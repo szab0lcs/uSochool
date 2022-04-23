@@ -1,1 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~normalize.css';
+@import url('./theme/all-custom.scss');
+body {
+    background-image: url('./assets/images/bg_portrait.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+}
