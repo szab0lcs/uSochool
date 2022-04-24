@@ -1,6 +1,81 @@
 @import '../../theme/customs.scss';
+@import '../../theme/backgrounds.scss';
 :host {
     .container {
         @include DefaultContainerStyle();
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow-y: auto;
+        gap: 3em;
+        .welcome-text {
+            width: 80%;
+            max-width: 19em;
+            text-align: center;
+            font-size: 3.5em;
+            font-weight: 700;
+            color: #0000008c;
+            .name { 
+                color: white;
+                word-break: break-word;
+            }
+        }
+        .menu {
+            width: 80%;
+            max-width: 19em;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 2em;
+            &-items {
+                width: calc(50% - 1em);
+                @include BlackBlurredBackground();
+                color: white;
+                position: relative;
+                &-content {
+                    position: absolute;
+                    transform: translate(-50%,-50%);
+                    top: calc(50% + 0.3em);
+                    left: 50%;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    overflow: hidden;
+                    gap: 0.4em;
+                    overflow: hidden;
+                    &>* {
+                        flex: 1;
+                        text-align: center;
+                        font-size: 1.2em;
+                        font-weight: 200;
+                    }
+                    i {
+                        flex-direction: column;
+                        display: flex;
+                        justify-content: flex-end;
+                        font-size: 1.7em;
+                    }
+                }
+            }
+            &-items::before {
+                content: '';
+                display: block;
+                padding-top: 100%;
+            }
+            &-items:active {
+                box-shadow: inset -2px -2px 5px 0px rgb(0 0 0 / 16%);
+                transition: box-shadow 100ms ease-in-out;
+            }
+        }
+        .next-class {
+            width: 80%;
+            max-width: 19em;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: 200;
+            color: white;
+        }
     }
 }

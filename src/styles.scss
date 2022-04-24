@@ -40,6 +40,7 @@ $usochool-theme: mat.define-light-theme((
 @import "./theme/customs.scss";
 @import "./theme/fonts.scss";
 @import "./theme/dialogs.scss";
+@import "~bootstrap-icons/font/bootstrap-icons.css";
 
 :root {
     font-family: 'Montserrat';
