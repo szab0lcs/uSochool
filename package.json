@@ -6,6 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build-ios": "ng build && npx cap copy ios && npx cap open ios",
+    "build-android": "ng build && npx cap copy android && npx cap open android",
     "build-ios-sync": "ng build && npx cap sync ios && npx cap open ios",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
