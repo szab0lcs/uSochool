@@ -1,0 +1,10 @@
+@mixin BlackBlurredBackground() {
+    background: #efefef;
+    background: linear-gradient(135deg, rgb(0 0 0 / 40%) 0%, rgb(0 0 0 / 5%) 100%);
+    -webkit-box-shadow: inset 2px 3px 5px 0px rgb(0 0 0 / 16%);
+    -moz-box-shadow: inset 2px 3px 5px 0px rgba(0,0,0,0.16);
+    box-shadow: inset 2px 3px 5px 0px rgb(0 0 0 / 16%);
+    border-radius: 1.25em;
+    backdrop-filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.53)) blur(24px);
+
+}

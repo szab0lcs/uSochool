@@ -1,7 +1,6 @@
 @import '../../theme/all-custom.scss';
 :host {
-    @include SafeAreasMargin();
-    p {
-        @include SafeAreasMargin();
+    .container {
+        @include DefaultContainerStyle();
     }
 }
