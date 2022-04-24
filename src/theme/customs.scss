@@ -1,12 +1,3 @@
-@import "../theme/backgrounds.scss";
-@import "../theme/buttons.scss";
-@import "../theme/colors.scss";
-@import "../theme/fonts.scss";
-@import "../theme/pop-ups.scss";
-
-:root {
-    font-family: 'Montserrat';
-}
 
 @mixin SafeAreasPadding() {
     padding-top: env(safe-area-inset-top);
@@ -30,4 +21,3 @@
     position: fixed;
     @include ContainerSafeArea();
 }
-

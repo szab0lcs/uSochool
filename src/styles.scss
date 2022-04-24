@@ -34,7 +34,17 @@ $usochool-theme: mat.define-light-theme((
 @include mat.all-component-themes($usochool-theme);
 
 @import '~normalize.css';
-@import url('./theme/all-custom.scss');
+@import "./theme/backgrounds.scss";
+@import "./theme/buttons.scss";
+@import "./theme/colors.scss";
+@import "./theme/customs.scss";
+@import "./theme/fonts.scss";
+@import "./theme/dialogs.scss";
+
+:root {
+    font-family: 'Montserrat';
+}
+
 body {
     background-image: url('./assets/images/bg_portrait.png');
     background-size: cover;

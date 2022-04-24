@@ -1,4 +1,5 @@
-@import '../../theme/all-custom.scss';
+@import '../../theme/backgrounds.scss';
+@import '../../theme/customs.scss';
 :host {
     .container {
         @include DefaultContainerStyle();
