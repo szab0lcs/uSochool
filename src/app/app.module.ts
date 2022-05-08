@@ -10,13 +10,17 @@ import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDialogModule} from '@angular/material/dialog';
 import { ForgotPasswordComponent } from './login/forgot-password/forgot-password.component';
+import { CatalogueComponent } from './catalogue/catalogue.component';
+import { SubjectsComponent } from './catalogue/subjects/subjects.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    CatalogueComponent,
+    SubjectsComponent
   ],
   imports: [
     BrowserModule,

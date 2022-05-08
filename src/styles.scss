@@ -42,6 +42,10 @@ $usochool-theme: mat.define-light-theme((
 @import "./theme/dialogs.scss";
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
+* {
+  box-sizing: border-box;
+}
+
 :root {
     font-family: 'Montserrat';
 }

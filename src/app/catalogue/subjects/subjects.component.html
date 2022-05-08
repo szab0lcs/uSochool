@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="dialog-title">{{data.title}}</div>
+    <div class="scroll-container">
+        <div class="tables">
+            <div class="tables-item tables-item-grades">
+                <span class="title">grades</span>
+                <div class="table-container">
+                    <div class="first-row">Grade</div>
+                    <div class="first-row">Date</div>
+    
+                    <ng-container *ngFor="let grade of grades">
+                        <div class="data">{{grade.grade}}</div>
+                        <div class="data">{{grade.date}}</div>
+                    </ng-container>
+                </div>
+                <span class="notes">Semester test: {{8}}</span>
+                <span class="notes">Final grade: {{9}}</span>
+            </div>
+            <div class="tables-item tables-item-absences">
+                <span class="title">absences</span>
+                <div class="table-container">
+                    <div class="first-row">Date</div>
+                    <div class="first-row">Proven</div>
+    
+                    <ng-container *ngFor="let absence of absences">
+                        <div class="data">{{absence.date}}</div>
+                        <div class="data" *ngIf="absence.proven else notProven">
+                            <i class="bi bi-check-circle-fill"></i> Yes
+                        </div>
+                    </ng-container>
+                </div>
+                <span class="notes">Total absences: {{2}}</span>
+            </div>
+        </div>
+    </div>
+    <span class="cancel" (click)="matDialogRef.close()">Cancel</span>
+</div>
+
+<ng-template #notProven>
+    <div class="data">
+        <i class="bi bi-x-circle-fill"></i> No
+    </div>
+</ng-template>

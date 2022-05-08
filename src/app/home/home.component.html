@@ -1,42 +1,53 @@
 <div class="container">
     <span class="welcome-text">hi <span class="name">john</span>!</span>
     <div class="menu">
-        <div class="menu-items">
-            <div class="menu-items-content">
-                <i class="bi bi-journals"></i>
-                <span>catalogue</span>
+        <ng-container *ngIf="role === 'user' || role === 'teacher'">
+            <div class="menu-items" (click)="navigateToCatalogue()">
+                <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-journals',text: 'catalogue'}"></ng-container>
             </div>
-        </div>
-        <div class="menu-items">
-            <div class="menu-items-content">
-                <i class="bi bi-clock"></i>
-                <span>timetable</span>
+            <div class="menu-items" (click)="navigateToLogin()">
+                <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-clock',text: 'timetable'}"></ng-container>
             </div>
-        </div>
-        <div class="menu-items">
-            <div class="menu-items-content">
-                <i class="bi bi-book"></i>
-                <span>library</span>
+            <div class="menu-items" (click)="navigateToLogin()">
+                <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-book',text: 'library'}"></ng-container>
             </div>
-        </div>
-        <div class="menu-items">
-            <div class="menu-items-content">
-                <i class="bi bi-newspaper"></i>
-                <span>news</span>
+            <div class="menu-items" (click)="navigateToLogin()">
+                <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-newspaper',text: 'news'}"></ng-container>
             </div>
-        </div>
-        <div class="menu-items" (click)="navigateToLogin()">
-            <div class="menu-items-content">
-                <i class="bi bi-person-circle"></i>
-                <span>profile</span>
+            <div class="menu-items" (click)="navigateToLogin()">
+                <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-person-circle',text: 'profile'}"></ng-container>
             </div>
-        </div>
-        <div class="menu-items">
-            <div class="menu-items-content">
-                <i class="bi bi-telephone"></i>
-                <span>contact</span>
+            <div class="menu-items" (click)="navigateToLogin()">
+                <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-telephone',text: 'contact'}"></ng-container>
             </div>
-        </div>
+        </ng-container>
+        <ng-container *ngIf="role === 'admin'">
+            <div class="menu-items" (click)="navigateToLogin()">
+                <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-journals',text: 'manage' + break + 'classes'}"></ng-container>
+            </div>
+            <div class="menu-items" (click)="navigateToLogin()">
+                <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-person-circle',text: 'manage' + break + 'users'}"></ng-container>
+            </div>
+            <div class="menu-items" (click)="navigateToLogin()">
+                <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-book',text: 'manage' + break + 'library'}"></ng-container>
+            </div>
+            <div class="menu-items" (click)="navigateToLogin()">
+                <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-newspaper',text: 'edit' + break + 'news'}"></ng-container>
+            </div>
+            <div class="menu-items" (click)="navigateToLogin()">
+                <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-telephone',text: 'edit' + break + 'contacts'}"></ng-container>
+            </div>
+            <div class="menu-items" (click)="navigateToLogin()">
+                <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-box-arrow-right',text: 'logout'}"></ng-container>
+            </div>
+        </ng-container>
     </div>
     <span class="next-class">Your next class is Geography!</span>
 </div>
+
+<ng-template let-icon="icon" let-text="text" #menuItem>
+    <div class="menu-items-content">
+        <i [class]="icon"></i>
+        <span [innerHTML]="text"></span>
+    </div>
+</ng-template>
