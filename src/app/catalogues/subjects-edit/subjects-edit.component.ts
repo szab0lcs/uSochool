@@ -73,7 +73,9 @@ export class SubjectsEditComponent implements OnInit {
     dialogConfig.data = grade;
 
     const dialog = this.matDialog.open(EditGradesComponent,dialogConfig);
-    await dialog.afterClosed().pipe(take(1)).toPromise();
+    const value = await dialog.afterClosed().pipe(take(1)).toPromise();
+    console.log({value});
+    
     
   }
   
@@ -90,7 +92,8 @@ export class SubjectsEditComponent implements OnInit {
 
   }
 
-  formatDate(value: number) {
+  formatDate(value: number | null) {
+    if (value === null) return;
     return moment.unix(value).format(this.dateFormat);
   }
   

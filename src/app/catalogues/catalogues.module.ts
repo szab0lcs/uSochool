@@ -12,6 +12,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AddGradesComponent } from './subjects-edit/add-grades/add-grades.component';
 
 
 
@@ -22,7 +23,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SubjectsComponent,
     StudentsListComponent,
     SubjectsEditComponent,
-    EditGradesComponent
+    EditGradesComponent,
+    AddGradesComponent
   ],
   imports: [
     CommonModule,

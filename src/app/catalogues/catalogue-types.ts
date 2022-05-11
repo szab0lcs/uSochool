@@ -16,6 +16,12 @@ export interface Student {
 
 export interface Grade {
     id: string,
-    date: number,
-    value: number
+    date: number | null,
+    value: number | null
+}
+
+export const INITIAL_GRADE_VALUE: Grade = {
+    id: '',
+    date: null,
+    value: null
 }
