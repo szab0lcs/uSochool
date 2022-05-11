@@ -10,6 +10,7 @@ import { Grade, INITIAL_GRADE_VALUE } from '../../catalogue-types';
   styleUrls: ['./add-grades.component.scss']
 })
 export class AddGradesComponent implements OnInit {
+  convertedDate: Date = new Date();
   data: Grade = INITIAL_GRADE_VALUE;
   constructor(
     public matDialogRef: MatDialogRef<AddGradesComponent>,
