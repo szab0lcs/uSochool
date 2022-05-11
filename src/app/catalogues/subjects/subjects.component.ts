@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
+import { Subject } from '../catalogue-types';
 
 @Component({
   selector: 'app-subjects',
@@ -49,7 +50,7 @@ export class SubjectsComponent implements OnInit {
 
   constructor(
     public matDialogRef: MatDialogRef<SubjectsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { id: string, title:string },
+    @Inject(MAT_DIALOG_DATA) public data: Subject,
   ) { }
 
   ngOnInit(): void {

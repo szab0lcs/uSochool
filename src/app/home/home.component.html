@@ -1,7 +1,7 @@
 <div class="container">
     <span class="welcome-text">hi <span class="name">john</span>!</span>
     <div class="menu">
-        <ng-container *ngIf="role === 'user' || role === 'teacher'">
+        <ng-container *ngIf="role === 'student' || role === 'teacher'">
             <div class="menu-items" (click)="navigateToCatalogue()">
                 <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-journals',text: 'catalogue'}"></ng-container>
             </div>

@@ -1,5 +1,5 @@
-@import '../../theme/customs.scss';
-@import '../../theme/backgrounds.scss';
+@import '../../../theme/customs.scss';
+@import '../../../theme/backgrounds.scss';
 
 .container {
     @include DefaultContainerStyle();
@@ -15,19 +15,18 @@
         @include whiteTitle(3.5em,700);
     }
     .list-scroll-container {
-        max-height: 60vh;
-        width: 80%;
-        padding: 0 0.3em;
+        max-width: 19em;
+        width: 85%;
+        height: 60vh;
+        padding: 0 0.6em;
         @include customScroll();
         .list {
             width: 100%;
-            max-width: 19em;
-            max-height: 60vh;
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
             gap: 1.5em;
-            overflow-y: auto;
+            justify-content: center;
             &-items {
                 width: 100%;
                 @include BlackBlurredBackground();
@@ -45,6 +44,21 @@
                     justify-content: center;
                     align-items: center;
                     font-size: 1.4em;
+                }
+                &-expandable {
+                    position: relative;
+                    width: 90%;
+                    display: none;
+                    align-items: center;
+                    flex-direction: column;
+                    justify-content: center;
+                    @include BlackBlurredBackground();
+                    color: white;
+                    gap: 1em;
+                    padding: 1em;
+                    &-show {
+                        display: flex;
+                    }
                 }
             }
             &-items::before {

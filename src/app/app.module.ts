@@ -10,8 +10,7 @@ import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDialogModule} from '@angular/material/dialog';
 import { ForgotPasswordComponent } from './login/forgot-password/forgot-password.component';
-import { CatalogueComponent } from './catalogue/catalogue.component';
-import { SubjectsComponent } from './catalogue/subjects/subjects.component';
+import { CataloguesModule } from './catalogues/catalogues.module';
 
 @NgModule({
   declarations: [
@@ -19,8 +18,6 @@ import { SubjectsComponent } from './catalogue/subjects/subjects.component';
     HomeComponent,
     LoginComponent,
     ForgotPasswordComponent,
-    CatalogueComponent,
-    SubjectsComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +25,8 @@ import { SubjectsComponent } from './catalogue/subjects/subjects.component';
     SharedModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatDialogModule
+    MatDialogModule,
+    CataloguesModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

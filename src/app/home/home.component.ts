@@ -10,7 +10,7 @@ import { fadeInAnimation } from '../_animations/index';
   host: { '[@fadeInAnimation]': '' }
 })
 export class HomeComponent implements OnInit {
-  role: 'user' | 'teacher' | 'admin' = 'user';
+  role: 'student' | 'teacher' | 'admin' = 'teacher';
   break = '<br>';
 
   constructor(
@@ -24,7 +24,8 @@ export class HomeComponent implements OnInit {
     this.router.navigateByUrl('login');
   }
 
-  navigateToCatalogue() {    
-    this.router.navigateByUrl('catalogue');
+  navigateToCatalogue() {
+    this.role === 'student' && this.router.navigateByUrl('student-catalogue');
+    this.role === 'teacher' && this.router.navigateByUrl('teacher-catalogue');
   }
 }

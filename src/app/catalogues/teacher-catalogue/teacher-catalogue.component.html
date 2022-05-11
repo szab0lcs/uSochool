@@ -1,0 +1,26 @@
+<div class="container">
+    <span class="title">Catalogue</span>
+    <div class="list-scroll-container">
+        <div class="list">
+            <ng-container *ngFor="let class of teacherClasses; let i = index;">
+                <div class="list-items" 
+                *ngIf="class"
+                (click)="toggleExpandable(i)">
+                    <span class="list-items-content">
+                        {{class.name}}
+                    </span>
+                </div>
+                <div class="list-items-expandable" [ngClass]="{'list-items-expandable-show': show === i}">
+                    <span class="class-subject" 
+                    *ngFor="let subject of class.subjects" 
+                    (click)="openStudentsList({className: class.name,classId: class.id, subject})">
+                        {{subject.name}}
+                    </span>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    <div class="back-button" (click)="back()">
+        <i class="bi bi-chevron-left"></i>
+    </div>
+</div>

@@ -1,44 +1,45 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { take } from 'rxjs/operators';
-import { NavigationService } from '../shared/services/navigation.service';
-import { SubjectsComponent } from './subjects/subjects.component';
+import { NavigationService } from 'src/app/shared/services/navigation.service';
+import { Subject } from '../catalogue-types';
+import { SubjectsComponent } from '../subjects/subjects.component';
 
 @Component({
   selector: 'app-catalogue',
-  templateUrl: './catalogue.component.html',
-  styleUrls: ['./catalogue.component.scss']
+  templateUrl: './student-catalogue.component.html',
+  styleUrls: ['./student-catalogue.component.scss']
 })
-export class CatalogueComponent implements OnInit {
+export class StudentCatalogueComponent implements OnInit {
 
-  studentSubjects = [
+  studentSubjects: Subject[] = [
     {
       id: 'mathematics',
-      title: 'Mathematics'
+      name: 'Mathematics'
     },
     {
       id: 'history',
-      title: 'History'
+      name: 'History'
     },
     {
       id: 'english',
-      title: 'English'
+      name: 'English'
     },
     {
       id: 'geography',
-      title: 'Geography'
+      name: 'Geography'
     },
     {
       id: 'science',
-      title: 'Science'
+      name: 'Science'
     },
     {
       id: 'informatics',
-      title: 'Informatics'
+      name: 'Informatics'
     },
     {
       id: 'science',
-      title: 'Science'
+      name: 'Science'
     },
   ]
 

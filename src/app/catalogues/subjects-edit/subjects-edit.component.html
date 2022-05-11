@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="dialog-title">{{data.title}}</div>
+    <div class="dialog-title">{{data.student.name}}</div>
     <div class="scroll-container">
         <div class="tables">
             <div class="tables-item tables-item-grades">
@@ -7,14 +7,18 @@
                 <div class="table-container">
                     <div class="first-row">Grade</div>
                     <div class="first-row">Date</div>
+                    <div class="first-row">Edit</div>
     
                     <ng-container *ngFor="let grade of grades">
-                        <div class="data">{{grade.grade}}</div>
-                        <div class="data">{{grade.date}}</div>
+                        <div class="data">{{grade.value}}</div>
+                        <div class="data">{{formatDate(grade.date)}}</div>
+                        <div class="data data-edit" (click)="editGrade(grade)"><i class="bi bi-pencil-fill"></i></div>
                     </ng-container>
                 </div>
                 <span class="notes">Semester test: {{8}}</span>
                 <span class="notes">Final grade: {{9}}</span>
+
+                <span class="button" (click)="addGrade()"><i class="bi bi-plus-circle-fill"></i> Add</span>
             </div>
             <div class="tables-item tables-item-absences">
                 <span class="title">absences</span>
@@ -30,10 +34,14 @@
                     </ng-container>
                 </div>
                 <span class="notes">Total absences: {{2}}</span>
+                <span class="button" (click)="addAbsence()"><i class="bi bi-plus-circle-fill"></i> Add</span>
             </div>
         </div>
     </div>
-    <span class="cancel" (click)="matDialogRef.close()">Cancel</span>
+    <div class="buttons-container">
+        <span class="cancel" (click)="matDialogRef.close()">Cancel</span>
+        <span class="save" (click)="matDialogRef.close()">Save</span>
+    </div>
 </div>
 
 <ng-template #notProven>

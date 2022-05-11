@@ -1,1 +1,71 @@
 
+#background {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    &-blur {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100vw;
+        height: 100vh;
+        backdrop-filter: blur(4em);
+    }
+    .circle {
+        position: absolute;
+        border-radius: 50%;
+        transition: background 2s ease;
+        &-1 {
+            width: 50%;
+            top: -10%;
+            left: -10%;
+            background: #6BC5D9;
+        }
+        &-2 {
+            width: 80%;
+            top: -5%;
+            right: -15%;
+            background: #9E379F;
+        }
+        &-3 {
+            width: 100%;
+            top: 25%;
+            left: -30%;
+            background: #FCBEF7;
+        }
+        &-4 {
+            width: 80%;
+            top: 70%;
+            left: -15%;
+            background: #9E379F;
+        }
+        &-5 {
+            width: 90%;
+            top: 30%;
+            right: -30%;
+            background: #b8bdd4;
+        }
+        &-6 {
+            width: 80%;
+            bottom: -4%;
+            right: -20%;
+            background: #7ac8db;
+        }
+        &-green-theme {
+            &-1 { background: #7ac8db}
+            &-2 { background: #7ac8db}
+            &-3 { background: #7ac8db}
+            &-4 { background: #7ac8db}
+            &-5 { background: #7ac8db}
+            &-6 { background: #7ac8db}
+        }
+    }
+    .circle::before {
+        content: '';
+        display: block;
+        padding-top: 100%;
+    }
+}

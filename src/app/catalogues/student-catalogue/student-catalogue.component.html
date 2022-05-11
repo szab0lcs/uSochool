@@ -3,7 +3,9 @@
     <div class="list-scroll-container">
         <div class="list">
             <ng-container *ngFor="let subject of studentSubjects">
-                <ng-container *ngTemplateOutlet="subjectTemplate; context:{subject: subject}"></ng-container>
+                <ng-container 
+                *ngTemplateOutlet="studentSubjectsTemplate; context:{subject: subject}">
+                </ng-container>
             </ng-container>
         </div>
     </div>
@@ -12,12 +14,12 @@
     </div>
 </div>
 
-<ng-template let-subject="subject" #subjectTemplate>
+<ng-template let-subject="subject" #studentSubjectsTemplate>
     <div class="list-items" 
     *ngIf="subject" 
     (click)="openSubjectDetails(subject)">
         <span class="list-items-content">
-            {{subject.title}}
+            {{subject.name}}
         </span>
     </div>
 </ng-template>
