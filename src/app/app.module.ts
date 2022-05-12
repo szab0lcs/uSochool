@@ -11,6 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDialogModule} from '@angular/material/dialog';
 import { ForgotPasswordComponent } from './login/forgot-password/forgot-password.component';
 import { CataloguesModule } from './catalogues/catalogues.module';
+import { NewsComponent } from './news/news.component';
+import { ArticleComponent } from './news/article/article.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { CataloguesModule } from './catalogues/catalogues.module';
     HomeComponent,
     LoginComponent,
     ForgotPasswordComponent,
+    NewsComponent,
+    ArticleComponent,
   ],
   imports: [
     BrowserModule,

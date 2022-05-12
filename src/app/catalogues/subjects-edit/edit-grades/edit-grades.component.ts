@@ -11,6 +11,7 @@ import { Grade } from '../../catalogue-types';
 })
 export class EditGradesComponent implements OnInit {
   convertedDate: Date = new Date();
+  displayOptions = false;
   constructor(
     public matDialogRef: MatDialogRef<EditGradesComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Grade,

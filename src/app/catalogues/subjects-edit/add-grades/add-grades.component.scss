@@ -17,15 +17,39 @@
         justify-content: center;
         align-items: center;
         gap: 1em;
+        color: white;
         .grade {
             display: flex;
             justify-content: center;
             gap: 1em;
             font-size: 1.8em;
             .value {
-                min-width: 3em;
+                position: relative;
+                width: 2em;
                 text-align: center;
+                .options {
+                    position: absolute;
+                    z-index: 1;
+                    background: white;
+                    color: black;
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 1em;
+                    width: 60vw;
+                    max-width: 10em;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 1em;
+                    transform: translate(-50%);
+                    left: 50%;
+                    top: 1.5em;
+                    border-radius: 1em;
+                }
             }
+        }
+        .click-note {
+            font-size: 0.8em;
+            color: #0009;
         }
     }
     .buttons {

@@ -3,9 +3,15 @@
     <div class="inputs">
         <div class="grade">
             <i class="bi bi-dash-circle-fill" (click)="minusGrade()"></i>
-            <div class="value">{{data.value}}</div>
+            <div class="value" (click)="displayOptions = !displayOptions">
+                {{data.value}}
+                <div class="options" *ngIf="displayOptions">
+                    <div *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]" (click)="data.value = item">{{item}}</div>
+                </div>
+            </div>
             <i class="bi bi-plus-circle-fill" (click)="plusGrade()"></i>
         </div>
+        <span class="click-note">click on number to select grade</span>
         <mat-form-field appearance="fill">
             <mat-label>Choose a date</mat-label>
             <input matInput 

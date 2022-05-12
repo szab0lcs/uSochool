@@ -1,6 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { Grade, INITIAL_GRADE_VALUE } from '../../catalogue-types';
 
@@ -12,11 +11,13 @@ import { Grade, INITIAL_GRADE_VALUE } from '../../catalogue-types';
 export class AddGradesComponent implements OnInit {
   convertedDate: Date = new Date();
   data: Grade = INITIAL_GRADE_VALUE;
+  displayOptions = false;
   constructor(
     public matDialogRef: MatDialogRef<AddGradesComponent>,
   ) {}
 
   ngOnInit(): void {
+    this.data.value = 10;
   }
 
   timestampToDate(value: number) {
@@ -30,15 +31,16 @@ export class AddGradesComponent implements OnInit {
 
   minusGrade() {
     if(this.data.value === 1 || this.data.value === null) return;
-    this.data.value = this.data.value - 1;
+    this.data.value -= 1;
   }
   
   plusGrade() {
     if(this.data.value === 10 || this.data.value === null) return;
-    this.data.value = this.data.value + 1;
+    this.data.value += 1;
   }
 
   save() {
+    if (this.data.date === null) this.data.date = moment(new Date()).unix();
     this.matDialogRef.close(this.data);
   }
 }

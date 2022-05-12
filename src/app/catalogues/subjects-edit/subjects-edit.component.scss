@@ -34,7 +34,6 @@
                 background: linear-gradient(135deg, rgb(0 0 0 / 18%) 0%, rgb(0 0 0 / 6%) 100%);
                 display: flex;
                 flex-direction: column;
-                gap: 0.6em;
                 .title {
                     display: inline-block;
                     width: 100%;
@@ -76,7 +75,10 @@
                 }
                 &-absences {
                     .table-container {
-                        grid-template-columns: 1fr 0.3fr;
+                        grid-template-columns: 1fr 0.4fr 0.2fr;
+                        .data-edit {
+                            font-size: 1.7em;
+                        }
                     }
                 }
             }

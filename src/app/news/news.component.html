@@ -1,0 +1,17 @@
+<div class="container">
+    <span class="title">News</span>
+    <div class="list-scroll-container">
+        <div class="list">
+            <div class="list-items" *ngFor="let article of articles" (click)="openArticle(article)">
+                <div class="article">
+                    <div class="article-image" [ngStyle]="getBackgroundUrl(article.imageUrl)"></div>
+                    <span class="article-title">{{article.title}}</span>
+                    <span class="article-short-description">{{article.shortDescription}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="back-button" (click)="back()">
+        <i class="bi bi-chevron-left"></i>
+    </div>
+</div>

@@ -28,4 +28,8 @@ export class HomeComponent implements OnInit {
     this.role === 'student' && this.router.navigateByUrl('student-catalogue');
     this.role === 'teacher' && this.router.navigateByUrl('teacher-catalogue');
   }
+
+  navigateToNews() {
+    this.router.navigateByUrl('news');
+  }
 }

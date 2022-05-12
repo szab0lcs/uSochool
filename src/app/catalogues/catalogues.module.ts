@@ -11,8 +11,10 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddGradesComponent } from './subjects-edit/add-grades/add-grades.component';
+import { AddAbsencesComponent } from './subjects-edit/add-absences/add-absences.component';
 
 
 
@@ -24,7 +26,8 @@ import { AddGradesComponent } from './subjects-edit/add-grades/add-grades.compon
     StudentsListComponent,
     SubjectsEditComponent,
     EditGradesComponent,
-    AddGradesComponent
+    AddGradesComponent,
+    AddAbsencesComponent
   ],
   imports: [
     CommonModule,
@@ -33,6 +36,7 @@ import { AddGradesComponent } from './subjects-edit/add-grades/add-grades.compon
     MatNativeDateModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     FormsModule,
     ReactiveFormsModule
   ]

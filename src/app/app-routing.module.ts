@@ -4,6 +4,7 @@ import { StudentCatalogueComponent } from './catalogues/student-catalogue/studen
 import { TeacherCatalogueComponent } from './catalogues/teacher-catalogue/teacher-catalogue.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
+import { NewsComponent } from './news/news.component';
 
 const routes: Routes = [
   {
@@ -26,7 +27,11 @@ const routes: Routes = [
   {
     path: 'teacher-catalogue',
     component: TeacherCatalogueComponent
-  }
+  },
+  {
+    path: 'news',
+    component: NewsComponent
+  },
 ];
 
 @NgModule({

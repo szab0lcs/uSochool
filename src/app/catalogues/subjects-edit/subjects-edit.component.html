@@ -25,12 +25,14 @@
                 <div class="table-container">
                     <div class="first-row">Date</div>
                     <div class="first-row">Proven</div>
+                    <div class="first-row">Edit</div>
     
                     <ng-container *ngFor="let absence of absences">
-                        <div class="data">{{absence.date}}</div>
+                        <div class="data">{{formatDate(absence.date)}}</div>
                         <div class="data" *ngIf="absence.proven else notProven">
                             <i class="bi bi-check-circle-fill"></i> Yes
                         </div>
+                        <div class="data data-edit" (click)="editAbsence(absence)"><i class="bi bi-pencil-fill"></i></div>
                     </ng-container>
                 </div>
                 <span class="notes">Total absences: {{2}}</span>

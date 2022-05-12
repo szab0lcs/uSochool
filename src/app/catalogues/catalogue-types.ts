@@ -25,3 +25,15 @@ export const INITIAL_GRADE_VALUE: Grade = {
     date: null,
     value: null
 }
+
+export interface Absence {
+    id: string,
+    date: number | null,
+    proven: boolean
+}
+
+export const INITIAL_ABSENCE_VALUE: Absence = {
+    id: '',
+    date: null,
+    proven: false
+}
