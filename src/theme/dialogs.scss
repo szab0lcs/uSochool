@@ -8,6 +8,7 @@
         backdrop-filter: brightness(1.5) drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.53)) blur(20px);
         width: 90vw;
         max-width: 25em;
+        max-height: 90vh;
     }
     &-backdrop {
         background: #00000063;

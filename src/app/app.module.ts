@@ -18,6 +18,7 @@ import { LibraryComponent } from './library/library.component';
 import { BooksComponent } from './library/books/books.component';
 import { RentedBooksComponent } from './library/rented-books/rented-books.component';
 import { SearchFilterPipe } from './pipes/search-filter.pipe';
+import { BookDetailsComponent } from './library/book-details/book-details.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { SearchFilterPipe } from './pipes/search-filter.pipe';
     BooksComponent,
     RentedBooksComponent,
     SearchFilterPipe,
+    BookDetailsComponent,
   ],
   imports: [
     BrowserModule,

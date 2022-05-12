@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { take } from 'rxjs/operators';
+import { BookDetailsComponent } from '../book-details/book-details.component';
 import { Book } from '../library.component';
 
 @Component({
@@ -65,6 +67,7 @@ export class BooksComponent implements OnInit {
 
   constructor(
     public matDialogRef: MatDialogRef<BooksComponent>,
+    public matDialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -79,5 +82,17 @@ export class BooksComponent implements OnInit {
     const target = el? el.target : undefined;
     const value = target && target.value ? target.value : '';
     this.query = value;
+  }
+
+  async openBookDetails(book: Book) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'forgot-password';
+    dialogConfig.backdropClass = 'forgot-password-backdrop';
+    dialogConfig.maxWidth = '100vw';
+    dialogConfig.data = book;
+
+    const dialog = this.matDialog.open(BookDetailsComponent,dialogConfig);
+    await dialog.afterClosed().pipe(take(1)).toPromise();
   }
 }

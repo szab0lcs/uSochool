@@ -58,35 +58,39 @@
             @include whiteTitle(1.3em,400,0.1);
         }
         .table-container {
-            display: grid;
-            row-gap: 2em;
+            display: flex;
+            flex-direction: column;
+            row-gap: 1em;
             font-size: 0.8em;
             color: white;
             font-weight: 400;
-            align-items: center;
+            align-items: flex-start;
             grid-template-columns: 1fr 0.5fr 0.3fr;
             max-height: 40vh;
             overflow-y: auto;
             padding: 0.2em 0.4em;
             @include customScroll();
-            .first-row {
-                border-bottom: 1px solid white;
-                padding-bottom: 0.4em;
+            &-title {
+                width: 100%;
+                text-align: center;
+                font-size: 1.6em;
+                font-weight: 300;
             }
-            .data {
+            .horizontal-line {
+                width: 100%;
+                height: 1px;
+                background-color: white;
+            }
+            &-props {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5em;
                 &-title {
-                    max-width: 95%;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                    overflow: hidden;
+                    font-weight: 500;
+                    font-size: 1.2em;
                 }
-                &-view {
-                    background: white;
-                    color: black;
-                    width: fit-content;
-                    font-size: 0.9em;
-                    padding: 0.3em 0.6em;
-                    border-radius: 1em;
+                &-text {
+                    font-weight: 300;
                 }
             }
         }
