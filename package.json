@@ -7,7 +7,9 @@
     "build": "ng build",
     "build-ios": "ng build && npx cap copy ios && npx cap open ios",
     "build-android": "ng build && npx cap copy android && npx cap open android",
+    "build-android-sync": "ng build && npx cap sync android && npx cap open android",
     "build-ios-sync": "ng build && npx cap sync ios && npx cap open ios",
+    "mobiles-sync": "ng build && npx cap sync ios && npx cap open ios && npx cap sync android && npx cap open android",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

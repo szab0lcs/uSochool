@@ -1,0 +1,134 @@
+@import '../../theme/customs.scss';
+@import '../../theme/backgrounds.scss';
+.container {
+    @include DefaultContainerStyle();
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    gap: 2em;
+    .pic-name {
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5em;
+        .image {
+            width: 10em;
+            height: 10em;
+            border-radius: 50%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        .change-pic {
+            position: absolute;
+            right: 0.5em;
+            bottom: 0.5em;
+            width: 2.5em;
+            height: 2.5em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            @include BlackBlurredBackground();
+            backdrop-filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.53)) blur(5px);
+            i {
+                font-size: 1.3em;
+                color: white;
+            }
+        }
+        .name {
+            color: white;
+            font-size: 2em;
+            font-weight: 700;
+        }
+    }
+    .details-container {
+        max-height: 41vh;
+        width: 80%;
+        padding: 0 0.3em;
+        @include customScroll();
+        .details {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1em;
+            width: 100%;
+            max-width: 17em;
+            &-item {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                gap: 0.5em;
+                color: white;
+                .header {
+                    font-size: 1.3em;
+                    font-weight: 700;
+                }
+                .text {
+                    font-size: 1em;
+                    font-weight: 300;
+                }
+            }
+        }
+    }
+    .buttons {
+        display: flex;
+        gap: 1.5em;
+        .button {
+            width: 4em;
+            height: 4em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+    
+            @include BlackBlurredBackground();
+            color: white;
+            transition: width 0.4s cubic-bezier(0.4, 0, 1, 1);
+            i {
+                font-size: 2em;
+                &::before {
+                    font-weight: bold !important;
+                }
+            }
+            &-logout {
+                position: relative;
+                i {
+                    position: absolute;
+                    transform: translate(-50%,-50%);
+                    top: 50%;
+                    left: 50%;
+                    transition: left .4s cubic-bezier(0.4, 0, 1, 1);
+                }
+                &-text {
+                    position: absolute;
+                    opacity: 0;
+                    width: 0;
+                    transform: translate(-50%, -50%);
+                    top: 50%;
+                    left: 50%;
+                }
+            }
+
+            &-logout-active {
+                width: 10em;
+                gap: 1em;
+                i {
+                    left: 25%;
+                }
+                .button-logout-text {
+                    left: 60%;
+                    opacity: 1;
+                    width: 4em;
+                    text-align: center;
+                    transition: all .4s .2s cubic-bezier(0.4, 0, 1, 1);
+                }
+            }
+        }
+    }
+}

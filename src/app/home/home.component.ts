@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ExistingRoutes } from '../app-routing.module';
+import { NavigationService } from '../shared/services/navigation.service';
 import { fadeInAnimation } from '../_animations/index';
 
 @Component({
@@ -14,22 +15,13 @@ export class HomeComponent implements OnInit {
   break = '<br>';
 
   constructor(
-    private router: Router
+    private navigationService: NavigationService
   ) { }
 
   ngOnInit(): void {
   }
 
-  navigateToLogin() {    
-    this.router.navigateByUrl('login');
-  }
-
-  navigateToCatalogue() {
-    this.role === 'student' && this.router.navigateByUrl('student-catalogue');
-    this.role === 'teacher' && this.router.navigateByUrl('teacher-catalogue');
-  }
-
-  navigateToNews() {
-    this.router.navigateByUrl('news');
+  navigateTo(url: ExistingRoutes) {
+    this.navigationService.navigateTo(url);
   }
 }

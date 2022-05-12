@@ -1,8 +1,10 @@
 <div id="background">
-    <div class="circle circle-{{i}}" 
-    *ngFor="let i of [1,2,3,4,5,6]"
-    [ngStyle]="getThemeColor(i,purpleColorScheme)"
-    ></div>
+    <ng-container *ngIf="appBackgroundObs$ | async as background">
+        <div class="circle circle-{{i}}" 
+        *ngFor="let i of [1,2,3,4,5,6]"
+        [ngStyle]="getThemeColor(i,background)"
+        ></div>
+    </ng-container>
     <div id="background-blur"></div>
     <router-outlet></router-outlet>
 </div>

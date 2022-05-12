@@ -4,8 +4,8 @@
         background: linear-gradient(135deg, rgb(209 209 209 / 40%) 0%, rgb(255 255 255 / 5%) 100%);
         box-shadow: inset 1px 1px 5px 0px rgb(0 0 0 / 16%);
         border-radius: 1.25em;
-        -webkit-backdrop-filter: blur(30px) brightness(1.5);
-        backdrop-filter: brightness(1.5) drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.53)) blur(30px);
+        -webkit-backdrop-filter: blur(20px) brightness(1.5);
+        backdrop-filter: brightness(1.5) drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.53)) blur(20px);
         width: 90vw;
         max-width: 25em;
     }

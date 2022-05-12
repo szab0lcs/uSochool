@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import { Location } from '@angular/common'
 import { Router, NavigationEnd } from '@angular/router'
+import { ExistingRoutes } from 'src/app/app-routing.module'
 
 @Injectable({ providedIn: 'root' })
 export class NavigationService {
@@ -21,5 +22,9 @@ export class NavigationService {
     } else {
       this.router.navigateByUrl('/')
     }
+  }
+
+  navigateTo(url: ExistingRoutes) {
+    this.router.navigateByUrl(url);
   }
 }
