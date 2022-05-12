@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start-external": "ng serve --host 0.0.0.0",
     "build": "ng build",
     "build-ios": "ng build && npx cap copy ios && npx cap open ios",
     "build-android": "ng build && npx cap copy android && npx cap open android",

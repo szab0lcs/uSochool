@@ -51,13 +51,13 @@
         width: 80%;
         padding: 0 0.3em;
         @include customScroll();
+        max-width: 20em;
         .details {
             display: flex;
             flex-direction: column;
             justify-content: center;
             gap: 1em;
             width: 100%;
-            max-width: 17em;
             &-item {
                 display: flex;
                 flex-direction: column;

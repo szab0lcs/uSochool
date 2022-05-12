@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="title">Search & Rent</div>
+    <div class="input">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="search by author or title" (input)="onSearchChange($event)">
+    </div>
+    <div class="table">
+        <span class="title">grades</span>
+        <div class="table-container">
+            <div class="first-row">Title</div>
+            <div class="first-row">Available</div>
+
+            <ng-container *ngFor="let book of books | searchFilter: query">
+                <div class="data">{{book.title}}</div>
+                <div class="data">{{book.available ? "Yes": "No"}}</div>
+            </ng-container>
+        </div>
+    </div>
+</div>

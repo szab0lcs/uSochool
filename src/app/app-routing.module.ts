@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { StudentCatalogueComponent } from './catalogues/student-catalogue/student-catalogue.component';
 import { TeacherCatalogueComponent } from './catalogues/teacher-catalogue/teacher-catalogue.component';
 import { HomeComponent } from './home/home.component';
+import { LibraryComponent } from './library/library.component';
 import { LoginComponent } from './login/login.component';
 import { NewsComponent } from './news/news.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -37,6 +38,10 @@ const routes: Routes = [
     path: 'profile',
     component: ProfileComponent
   },
+  {
+    path: 'library',
+    component: LibraryComponent
+  },
 ];
 
 @NgModule({
@@ -45,4 +50,5 @@ const routes: Routes = [
 })
 export class AppRoutingModule { }
 
-export type ExistingRoutes = '' | 'home' | 'login' | 'student-catalogue' | 'teacher-catalogue' | 'news' | 'profile';
+export type ExistingRoutes = '' | 'home' | 'login' | 'student-catalogue' |
+ 'teacher-catalogue' | 'news' | 'profile' | 'library';
