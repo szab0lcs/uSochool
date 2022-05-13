@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { take } from 'rxjs/operators';
+import { NavigationService } from 'src/app/shared/services/navigation.service';
+import { EditClassComponent } from './edit-class/edit-class.component';
 
 @Component({
   selector: 'app-manage-classes',
@@ -6,10 +10,55 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./manage-classes.component.scss']
 })
 export class ManageClassesComponent implements OnInit {
-
-  constructor() { }
+  classesList = [
+    {
+      schoolGrade: 'IX',
+      classes: ['A','B','C','D']
+    },
+    {
+      schoolGrade: 'X',
+      classes: ['A','B','C']
+    },
+    {
+      schoolGrade: 'XI',
+      classes: ['A','B','C','D']
+    },
+    {
+      schoolGrade: 'XII',
+      classes: ['A','B','C','D']
+    },
+  ]
+  show: number = -1;
+  constructor(
+    private navigationService: NavigationService,
+    private matDialog: MatDialog,
+  ) { }
 
   ngOnInit(): void {
+  }
+
+  back(): void {
+    this.navigationService.back();
+  }
+
+  async openStudentsList(data: string) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'forgot-password';
+    dialogConfig.backdropClass = 'forgot-password-backdrop';
+    dialogConfig.maxWidth = '100vw';
+    dialogConfig.data = data;
+
+    const dialog = this.matDialog.open(EditClassComponent,dialogConfig);
+    await dialog.afterClosed().pipe(take(1)).toPromise();
+  }
+
+  toggleExpandable(i: number){
+    if (this.show === i) {
+      this.show = -1;
+      return;
+    }
+    this.show = i;
   }
 
 }

@@ -11,7 +11,7 @@ import { fadeInAnimation } from '../_animations/index';
   host: { '[@fadeInAnimation]': '' }
 })
 export class HomeComponent implements OnInit {
-  role: 'student' | 'teacher' | 'admin' = 'student';
+  role: 'student' | 'teacher' | 'admin' = 'admin';
   break = '<br>';
 
   constructor(
