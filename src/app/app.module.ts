@@ -19,6 +19,8 @@ import { BooksComponent } from './library/books/books.component';
 import { RentedBooksComponent } from './library/rented-books/rented-books.component';
 import { SearchFilterPipe } from './pipes/search-filter.pipe';
 import { BookDetailsComponent } from './library/book-details/book-details.component';
+import { MyRentedBooks } from './pipes/my-rented-books.pipe';
+import { FormatDatePipe } from './pipes/format-date.pipe';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { BookDetailsComponent } from './library/book-details/book-details.compon
     RentedBooksComponent,
     SearchFilterPipe,
     BookDetailsComponent,
+    MyRentedBooks,
+    FormatDatePipe
   ],
   imports: [
     BrowserModule,

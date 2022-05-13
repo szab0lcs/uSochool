@@ -52,6 +52,12 @@ export interface Book {
   title: string;
   author: string;
   maxRentPeriod: number;
-  available: boolean;
+  available: true | BookRental;
   isbn: string;
+}
+
+export interface BookRental {
+  rentedDate: number;
+  rentPeriod: number;
+  rentedBy: string;
 }

@@ -35,7 +35,11 @@ export class BooksComponent implements OnInit {
       title: 'Lorem ipsum dolor',
       author: 'Example Szerzo',
       maxRentPeriod: 60,
-      available: true,
+      available: {
+        rentPeriod: 20,
+        rentedDate: 1651901856,
+        rentedBy: 'myUserID'
+      },
       isbn: '9496518465146854324564',
     },
     {
@@ -43,7 +47,11 @@ export class BooksComponent implements OnInit {
       title: 'Lorem ipsum sit',
       author: 'Example Author',
       maxRentPeriod: 30,
-      available: false,
+      available: {
+        rentPeriod: 20,
+        rentedDate: 1651901856,
+        rentedBy: 'otherUserID'
+      },
       isbn: '9496518465146854324564',
     },
     {
@@ -59,7 +67,11 @@ export class BooksComponent implements OnInit {
       title: 'Lorem dolor sit',
       author: 'Example Author',
       maxRentPeriod: 30,
-      available: false,
+      available: {
+        rentPeriod: 20,
+        rentedDate: 1651901856,
+        rentedBy: 'myUserID'
+      },
       isbn: '9496518465146854324564',
     },
 
@@ -90,7 +102,7 @@ export class BooksComponent implements OnInit {
     dialogConfig.panelClass = 'forgot-password';
     dialogConfig.backdropClass = 'forgot-password-backdrop';
     dialogConfig.maxWidth = '100vw';
-    dialogConfig.data = book;
+    dialogConfig.data = {book, rented: false};;
 
     const dialog = this.matDialog.open(BookDetailsComponent,dialogConfig);
     await dialog.afterClosed().pipe(take(1)).toPromise();

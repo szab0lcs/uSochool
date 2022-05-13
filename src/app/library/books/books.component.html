@@ -12,7 +12,7 @@
 
             <ng-container *ngFor="let book of books | searchFilter: query">
                 <div class="data data-title">{{book.title}}</div>
-                <div class="data">{{book.available ? "Yes": "No"}}</div>
+                <div class="data">{{book.available === true ? "Yes": "No"}}</div>
                 <div class="data data-view" (click)="openBookDetails(book)">View</div>
             </ng-container>
         </div>
