@@ -7,6 +7,7 @@ import { LibraryComponent } from './library/library.component';
 import { LoginComponent } from './login/login.component';
 import { NewsComponent } from './news/news.component';
 import { ProfileComponent } from './profile/profile.component';
+import { TimetableComponent } from './timetable/timetable.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,10 @@ const routes: Routes = [
     path: 'library',
     component: LibraryComponent
   },
+  {
+    path: 'timetable',
+    component: TimetableComponent
+  }
 ];
 
 @NgModule({
@@ -50,5 +55,4 @@ const routes: Routes = [
 })
 export class AppRoutingModule { }
 
-export type ExistingRoutes = '' | 'home' | 'login' | 'student-catalogue' |
- 'teacher-catalogue' | 'news' | 'profile' | 'library';
+export type ExistingRoutes = '' | 'home' | 'login' | 'student-catalogue' | 'teacher-catalogue' | 'news' | 'profile' | 'library' | 'timetable';

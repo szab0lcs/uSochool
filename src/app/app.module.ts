@@ -11,6 +11,7 @@ import { NewsModule } from './news/news.module';
 import { LoginModule } from './login/login.module';
 import { HomeModule } from './home/home.module';
 import { ProfileModule } from './profile/profile.module';
+import { TimetableModule } from './timetable/timetable.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ProfileModule } from './profile/profile.module';
     NewsModule,
     LoginModule,
     HomeModule,
-    ProfileModule
+    ProfileModule,
+    TimetableModule
   ],
   providers: [],
   exports: [SharedModule],

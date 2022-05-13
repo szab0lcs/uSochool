@@ -1,0 +1,16 @@
+<div class="container">
+    <ng-container *ngIf="data !== -1">
+        <div class="title">{{days[data]}}</div>
+        <div class="table">
+            <div class="table-container">
+                <div class="table-container-props" *ngFor="let hour of [8,9,10,11,12,13]">
+                    <span class="table-container-props-title">{{hour}}:00 - {{hour}}:50</span>
+                    <span class="table-container-props-text">Math - Teacher Name</span>
+                </div>
+            </div>
+        </div>
+        <div class="buttons">
+            <span class="button button-cancel" (click)="matDialogRef.close()">Cancel</span>
+        </div>
+    </ng-container>
+</div>

@@ -1,0 +1,21 @@
+<div class="container">
+    <span class="title">Timetable</span>
+    <div class="list-scroll-container">
+        <div class="list">
+            <ng-container *ngFor="let day of [1,2,3,4,5]">
+                <ng-container *ngTemplateOutlet="dayTemplate; context:{dayNumber: day}"></ng-container>
+            </ng-container>
+        </div>
+    </div>
+    <div class="back-button" (click)="back()">
+        <i class="bi bi-chevron-left"></i>
+    </div>
+</div>
+
+<ng-template let-dayNumber="dayNumber" #dayTemplate>
+    <div class="list-items" [ngClass]="{'list-items-active': dayOfTheWeek === dayNumber}" (click)="openDay(dayNumber - 1)">
+        <span class="list-items-content">
+            {{days[dayNumber - 1]}}
+        </span>
+    </div>
+</ng-template>
