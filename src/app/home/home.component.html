@@ -40,7 +40,7 @@
             <div class="menu-items" (click)="navigateTo('manage-contacts')">
                 <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-telephone',text: 'edit' + break + 'contacts'}"></ng-container>
             </div>
-            <div class="menu-items" (click)="navigateTo('login')">
+            <div class="menu-items" (click)="authService.SignOut()">
                 <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-box-arrow-right',text: 'logout'}"></ng-container>
             </div>
         </ng-container>

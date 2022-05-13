@@ -6,14 +6,14 @@
             <div class="inputs">
                 <div class="input">
                     <img src="assets/icons/profile.svg">
-                    <input type="text" placeholder="enter your email">
+                    <input type="text" placeholder="enter your email" #userEmail>
                 </div>
                 <div class="input">
                     <img src="assets/icons/lock.svg">
-                    <input type="password" placeholder="enter your password">
+                    <input type="password" placeholder="enter your password" #userPassword>
                 </div>
             </div>
-            <button class="submit" type="submit" (click)="navigateToHome()">Sign In</button>
+            <button class="submit" type="submit" (click)="authService.SignIn(userEmail.value, userPassword.value)">Sign In</button>
             <span class="forgot" (click)="forgotPassword()">Forgot password?</span>
         </div>
 </div>

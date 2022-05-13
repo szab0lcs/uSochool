@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ExistingRoutes } from '../app-routing.module';
+import { AuthService } from '../shared/services/auth.service';
 import { NavigationService } from '../shared/services/navigation.service';
+import { UserService } from '../shared/services/user.service';
 import { fadeInAnimation } from '../_animations/index';
 
 @Component({
@@ -11,14 +13,17 @@ import { fadeInAnimation } from '../_animations/index';
   host: { '[@fadeInAnimation]': '' }
 })
 export class HomeComponent implements OnInit {
-  role: 'student' | 'teacher' | 'admin' = 'admin';
+  role: 'student' | 'teacher' | 'admin' = 'teacher';
   break = '<br>';
 
   constructor(
-    private navigationService: NavigationService
+    private navigationService: NavigationService,
+    public authService: AuthService,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
+    this.userService.currentUser$.subscribe(data => console.log({user: data}))
   }
 
   navigateTo(url: ExistingRoutes) {

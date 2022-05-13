@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../shared/services/auth.service';
 import { NavigationService } from '../shared/services/navigation.service';
 import { ThemeService } from '../shared/services/theme.service';
 
@@ -12,7 +13,8 @@ export class ProfileComponent implements OnInit {
   canLogout = false;
   constructor(
     private navigationService: NavigationService,
-    public themeService: ThemeService
+    public themeService: ThemeService,
+    public authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -24,7 +26,7 @@ export class ProfileComponent implements OnInit {
       setTimeout(() => {
         this.canLogout = false;
       }, 3000);
-    } else this.navigationService.navigateTo('login');
+    } else this.authService.SignOut();
   }
 
   back(): void {
