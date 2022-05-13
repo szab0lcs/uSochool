@@ -7,12 +7,6 @@ import { TeacherCatalogueComponent } from './teacher-catalogue/teacher-catalogue
 import { StudentsListComponent } from './teacher-catalogue/students-list/students-list.component';
 import { SubjectsEditComponent } from './subjects-edit/subjects-edit.component';
 import { EditGradesComponent } from './subjects-edit/edit-grades/edit-grades.component';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddGradesComponent } from './subjects-edit/add-grades/add-grades.component';
 import { AddAbsencesComponent } from './subjects-edit/add-absences/add-absences.component';
 
@@ -32,13 +26,6 @@ import { AddAbsencesComponent } from './subjects-edit/add-absences/add-absences.
   imports: [
     CommonModule,
     SharedModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    FormsModule,
-    ReactiveFormsModule
   ]
 })
 export class CataloguesModule { }

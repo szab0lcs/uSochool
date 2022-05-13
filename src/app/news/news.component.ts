@@ -18,7 +18,7 @@ export class NewsComponent implements OnInit {
       imageUrl: 'assets/images/news.jpg',
       title: 'Lorem ipsum dolor',
       shortDescription: 'Lorem ipsum dolor sit amet, adipisicing elit.',
-      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. In quaerat, cum quos quibusdam autem inventore repellendus ipsum est nemo facere corrupti quidem rem dignissimos dolore facilis ab debitis omnis. Magnam quisquam veritatis vitae quo, recusandae, dolorem ut facere incidunt quibusdam excepturi eum, vel sunt. Quis architecto quo optio necessitatibus at!'
+      text: 'Lorem ipsum dolor sit amet consectetur <br> adipisicing elit. In quaerat, cum quos quibusdam autem inventore repellendus ipsum est nemo facere corrupti quidem rem dignissimos dolore facilis ab debitis omnis. Magnam quisquam veritatis vitae quo, recusandae, dolorem ut facere incidunt quibusdam excepturi eum, vel sunt. Quis architecto quo optio necessitatibus at!'
     },
     {
       id: 'xyz',

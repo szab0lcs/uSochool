@@ -4,51 +4,31 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
 import { SharedModule } from './shared/shared.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatDialogModule} from '@angular/material/dialog';
-import { ForgotPasswordComponent } from './login/forgot-password/forgot-password.component';
 import { CataloguesModule } from './catalogues/catalogues.module';
-import { NewsComponent } from './news/news.component';
-import { ArticleComponent } from './news/article/article.component';
-import { ProfileComponent } from './profile/profile.component';
-import { LibraryComponent } from './library/library.component';
-import { BooksComponent } from './library/books/books.component';
-import { RentedBooksComponent } from './library/rented-books/rented-books.component';
-import { SearchFilterPipe } from './pipes/search-filter.pipe';
-import { BookDetailsComponent } from './library/book-details/book-details.component';
-import { MyRentedBooks } from './pipes/my-rented-books.pipe';
-import { FormatDatePipe } from './pipes/format-date.pipe';
+import { LibraryModule } from './library/library.module';
+import { NewsModule } from './news/news.module';
+import { LoginModule } from './login/login.module';
+import { HomeModule } from './home/home.module';
+import { ProfileModule } from './profile/profile.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    LoginComponent,
-    ForgotPasswordComponent,
-    NewsComponent,
-    ArticleComponent,
-    ProfileComponent,
-    LibraryComponent,
-    BooksComponent,
-    RentedBooksComponent,
-    SearchFilterPipe,
-    BookDetailsComponent,
-    MyRentedBooks,
-    FormatDatePipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     SharedModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    MatDialogModule,
     CataloguesModule,
+    LibraryModule,
+    NewsModule,
+    LoginModule,
+    HomeModule,
+    ProfileModule
   ],
   providers: [],
+  exports: [SharedModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
