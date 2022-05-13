@@ -12,10 +12,13 @@ import { LoginModule } from './login/login.module';
 import { HomeModule } from './home/home.module';
 import { ProfileModule } from './profile/profile.module';
 import { TimetableModule } from './timetable/timetable.module';
+import { ManagerModule } from './manager/manager.module';
+import { ContactsComponent } from './contacts/contacts.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    ContactsComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,7 +30,8 @@ import { TimetableModule } from './timetable/timetable.module';
     LoginModule,
     HomeModule,
     ProfileModule,
-    TimetableModule
+    TimetableModule,
+    ManagerModule
   ],
   providers: [],
   exports: [SharedModule],

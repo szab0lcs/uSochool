@@ -20,24 +20,24 @@
             <div class="menu-items" (click)="navigateTo('profile')">
                 <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-person-circle',text: 'profile'}"></ng-container>
             </div>
-            <div class="menu-items" (click)="navigateTo('')">
+            <div class="menu-items" (click)="navigateTo('contacts')">
                 <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-telephone',text: 'contact'}"></ng-container>
             </div>
         </ng-container>
         <ng-container *ngIf="role === 'admin'">
-            <div class="menu-items" (click)="navigateTo('login')">
-                <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-journals',text: 'manage' + break + 'classes'}"></ng-container>
+            <div class="menu-items" (click)="navigateTo('manage-classes')">
+                <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-people-fill',text: 'manage' + break + 'classes'}"></ng-container>
             </div>
-            <div class="menu-items" (click)="navigateTo('login')">
+            <div class="menu-items" (click)="navigateTo('manage-users')">
                 <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-person-circle',text: 'manage' + break + 'users'}"></ng-container>
             </div>
-            <div class="menu-items" (click)="navigateTo('login')">
+            <div class="menu-items" (click)="navigateTo('manage-library')">
                 <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-book',text: 'manage' + break + 'library'}"></ng-container>
             </div>
-            <div class="menu-items" (click)="navigateTo('login')">
+            <div class="menu-items" (click)="navigateTo('manage-news')">
                 <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-newspaper',text: 'edit' + break + 'news'}"></ng-container>
             </div>
-            <div class="menu-items" (click)="navigateTo('login')">
+            <div class="menu-items" (click)="navigateTo('manage-contacts')">
                 <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-telephone',text: 'edit' + break + 'contacts'}"></ng-container>
             </div>
             <div class="menu-items" (click)="navigateTo('login')">
