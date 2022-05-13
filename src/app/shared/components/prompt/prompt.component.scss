@@ -1,0 +1,62 @@
+@import '../../../../theme/backgrounds.scss';
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+    .title {
+        color: white;
+        font-weight: 500;
+        font-size: 1.6em;
+    }
+    .text {
+        font-size: 1.1em;
+        text-align: center;
+        color: #0009;
+    }
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1em;
+        .ok-cancel {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 1em;
+            text-align: center;
+            .cancel {
+                background: #787878;
+                background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.05) 100%);
+                color: white;
+            }
+            .ok {
+                background: #787878;
+                background: linear-gradient(135deg, white 0%, rgba(245, 245, 245, 0.65) 100%);
+                color: black;
+            }
+        }
+        .ok-cancel > span {
+            box-shadow: inset 2px 3px 5px 0px rgb(0 0 0 / 16%);
+            border-radius: 1.25em;
+            padding: 0.9em 1.3em;
+            font-size: 1.2em;
+            font-weight: 500;
+            border: none;
+            border-radius: 0.75em;
+            mix-blend-mode: screen;
+            text-shadow: 1px 1px 3px rgb(0 0 0 / 22%);
+            &:active {
+                box-shadow: inset -2px -2px 5px 0px rgb(0 0 0 / 16%);
+            }
+        }
+        .cancel {
+            color: white;
+            font-weight: 400;
+            font-size: 1.2em;
+            text-shadow: 1px 1px 3px rgb(0 0 0 / 22%);
+        }
+    }
+}

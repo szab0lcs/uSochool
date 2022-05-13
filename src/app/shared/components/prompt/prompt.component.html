@@ -1,0 +1,15 @@
+<div class="container" *ngIf="data">
+    <div class="title" *ngIf="data.title as title">{{title}}</div>
+    <span class="text" *ngIf="data.text as text">{{text}}</span>
+    <div class="buttons">
+        <div class="ok-cancel" *ngIf="data.cancelButton || data.okButton">
+            <span class="cancel" 
+            *ngIf="data.cancelButton as cancelText" 
+            (click)="matDialogRef.close(false)">{{cancelText}}</span>
+            <span class="ok" 
+            *ngIf="data.okButton as okText" 
+            (click)="matDialogRef.close(true)">{{okText}}</span>
+        </div>
+        <span class="cancel" (click)="matDialogRef.close(undefined)">Cancel</span>
+    </div>
+</div>

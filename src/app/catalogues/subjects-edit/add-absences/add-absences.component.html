@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="title">Add Absences</div>
+    <div class="inputs">
+        <mat-form-field appearance="fill">
+            <mat-label>Choose a date</mat-label>
+            <input matInput 
+            [matDatepicker]="picker" 
+            readonly 
+            [value]="convertedDate" 
+            (dateChange)="dateChangeHandler($event.value)">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div class="buttons">
+        <div class="edit-save">
+            <span class="save" (click)="add()"><i class="bi bi-plus-circle-fill"></i> Add</span>
+        </div>
+        <span class="cancel" (click)="matDialogRef.close()">Cancel</span>
+    </div>
+</div>

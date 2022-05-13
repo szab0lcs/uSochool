@@ -1,0 +1,70 @@
+@import '../../../../theme/customs.scss';
+@import '../../../../theme/backgrounds.scss';
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+    .dialog-title {
+        color: white;
+        font-weight: 500;
+        font-size: 1.6em;
+    }
+    .scroll-container {
+        max-height: 35vh;
+        width: 100%;
+        padding: 0 0.3em;
+        @include customScroll();
+        .list {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 1.5em;
+            justify-content: center;
+            &-items {
+                width: 100%;
+                @include BlackBlurredBackground();
+                color: white;
+                position: relative;
+                &-content {
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    overflow: hidden;
+                    transform: translate(-50%,-50%);
+                    top: 50%;
+                    left: 50%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 1.4em;
+                }
+            }
+            &-items::before {
+                content: '';
+                display: block;
+                padding-top: 25%;
+            }
+            &-items:active {
+                box-shadow: inset -2px -2px 5px 0px rgb(0 0 0 / 16%);
+                transition: box-shadow 100ms ease-in-out;
+            }
+        }
+    }
+    .cancel {
+        width: 6em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+
+        @include BlackBlurredBackground();
+        border-radius: 0.6em;
+        color: white;
+        font-size: 1.3em;
+        padding: 0.7em 0.9em;
+    }
+}

@@ -1,0 +1,53 @@
+<div class="container">
+    <div class="dialog-title">{{data.student.name}}</div>
+    <div class="scroll-container">
+        <div class="tables">
+            <div class="tables-item tables-item-grades">
+                <span class="title">grades</span>
+                <div class="table-container">
+                    <div class="first-row">Grade</div>
+                    <div class="first-row">Date</div>
+                    <div class="first-row">Edit</div>
+    
+                    <ng-container *ngFor="let grade of grades">
+                        <div class="data">{{grade.value}}</div>
+                        <div class="data">{{formatDate(grade.date)}}</div>
+                        <div class="data data-edit" (click)="editGrade(grade)"><i class="bi bi-pencil-fill"></i></div>
+                    </ng-container>
+                </div>
+                <span class="notes">Semester test: {{8}}</span>
+                <span class="notes">Final grade: {{9}}</span>
+
+                <span class="button" (click)="addGrade()"><i class="bi bi-plus-circle-fill"></i> Add</span>
+            </div>
+            <div class="tables-item tables-item-absences">
+                <span class="title">absences</span>
+                <div class="table-container">
+                    <div class="first-row">Date</div>
+                    <div class="first-row">Proven</div>
+                    <div class="first-row">Edit</div>
+    
+                    <ng-container *ngFor="let absence of absences">
+                        <div class="data">{{formatDate(absence.date)}}</div>
+                        <div class="data" *ngIf="absence.proven else notProven">
+                            <i class="bi bi-check-circle-fill"></i> Yes
+                        </div>
+                        <div class="data data-edit" (click)="editAbsence(absence)"><i class="bi bi-pencil-fill"></i></div>
+                    </ng-container>
+                </div>
+                <span class="notes">Total absences: {{2}}</span>
+                <span class="button" (click)="addAbsence()"><i class="bi bi-plus-circle-fill"></i> Add</span>
+            </div>
+        </div>
+    </div>
+    <div class="buttons-container">
+        <span class="cancel" (click)="matDialogRef.close()">Cancel</span>
+        <span class="save" (click)="matDialogRef.close()">Save</span>
+    </div>
+</div>
+
+<ng-template #notProven>
+    <div class="data">
+        <i class="bi bi-x-circle-fill"></i> No
+    </div>
+</ng-template>

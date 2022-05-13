@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">usochool</string>
+    <string name="title_activity_main">usochool</string>
+    <string name="package_name">usochool.szabolcskencse</string>
+    <string name="custom_url_scheme">usochool.szabolcskencse</string>
+</resources>

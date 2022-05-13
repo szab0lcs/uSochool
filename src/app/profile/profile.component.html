@@ -1,0 +1,46 @@
+<div class="container">
+    <div class="pic-name">
+        <div class="image" [ngStyle]="getBackgroundUrl('assets/images/profile/default_boy_1.png')">
+            <div class="change-pic">
+                <i class="bi bi-camera-fill"></i>
+            </div>
+        </div>
+        <span class="name">John Doe</span>
+    </div>
+    <div class="details-container">
+        <div class="details">
+            <div class="details-item">
+                <span class="header">Email</span>
+                <span class="text">johndoe@usochool.com</span>
+            </div>
+            <div class="details-item">
+                <span class="header">Birthday</span>
+                <span class="text">1995/04/24</span>
+            </div>
+            <div class="details-item">
+                <span class="header">Address</span>
+                <span class="text">Example street 123</span>
+            </div>
+            <div class="details-item">
+                <span class="header">Phone</span>
+                <span class="text">0123456789</span>
+            </div>
+            <div class="details-item">
+                <span class="header">CNP</span>
+                <span class="text">1654515486423</span>
+            </div>
+        </div>
+    </div>
+    <div class="buttons">
+        <div class="button button-logout" (click)="logout()" [ngClass]="{'button-logout-active': canLogout}">
+            <i class="bi bi-power"></i>
+            <span class="button-logout-text">Logout</span>
+        </div>
+        <div class="button" (click)="back()">
+            <i class="bi bi-chevron-left"></i>
+        </div>
+        <div class="button" (click)="themeService.switchColor()">
+            <i class="bi bi-palette2"></i>
+        </div>
+    </div>
+</div>

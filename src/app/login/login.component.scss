@@ -1,0 +1,76 @@
+@import '../../theme/backgrounds.scss';
+@import '../../theme/customs.scss';
+:host {
+    .container {
+        @include DefaultContainerStyle();
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 6em;
+        .logo {
+            width: 70%;
+        }
+        .form {
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5em;
+            .inputs {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 1em;
+                .input {
+                    width: 100%;
+                    display: flex;
+                    padding: 0.8em 1.1em;
+                    align-items: center;
+                    justify-content: flex-start;
+                    gap: 1em;
+                    @include BlackBlurredBackground();
+                    img {
+                        height: 2.1em;
+                    }
+                    input {
+                        background: transparent;
+                        border: none;
+                        padding: 0.5em;
+                        flex: 1;
+                        color: white;
+                        &::placeholder {
+                            color: white;
+                            font-weight: 200;
+                            font-size: 1.1em;
+                        }
+                        &:focus {
+                            outline: none;
+                        }
+                    }
+                }
+            }
+            button.submit {
+                @include BlackBlurredBackground();
+                width: 7em;
+                padding: 0.6em 1.1em;
+                color: white;
+                font-size: 1.5em;
+                font-weight: 300;
+                border: none;
+                border-radius: 0.75em;
+                &:active {
+                    box-shadow: inset -2px -2px 5px 0px rgb(0 0 0 / 16%);
+                    transition: box-shadow 100ms ease-in-out;
+                }
+            }
+            .forgot {
+                color: white;
+                font-size: 1.35em;
+                font-weight: 100;
+            }
+        }
+    }
+}

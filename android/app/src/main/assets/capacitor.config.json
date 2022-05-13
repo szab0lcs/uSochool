@@ -1,0 +1,6 @@
+{
+	"appId": "usochool.szabolcskencse",
+	"appName": "usochool",
+	"webDir": "dist/usochool",
+	"bundledWebRuntime": false
+}
