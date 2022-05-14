@@ -6,8 +6,8 @@ export interface User {
 export interface AllUserData {
     userId: string;
     publicData: PublicData;
-    privateData?: PrivateData;
-    roles?: UserRole[];
+    privateData: PrivateData;
+    roles: UserRole[];
 }
 
 export interface PrivateData {
@@ -16,8 +16,17 @@ export interface PrivateData {
     address: string;
     phone: string;
 }
+
+export const INITIAL_PRIVATE_DATA_VALUE: PrivateData = {
+    cnp: '',
+    birthday: '',
+    address: '',
+    phone: '',
+}
+
 export interface PublicData {
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     active: boolean;
     promotionYear?: number;

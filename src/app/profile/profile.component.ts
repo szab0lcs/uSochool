@@ -26,7 +26,7 @@ export class ProfileComponent implements OnInit {
       setTimeout(() => {
         this.canLogout = false;
       }, 3000);
-    } else this.authService.SignOut();
+    } else this.authService.signOut();
   }
 
   back(): void {

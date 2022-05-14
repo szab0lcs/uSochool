@@ -13,7 +13,7 @@
                     <input type="password" placeholder="enter your password" #userPassword>
                 </div>
             </div>
-            <button class="submit" type="submit" (click)="authService.SignIn(userEmail.value, userPassword.value)">Sign In</button>
+            <button class="submit" type="submit" (click)="authService.signIn(userEmail.value, userPassword.value)">Sign In</button>
             <span class="forgot" (click)="forgotPassword()">Forgot password?</span>
         </div>
 </div>

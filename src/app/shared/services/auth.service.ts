@@ -2,6 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { PublicData, UserRole } from '../interfaces/user';
 import { NavigationService } from './navigation.service';
 import { UserService } from './user.service';
 @Injectable({
@@ -26,7 +27,7 @@ export class AuthService {
 
   }
 
-  SignIn(email: string, password: string) {
+  signIn(email: string, password: string) {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then(() => {
@@ -37,7 +38,7 @@ export class AuthService {
       });
   }
 
-  ForgotPassword(passwordResetEmail: string) {
+  forgotPassword(passwordResetEmail: string) {
     return this.afAuth
       .sendPasswordResetEmail(passwordResetEmail)
       .then(() => {
@@ -53,8 +54,16 @@ export class AuthService {
       });
   }
 
+  async registerUser(email: string, password: string, publicData: PublicData, userRoles: UserRole[]) {
+    const newUser = await this.afAuth.createUserWithEmailAndPassword(email,password);
+    if (newUser && newUser.user) {
+      return this.userService.createNewUser(newUser.user.uid,publicData,userRoles)
+    }
+    return;
+  }
+
   // Sign out
-  SignOut() {
+  signOut() {
     return this.afAuth.signOut().then(() => {
       this.router.navigate(['login']);
     });
