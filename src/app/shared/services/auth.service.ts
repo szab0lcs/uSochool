@@ -31,7 +31,7 @@ export class AuthService {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        this.navigationService.navigateTo('home');
+        this.navigationService.navigateTo(this.navigationService.eRoutes.Home);
       })
       .catch((error) => {
         window.alert(error.message);
@@ -56,9 +56,7 @@ export class AuthService {
 
   async registerUser(email: string, password: string, publicData: PublicData, userRoles: UserRole[]) {
     const newUser = await this.afAuth.createUserWithEmailAndPassword(email,password);
-    if (newUser && newUser.user) {
-      return this.userService.createNewUser(newUser.user.uid,publicData,userRoles)
-    }
+    if (newUser && newUser.user) return this.userService.createNewUser(newUser.user.uid,publicData,userRoles)
     return;
   }
 

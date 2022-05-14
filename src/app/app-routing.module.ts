@@ -15,6 +15,8 @@ import { NewsComponent } from './news/news.component';
 import { ProfileComponent } from './profile/profile.component';
 import { TimetableComponent } from './timetable/timetable.component';
 import { AngularFireAuthGuard, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/compat/auth-guard';
+import { AddUserComponent } from './manager/components/manage-users/add-user/add-user.component';
+import { UsersListComponent } from './manager/components/manage-users/users-list/users-list.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 const redirectLoggedInToItems = () => redirectLoggedInTo(['home']);
@@ -85,6 +87,14 @@ const routes: Routes = [
     path: 'manage-users',
     component: ManageUsersComponent
   },
+  {
+    path: 'add-user',
+    component: AddUserComponent
+  },
+  {
+    path: 'users-list',
+    component: UsersListComponent
+  },
 ];
 
 @NgModule({
@@ -93,19 +103,22 @@ const routes: Routes = [
 })
 export class AppRoutingModule { }
 
-export type ExistingRoutes = 
-  '' |
-  'home' |
-  'login' |
-  'student-catalogue' |
-  'teacher-catalogue' |
-  'news' |
-  'profile' |
-  'library' |
-  'contacts' |
-  'timetable' |
-  'manage-classes' |
-  'manage-contacts' |
-  'manage-library' |
-  'manage-news' |
-  'manage-users';
+export enum ExistingRoutes {
+  Default = '',
+  Home = 'home',
+  Login = 'login',
+  StudentCatalogue = 'student-catalogue',
+  TeacherCatalogue = 'teacher-catalogue',
+  News = 'news',
+  Profile = 'profile',
+  Library = 'library',
+  Contacts = 'contacts',
+  Timetable = 'timetable',
+  ManageClasses = 'manage-classes',
+  ManageContacts = 'manage-contacts',
+  ManageLibrary = 'manage-library',
+  ManageNews = 'manage-news',
+  ManageUsers = 'manage-users',
+  AddUser = 'add-user',
+  UsersList = 'users-list'
+}

@@ -27,4 +27,8 @@ export class NavigationService {
   navigateTo(url: ExistingRoutes) {
     this.router.navigateByUrl(url);
   }
+
+  public get eRoutes(): typeof ExistingRoutes {
+    return ExistingRoutes;
+  }
 }

@@ -1,0 +1,40 @@
+<div class="container" *ngIf="(userType$ | async) as userType">
+    <div class="title">Create new user</div>
+    <form class="inputs" [formGroup]="userForm" (ngSubmit)="onFormSubmit()">
+            <div class="user-type-toggle" (click)="switchUserType()">
+                <span class="thumb" [ngClass]="{'thumb-student': userType === 'student'}"></span>
+                <div class="types">
+                    <span class="type">Teacher</span>
+                    <span class="type">Student</span>
+                </div>
+            </div>
+            <div class="input">
+                <i class="bi bi-type"></i>
+                <input type="text" placeholder="first name" formControlName="firstName" required>
+            </div>
+            <span *ngIf="firstName && firstName.invalid && firstName.touched" class="error-message">This field is required!</span>
+            <div class="input">
+                <i class="bi bi-type"></i>
+                <input type="text" placeholder="last name" formControlName="lastName" required>
+            </div>
+            <span *ngIf="lastName && lastName.invalid && lastName.touched" class="error-message">This field is required!</span>
+            <div class="input">
+                <i class="bi bi-at"></i>
+                <input type="email" placeholder="email address" formControlName="email" required>
+            </div>
+            <span *ngIf="email && email.invalid && email.touched" class="error-message">Not valid email address!</span>
+            <ng-container *ngIf="userType === 'student'">
+                <div class="input">
+                    <i class="bi bi-calendar3"></i>
+                    <input type="email" placeholder="promotion year" formControlName="promotionYear" required>
+                </div>
+                <span *ngIf="promotionYear && promotionYear.invalid && promotionYear.touched" class="error-message">This year is not valid!</span>
+            </ng-container>
+            <button class="reset" type="submit">Create user</button>
+        </form>
+    <div class="buttons">
+        <div class="back-button" (click)="navS.back()">
+            <i class="bi bi-chevron-left"></i>
+        </div>
+    </div>
+</div>

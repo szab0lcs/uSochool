@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ExistingRoutes } from 'src/app/app-routing.module';
+import { NavigationService } from 'src/app/shared/services/navigation.service';
 
 @Component({
   selector: 'app-manage-users',
@@ -7,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ManageUsersComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public navS: NavigationService,
+  ) { }
 
   ngOnInit(): void {
   }

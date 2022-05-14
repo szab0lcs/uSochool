@@ -3,42 +3,42 @@
     <div class="menu">
         <ng-container *ngIf="(role$ | async) as role">
             <ng-container *ngIf="role === 'student' || role === 'teacher'">
-                <div class="menu-items" (click)="navigateTo('student-catalogue')" *ngIf="role === 'student'">
+                <div class="menu-items" (click)="navS.navigateTo(navS.eRoutes.StudentCatalogue)" *ngIf="role === 'student'">
                     <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-journals',text: 'catalogue'}"></ng-container>
                 </div>
-                <div class="menu-items" (click)="navigateTo('teacher-catalogue')" *ngIf="role === 'teacher'">
+                <div class="menu-items" (click)="navS.navigateTo(navS.eRoutes.TeacherCatalogue)" *ngIf="role === 'teacher'">
                     <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-journals',text: 'catalogue'}"></ng-container>
                 </div>
-                <div class="menu-items" (click)="navigateTo('timetable')">
+                <div class="menu-items" (click)="navS.navigateTo(navS.eRoutes.Timetable)">
                     <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-clock',text: 'timetable'}"></ng-container>
                 </div>
-                <div class="menu-items" (click)="navigateTo('library')">
+                <div class="menu-items" (click)="navS.navigateTo(navS.eRoutes.Library)">
                     <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-book',text: 'library'}"></ng-container>
                 </div>
-                <div class="menu-items" (click)="navigateTo('news')">
+                <div class="menu-items" (click)="navS.navigateTo(navS.eRoutes.News)">
                     <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-newspaper',text: 'news'}"></ng-container>
                 </div>
-                <div class="menu-items" (click)="navigateTo('profile')">
+                <div class="menu-items" (click)="navS.navigateTo(navS.eRoutes.Profile)">
                     <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-person-circle',text: 'profile'}"></ng-container>
                 </div>
-                <div class="menu-items" (click)="navigateTo('contacts')">
+                <div class="menu-items" (click)="navS.navigateTo(navS.eRoutes.Contacts)">
                     <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-telephone',text: 'contact'}"></ng-container>
                 </div>
             </ng-container>
             <ng-container *ngIf="role === 'admin'">
-                <div class="menu-items" (click)="navigateTo('manage-classes')">
+                <div class="menu-items" (click)="navS.navigateTo(navS.eRoutes.ManageClasses)">
                     <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-people-fill',text: 'manage' + break + 'classes'}"></ng-container>
                 </div>
-                <div class="menu-items" (click)="navigateTo('manage-users')">
+                <div class="menu-items" (click)="navS.navigateTo(navS.eRoutes.ManageUsers)">
                     <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-person-circle',text: 'manage' + break + 'users'}"></ng-container>
                 </div>
-                <div class="menu-items" (click)="navigateTo('manage-library')">
+                <div class="menu-items" (click)="navS.navigateTo(navS.eRoutes.ManageLibrary)">
                     <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-book',text: 'manage' + break + 'library'}"></ng-container>
                 </div>
-                <div class="menu-items" (click)="navigateTo('manage-news')">
+                <div class="menu-items" (click)="navS.navigateTo(navS.eRoutes.ManageNews)">
                     <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-newspaper',text: 'edit' + break + 'news'}"></ng-container>
                 </div>
-                <div class="menu-items" (click)="navigateTo('manage-contacts')">
+                <div class="menu-items" (click)="navS.navigateTo(navS.eRoutes.ManageContacts)">
                     <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-telephone',text: 'edit' + break + 'contacts'}"></ng-container>
                 </div>
                 <div class="menu-items" (click)="authService.signOut()">

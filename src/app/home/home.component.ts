@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
   break = '<br>';
 
   constructor(
-    private navigationService: NavigationService,
+    public navS: NavigationService,
     public authService: AuthService,
     private userService: UserService
   ) { 
@@ -32,7 +32,4 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  navigateTo(url: ExistingRoutes) {
-    this.navigationService.navigateTo(url);
-  }
 }
