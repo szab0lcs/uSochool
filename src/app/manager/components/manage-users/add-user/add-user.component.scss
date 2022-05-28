@@ -9,9 +9,9 @@
     overflow-y: auto;
     gap: 3em;
     .title {
-        color: white;
-        font-weight: 500;
-        font-size: 1.6em;
+        width: 80%;
+        max-width: 19em;
+        @include whiteTitle(2em,700);
     }
     .user-type-toggle {
         width: 80%;
@@ -21,7 +21,7 @@
         @include BlackBlurredBackground();
         backdrop-filter: none;
         background: linear-gradient(135deg, rgb(0 0 0 / 18%) 0%, rgb(0 0 0 / 6%) 100%);
-
+        flex-shrink: 0;
         .types {
             position: absolute;
             width: 100%;
@@ -65,10 +65,12 @@
     .inputs {
         width: 80%;
         max-width: 20em;
-        min-height: 60vh;
+        height: 65vh;
         display: flex;
         flex-direction: column;
+        flex-shrink: 1;
         gap: 1em;
+        overflow-y: auto;
         .input {
             width: 100%;
             display: flex;

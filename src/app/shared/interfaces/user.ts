@@ -11,14 +11,14 @@ export interface AllUserData {
 }
 
 export interface PrivateData {
-    cnp: string;
+    idNumber: string;
     birthday: string;
     address: string;
     phone: string;
 }
 
 export const INITIAL_PRIVATE_DATA_VALUE: PrivateData = {
-    cnp: '',
+    idNumber: '',
     birthday: '',
     address: '',
     phone: '',
@@ -27,9 +27,11 @@ export const INITIAL_PRIVATE_DATA_VALUE: PrivateData = {
 export interface PublicData {
     firstName: string;
     lastName: string;
+    parentInitial?: string;
     email: string;
     active: boolean;
     promotionYear?: number;
+    userImage?: string;
 }
 export interface UserRole {
     roleId: string;

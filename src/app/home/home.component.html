@@ -1,5 +1,5 @@
 <div class="container" *ngIf="(userData$ | async) as user">
-    <span class="welcome-text">hi <span class="name">{{user.publicData.firstName}}</span>!</span>
+    <span class="welcome-text">hi <span class="name">{{user.publicData.firstName}}</span></span>
     <div class="menu">
         <ng-container *ngIf="(role$ | async) as role">
             <ng-container *ngIf="role === 'student' || role === 'teacher'">

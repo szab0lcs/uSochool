@@ -10,6 +10,6 @@
             *ngIf="data.okButton as okText" 
             (click)="matDialogRef.close(true)">{{okText}}</span>
         </div>
-        <span class="cancel" (click)="matDialogRef.close(undefined)">Cancel</span>
+        <span class="cancel" *ngIf="!hideCancel" (click)="matDialogRef.close(undefined)">Cancel</span>
     </div>
 </div>

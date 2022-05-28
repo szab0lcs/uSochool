@@ -27,6 +27,10 @@ export class NavigationService {
   navigateTo(url: ExistingRoutes) {
     this.router.navigateByUrl(url);
   }
+  
+  editUser(userId: string) {
+    this.router.navigateByUrl(ExistingRoutes.EditUser + '/' + userId);
+  }
 
   public get eRoutes(): typeof ExistingRoutes {
     return ExistingRoutes;

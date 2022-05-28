@@ -35,10 +35,6 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  onSubmit() {
-    console.log(`submit`);
-  }
-
   navigateToHome() {
     this.router.navigateByUrl('home');
   }

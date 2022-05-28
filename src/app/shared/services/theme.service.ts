@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core'
-import { BehaviorSubject } from 'rxjs'
+import { BehaviorSubject, Observable } from 'rxjs'
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
@@ -22,19 +23,26 @@ export class ThemeService {
     ]
   }
   activeColor$ = new BehaviorSubject<ColorSchemes>('purple');
-  activeScheme$ = new BehaviorSubject<string[]>(this.colors.purple)
 
-  constructor() {}
+  constructor() {
+    const localTheme = localStorage.getItem('theme');
+    const savedColor: ColorSchemes | null = localTheme ? localTheme as ColorSchemes : null;
+    if (savedColor) this.activeColor$.next(savedColor);
+  }
 
   switchColor() {
     if (this.activeColor$.value === 'purple') {
+      localStorage.setItem('theme','green');
       this.activeColor$.next('green');
-      this.activeScheme$.next(this.colors['green']);
     }
     else {
+      localStorage.setItem('theme','purple');
       this.activeColor$.next('purple');
-      this.activeScheme$.next(this.colors['purple']);
     }
+  }
+
+  getActiveColor$(): Observable<string[]> {
+    return this.activeColor$.pipe(map( color => this.colors[color]))
   }
 
 }

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { ExistingRoutes } from '../app-routing.module';
 import { AllUserData } from '../shared/interfaces/user';
 import { AuthService } from '../shared/services/auth.service';
 import { NavigationService } from '../shared/services/navigation.service';
@@ -24,7 +23,7 @@ export class HomeComponent implements OnInit {
     public navS: NavigationService,
     public authService: AuthService,
     private userService: UserService
-  ) { 
+  ) {
     this.role$ = this.userService.getUserMainRole$().pipe(distinctUntilChanged());
     this.userData$ = this.userService.currentUser$;
   }

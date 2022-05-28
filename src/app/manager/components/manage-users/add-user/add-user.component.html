@@ -12,12 +12,17 @@
                 <i class="bi bi-type"></i>
                 <input type="text" placeholder="first name" formControlName="firstName" required>
             </div>
-            <span *ngIf="firstName && firstName.invalid && firstName.touched" class="error-message">This field is required!</span>
+            <span *ngIf="firstName && firstName.invalid && firstName.touched" class="error-message">The first character must be uppercase!</span>
             <div class="input">
                 <i class="bi bi-type"></i>
                 <input type="text" placeholder="last name" formControlName="lastName" required>
             </div>
-            <span *ngIf="lastName && lastName.invalid && lastName.touched" class="error-message">This field is required!</span>
+            <span *ngIf="lastName && lastName.invalid && lastName.touched" class="error-message">The first character must be uppercase!</span>
+            <div class="input" *ngIf="userType === 'student'">
+                <i class="bi bi-type"></i>
+                <input type="text" placeholder="father's initial" formControlName="parentInitial" maxlength="1" required>
+            </div>
+            <span *ngIf="parentInitial && parentInitial.invalid && parentInitial.touched" class="error-message">Initial must be uppercase!</span>
             <div class="input">
                 <i class="bi bi-at"></i>
                 <input type="email" placeholder="email address" formControlName="email" required>
@@ -26,7 +31,7 @@
             <ng-container *ngIf="userType === 'student'">
                 <div class="input">
                     <i class="bi bi-calendar3"></i>
-                    <input type="email" placeholder="promotion year" formControlName="promotionYear" required>
+                    <input type="number" placeholder="promotion year" formControlName="promotionYear" required>
                 </div>
                 <span *ngIf="promotionYear && promotionYear.invalid && promotionYear.touched" class="error-message">This year is not valid!</span>
             </ng-container>

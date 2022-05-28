@@ -17,6 +17,7 @@ import { TimetableComponent } from './timetable/timetable.component';
 import { AngularFireAuthGuard, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/compat/auth-guard';
 import { AddUserComponent } from './manager/components/manage-users/add-user/add-user.component';
 import { UsersListComponent } from './manager/components/manage-users/users-list/users-list.component';
+import { EditUserComponent } from './manager/components/manage-users/edit-user/edit-user.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 const redirectLoggedInToItems = () => redirectLoggedInTo(['home']);
@@ -95,6 +96,10 @@ const routes: Routes = [
     path: 'users-list',
     component: UsersListComponent
   },
+  {
+    path: 'edit-user/:id',
+    component: EditUserComponent
+  },
 ];
 
 @NgModule({
@@ -120,5 +125,6 @@ export enum ExistingRoutes {
   ManageNews = 'manage-news',
   ManageUsers = 'manage-users',
   AddUser = 'add-user',
-  UsersList = 'users-list'
+  UsersList = 'users-list',
+  EditUser = 'edit-user'
 }

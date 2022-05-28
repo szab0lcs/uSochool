@@ -10,7 +10,7 @@ import { Book } from '../library.component';
   styleUrls: ['./books.component.scss']
 })
 export class BooksComponent implements OnInit {
-  private timeout?: number;
+  timeout: NodeJS.Timeout | undefined;
   searchFilter: any = '';
   query = '';
   books: Book[] = [
@@ -86,8 +86,8 @@ export class BooksComponent implements OnInit {
   }
 
   onSearchChange(el: any): void {  
-    window.clearTimeout(this.timeout);
-    this.timeout = window.setTimeout(() => this.search(el), 250);
+    if(this.timeout) clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => this.search(el), 250);
   }
   
   search(el: any){
@@ -102,7 +102,7 @@ export class BooksComponent implements OnInit {
     dialogConfig.panelClass = 'forgot-password';
     dialogConfig.backdropClass = 'forgot-password-backdrop';
     dialogConfig.maxWidth = '100vw';
-    dialogConfig.data = {book, rented: false};;
+    dialogConfig.data = {book, rented: false};
 
     const dialog = this.matDialog.open(BookDetailsComponent,dialogConfig);
     await dialog.afterClosed().pipe(take(1)).toPromise();

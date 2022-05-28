@@ -17,7 +17,7 @@ export class AppComponent {
   constructor(
     private themeService: ThemeService
   ){
-    this.appBackgroundObs$ = this.themeService.activeScheme$;
+    this.appBackgroundObs$ = this.themeService.getActiveColor$();
     const app = initializeApp(environment.firebase);
     if (Capacitor.isNativePlatform()) {
       initializeAuth(app, {

@@ -7,14 +7,14 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./prompt.component.scss']
 })
 export class PromptComponent implements OnInit {
-
+  hideCancel = false;
   constructor(
     public matDialogRef: MatDialogRef<PromptComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) { }
 
   ngOnInit(): void {
-    console.log({data: this.data});
+    if (this.data && this.data.extraData && this.data.extraData.hideCancel) this.hideCancel = true;
     
   }
 }
@@ -26,5 +26,6 @@ export interface DialogData {
   okButton?: string;
   extraData?: {
     booleanValue?: boolean;
+    hideCancel?: boolean;
   };
 }

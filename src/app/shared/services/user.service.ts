@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
-import { map, take, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, map, take, takeUntil } from 'rxjs/operators';
 import { AllUserData, INITIAL_PRIVATE_DATA_VALUE, PrivateData, PublicData, UserRole } from '../interfaces/user';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
@@ -23,6 +23,10 @@ export class UserService {
     return this.user$.asObservable();
   }
 
+  get userId$() {
+    return this.currentUser$.pipe(map( user => user?.userId), distinctUntilChanged());
+  }
+
   onUserDataChanged(user: any) {
     this.user$.next(user);
   }
@@ -33,23 +37,7 @@ export class UserService {
   }
 
   getUserDataFromFirestore(uid: string) {
-    combineLatest([this.getUserPublicData$(uid), this.getUserPrivateData$(uid), this.getUserRoles$(uid)])
-      .pipe(
-        takeUntil(this.loggedOut$),
-        map(([publicData, privateData, roles]) => {
-          if (publicData && privateData && roles) {
-            const userData: AllUserData = {
-              userId: uid,
-              publicData,
-              privateData,
-              roles
-            }
-            return userData;
-          }
-          return null;
-        })
-      )
-      .subscribe(data => this.onUserDataChanged(data))
+    this.getAllData$(uid).subscribe(data => this.onUserDataChanged(data))
   }
 
   /**OBSERVABLES */
@@ -65,8 +53,28 @@ export class UserService {
     return this.afs.collection<UserRole>(`users/${userId}/role`).valueChanges();
   }
 
+
+  getAllData$(uid: string){
+    return combineLatest([this.getUserPublicData$(uid), this.getUserPrivateData$(uid), this.getUserRoles$(uid)])
+    .pipe(
+      takeUntil(this.loggedOut$),
+      map(([publicData, privateData, roles]) => {
+        if (publicData && privateData && roles) {
+          const userData: AllUserData = {
+            userId: uid,
+            publicData,
+            privateData,
+            roles
+          }
+          return userData;
+        }
+        return null;
+      })
+    )
+  }
+
   getAllUser$() {
-    return this.afs.collection<PublicData>(`users`).valueChanges();
+    return this.afs.collection<PublicData>(`users`).valueChanges({idField: 'userId'}).pipe(distinctUntilChanged());
   }
 
   getUserMainRole$() {
@@ -106,19 +114,13 @@ export class UserService {
 
   async setAllUserData(userData: AllUserData) {
     await this.afs.doc<PublicData>(`users/${userData.userId}`)
-      .set({
-        firstName: userData.publicData.firstName,
-        lastName: userData.publicData.lastName,
-        email: userData.publicData.email,
-        active: userData.publicData.active,
-        promotionYear: userData.publicData.promotionYear ? userData.publicData.promotionYear : 0
-      });
+      .set(userData.publicData);
 
     await this.afs.doc<PrivateData>(`users/${userData.userId}/data/private`)
       .set({
         address: userData.privateData.address,
         birthday: userData.privateData.birthday,
-        cnp: userData.privateData.cnp,
+        idNumber: userData.privateData.idNumber,
         phone: userData.privateData.phone
       });
 

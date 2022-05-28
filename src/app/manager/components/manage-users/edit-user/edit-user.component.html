@@ -1,0 +1,103 @@
+<div class="container">
+    <div class="title">Edit user</div>
+    <form class="inputs" [formGroup]="userForm" (ngSubmit)="onFormSubmit()" *ngIf="dataLoaded else inputsLoading">
+            <div class="input">
+                <i class="bi bi-type"></i>
+                <div class="input-container" [ngClass]="{'input-container-active': firstName?.value}">
+                    <span class="input-container-placeholder">first name</span>
+                    <input type="text" formControlName="firstName" required>
+                </div>
+            </div>
+            <span *ngIf="firstName && firstName.invalid && firstName.touched" class="error-message">The first character must be uppercase!</span>
+
+            <div class="input">
+                <i class="bi bi-type"></i>
+                <div class="input-container" [ngClass]="{'input-container-active': lastName?.value}">
+                    <span class="input-container-placeholder">last name</span>
+                    <input type="text" formControlName="lastName" required>
+                </div>
+            </div>
+            <span *ngIf="lastName && lastName.invalid && lastName.touched" class="error-message">The first character must be uppercase!</span>
+
+            <div class="input" *ngIf="isStudent">
+                <i class="bi bi-type"></i>
+                <div class="input-container" [ngClass]="{'input-container-active': parentInitial?.value}">
+                    <span class="input-container-placeholder">father's initial</span>
+                    <input type="text" formControlName="parentInitial" maxlength="1" required>
+                </div>
+            </div>
+            <span *ngIf="parentInitial && parentInitial.invalid && parentInitial.touched" class="error-message">Initial must be uppercase!</span>
+
+            <div class="input">
+                <i class="bi bi-at"></i>
+                <div class="input-container" [ngClass]="{'input-container-active': email?.value}">
+                    <span class="input-container-placeholder">email address</span>
+                    <input type="email" formControlName="email" required>
+
+                </div>
+            </div>
+            <span *ngIf="email && email.invalid && email.touched" class="error-message">Not valid email address!</span>
+            
+            <div class="input" *ngIf="isStudent">
+                <i class="bi bi-calendar3"></i>
+                <div class="input-container" [ngClass]="{'input-container-active': promotionYear?.value}">
+                    <span class="input-container-placeholder">promotion year</span>
+                    <input type="number" formControlName="promotionYear" required>
+                </div>
+            </div>
+            <span *ngIf="promotionYear && promotionYear.invalid && promotionYear.touched" class="error-message">This year is not valid!</span>
+
+            <div class="input">
+                <i class="bi bi-geo-alt"></i>
+                <div class="input-container" [ngClass]="{'input-container-active': address?.value}">
+                    <span class="input-container-placeholder">address</span>
+                    <input type="text" formControlName="address" required>
+
+                </div>
+            </div>
+            <span *ngIf="address && address.invalid && address.touched" class="error-message">This field is required!</span>
+
+            <div class="input">
+                <i class="bi bi-calendar3"></i>
+                <div class="input-container" [ngClass]="{'input-container-active': birthday?.value}">
+                    <span class="input-container-placeholder">birthday</span>
+                    <input type="date" formControlName="birthday" required>
+
+                </div>
+            </div>
+            <span *ngIf="birthday && birthday.invalid && birthday.touched" class="error-message">Not valid date!</span>
+
+            <div class="input">
+                <i class="bi bi-123"></i>
+                <div class="input-container" [ngClass]="{'input-container-active': phone?.value}">
+                    <span class="input-container-placeholder">phone</span>
+                    <input type="tel" formControlName="phone" required>
+
+                </div>
+            </div>
+            <span *ngIf="phone && phone.invalid && phone.touched" class="error-message">This field is required!</span>
+
+            <div class="input">
+                <i class="bi bi-person-badge"></i>
+                <div class="input-container" [ngClass]="{'input-container-active': idNumber?.value}">
+                    <span class="input-container-placeholder">idNumber</span>
+                    <input type="idNumber" formControlName="idNumber" required>
+
+                </div>
+            </div>
+            <span *ngIf="idNumber && idNumber.invalid && idNumber.touched" class="error-message">Not valid ID number!</span>
+            
+            <div class="autoexpand"></div>
+            <button class="save" [ngClass]="{'save-disabled': !canSave}" type="submit">Save</button>
+        </form>
+    <div class="buttons">
+        <div class="back-button" (click)="back()">
+            <i class="bi bi-chevron-left"></i>
+        </div>
+    </div>
+</div>
+
+<ng-template #inputsLoading>
+    <div class="inputs"></div>
+</ng-template>
+
