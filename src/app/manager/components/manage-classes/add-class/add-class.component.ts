@@ -9,7 +9,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import { IClass, IClassProfile } from 'src/app/shared/interfaces/catalogue';
+import { IClass, IClassProfile, romanNumbers } from 'src/app/shared/interfaces/catalogue';
 import { IPerson, PublicData, UserRole } from 'src/app/shared/interfaces/user';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CatalogueService } from 'src/app/shared/services/catalogue.service';
@@ -121,7 +121,7 @@ export class AddClassComponent implements OnInit, OnDestroy {
     ) {
       const newClass: IClass = {
         classId: this.promotionYear.value + '_' + this.profile.value.id,
-        name: this.grade.value + '.' + this.profile.value.id,
+        name: this.convertClassToRoman(+this.grade.value) + '.' + this.profile.value.id,
         students: [],
         subjects: [],
         headMaster: {
@@ -141,6 +141,21 @@ export class AddClassComponent implements OnInit, OnDestroy {
       this.toastr.error('The form is not valid!', `Invalid!`, {
         positionClass: 'toast-bottom-center',
       });
+    }
+  }
+
+  convertClassToRoman(year: number): romanNumbers {
+    switch (year) {
+      case 9:
+        return 'IX'
+      case 10:
+        return 'X'
+      case 11:
+        return 'XI'
+      case 12:
+        return 'XII'
+      default:
+        return 'IX'
     }
   }
 

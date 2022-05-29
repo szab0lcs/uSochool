@@ -62,3 +62,5 @@ export interface ISubjectClosure extends IPerson {
 }
 
 export const PERIOD_COUNT_IN_YEAR = 2;
+
+export type romanNumbers = 'IX' | 'X' | 'XI' | 'XII';
