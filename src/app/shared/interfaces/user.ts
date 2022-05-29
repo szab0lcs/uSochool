@@ -4,7 +4,6 @@ export interface User {
     displayName: string;
  }
 export interface AllUserData {
-    userId: string;
     publicData: PublicData;
     privateData: PrivateData;
     roles: UserRole[];
@@ -25,6 +24,7 @@ export const INITIAL_PRIVATE_DATA_VALUE: PrivateData = {
 }
 
 export interface PublicData {
+    userId: string;
     firstName: string;
     lastName: string;
     parentInitial?: string;
@@ -34,6 +34,7 @@ export interface PublicData {
     userImage?: string;
     teacher: boolean;
     headMaster?: string;
+    classId?: string;
 }
 export interface UserRole {
     roleId: string;
@@ -41,7 +42,7 @@ export interface UserRole {
 }
 
 export interface IPerson {
-    id: string;
+    userId: string;
     firstName: string;
     lastName: string;
     roles?: UserRole[];
@@ -49,7 +50,7 @@ export interface IPerson {
 }
 
 export const INITIAL_PERSON_VALUE: IPerson = {
-    id: '',
+    userId: '',
     firstName: '',
     lastName: '',
 }

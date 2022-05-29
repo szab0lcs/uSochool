@@ -29,6 +29,8 @@ export class ManageClassesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    // this.catalogueService.addStudentToClass({id: 'KNzWmMwYhJYusFNf0xbq9GvH30t1',firstName: 'Alexandra', lastName: 'Dunn'},'2022_B');
+    this.catalogueService.getEligibleStudentForClass(2024).subscribe( students => console.log({students}))
     this.classesList$ = this.catalogueService.getAllClasses().pipe(map( classes => {
       const sortedClasses: {
         IX: IClass[], X: IClass[], XI: IClass[], XII: IClass[]

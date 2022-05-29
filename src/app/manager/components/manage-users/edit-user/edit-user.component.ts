@@ -149,6 +149,7 @@ export class EditUserComponent implements OnInit {
     if (this.userId && this.userForm.valid && this.firstName && this.lastName && this.email
       && this.address && this.birthday && this.phone && this.idNumber) {
       const publicData: PublicData = {
+        userId: this.userId,
         firstName: this.firstName.value as string,
         lastName: this.lastName.value as string,
         email: this.email.value as string,
@@ -171,7 +172,7 @@ export class EditUserComponent implements OnInit {
         idNumber: this.idNumber.value
       }
 
-      return { publicData, roles, privateData, userId: this.userId };
+      return { publicData, roles, privateData };
     }
     return undefined;
   }

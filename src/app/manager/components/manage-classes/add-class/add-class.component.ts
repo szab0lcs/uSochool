@@ -125,7 +125,7 @@ export class AddClassComponent implements OnInit, OnDestroy {
         students: [],
         subjects: [],
         headMaster: {
-          id: this.headMaster.value.id,
+          userId: this.headMaster.value.id,
           firstName: this.headMaster.value.firstName,
           lastName: this.headMaster.value.lastName,
         },

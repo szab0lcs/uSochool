@@ -81,6 +81,7 @@ export class AddUserComponent implements OnInit, OnDestroy {
   onFormSubmit() {
     if (this.userForm.valid && this.firstName && this.lastName && this.email) {
       let publicData: PublicData = {
+        userId: '',
         firstName: this.firstName.value as string,
         lastName: this.lastName.value as string,
         email: this.email.value as string,
@@ -92,9 +93,9 @@ export class AddUserComponent implements OnInit, OnDestroy {
       if(this.userType$.value === 'student' && this.promotionYear && this.parentInitial) {
         publicData.promotionYear = this.promotionYear.value;
         publicData.parentInitial = this.parentInitial.value;
+        publicData.classId = ''
         userRoles.push({roleId: 'student', roleName: 'student'});
       } else {
-        publicData.teacher = true;
         userRoles.push({roleId: 'teacher', roleName: 'teacher'});
       }
 

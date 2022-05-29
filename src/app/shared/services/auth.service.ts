@@ -59,7 +59,10 @@ export class AuthService {
   async registerUser(email: string, publicData: PublicData, userRoles: UserRole[]) {
     const detachApp = firebase.initializeApp(environment.firebase,"secondary");
     const newUser = await detachApp.auth().createUserWithEmailAndPassword(email,'123456');
-    if (newUser && newUser.user) return this.userService.createNewUser(newUser.user.uid,publicData,userRoles);
+    if (newUser && newUser.user) {
+      publicData.userId = newUser.user.uid;
+      return this.userService.createNewUser(publicData,userRoles);
+    }
     return;
   }
 

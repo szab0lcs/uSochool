@@ -3,7 +3,7 @@
         <div class="image" [ngStyle]="getBackgroundUrl(user.publicData)">
             <div class="change-pic">
                 <div class="change-pic-container">
-                    <input type="file" accept="image/*" (change)="uploadFile($event, user.userId)" />
+                    <input type="file" accept="image/*" (change)="uploadFile($event, user.publicData.userId)" />
                     <i class="bi bi-camera-fill"></i>
                 </div>
             </div>

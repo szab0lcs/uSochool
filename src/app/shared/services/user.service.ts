@@ -30,7 +30,7 @@ export class UserService {
 
   get userId$() {
     return this.currentUser$.pipe(
-      map((user) => user?.userId),
+      map((user) => user?.publicData.userId),
       distinctUntilChanged()
     );
   }
@@ -73,7 +73,6 @@ export class UserService {
       map(([publicData, privateData, roles]) => {
         if (publicData && privateData && roles) {
           const userData: AllUserData = {
-            userId: uid,
             publicData,
             privateData,
             roles,
@@ -139,11 +138,11 @@ export class UserService {
 
   async setAllUserData(userData: AllUserData) {
     await this.afs
-      .doc<PublicData>(`users/${userData.userId}`)
+      .doc<PublicData>(`users/${userData.publicData.userId}`)
       .set(userData.publicData);
 
     await this.afs
-      .doc<PrivateData>(`users/${userData.userId}/data/private`)
+      .doc<PrivateData>(`users/${userData.publicData.userId}/data/private`)
       .set({
         address: userData.privateData.address,
         birthday: userData.privateData.birthday,
@@ -152,9 +151,9 @@ export class UserService {
       });
 
     const roleCollection = this.afs.collection<UserRole>(
-      `users/${userData.userId}/role`
+      `users/${userData.publicData.userId}/role`
     );
-    const userRoles: UserRole[] = await this.getUserRoles$(userData.userId)
+    const userRoles: UserRole[] = await this.getUserRoles$(userData.publicData.userId)
       .pipe(take(1))
       .toPromise();
     userRoles.forEach(async (existingRole) => {
@@ -185,14 +184,13 @@ export class UserService {
 
   /**NEW USER */
   async createNewUser(
-    userId: string,
     publicData: PublicData,
     userRoles: UserRole[]
   ) {
     const promises: Promise<any>[] = [];
-    promises.push(this.setUserPublicData(userId, publicData));
-    promises.push(this.setUserPrivateData(userId, INITIAL_PRIVATE_DATA_VALUE));
-    promises.push(this.setUserRoles(userId, userRoles));
+    promises.push(this.setUserPublicData(publicData.userId, publicData));
+    promises.push(this.setUserPrivateData(publicData.userId, INITIAL_PRIVATE_DATA_VALUE));
+    promises.push(this.setUserRoles(publicData.userId, userRoles));
     return await Promise.all(promises);
   }
 
@@ -204,7 +202,7 @@ export class UserService {
       map( teachers => {
         let teachersPerson: IPerson[] = [];
         teachers.forEach( teacher => teachersPerson.push({
-          id: teacher.userId,
+          userId: teacher.userId,
           firstName: teacher.firstName,
           lastName: teacher.lastName,
           headMaster: teacher.headMaster
