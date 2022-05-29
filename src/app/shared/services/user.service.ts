@@ -1,19 +1,24 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
-import { distinctUntilChanged, map, take, takeUntil } from 'rxjs/operators';
-import { AllUserData, INITIAL_PRIVATE_DATA_VALUE, PrivateData, PublicData, UserRole } from '../interfaces/user';
+import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import { distinctUntilChanged, filter, map, take, takeUntil } from 'rxjs/operators';
+import {
+  AllUserData,
+  INITIAL_PRIVATE_DATA_VALUE,
+  IPerson,
+  PrivateData,
+  PublicData,
+  UserRole,
+} from '../interfaces/user';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
   private user: AllUserData | null = null;
   private readonly user$ = new BehaviorSubject(this.user);
   private loggedOut$ = new Subject();
-  constructor(
-    private afs: AngularFirestore
-  ) { }
+  constructor(private afs: AngularFirestore) {}
 
   get currentUser() {
     return this.user;
@@ -24,7 +29,10 @@ export class UserService {
   }
 
   get userId$() {
-    return this.currentUser$.pipe(map( user => user?.userId), distinctUntilChanged());
+    return this.currentUser$.pipe(
+      map((user) => user?.userId),
+      distinctUntilChanged()
+    );
   }
 
   onUserDataChanged(user: any) {
@@ -37,7 +45,7 @@ export class UserService {
   }
 
   getUserDataFromFirestore(uid: string) {
-    this.getAllData$(uid).subscribe(data => this.onUserDataChanged(data))
+    this.getAllData$(uid).subscribe((data) => this.onUserDataChanged(data));
   }
 
   /**OBSERVABLES */
@@ -46,17 +54,21 @@ export class UserService {
   }
 
   getUserPrivateData$(userId: string) {
-    return this.afs.doc<PrivateData>(`users/${userId}/data/private`).valueChanges();
+    return this.afs
+      .doc<PrivateData>(`users/${userId}/data/private`)
+      .valueChanges();
   }
 
   getUserRoles$(userId: string) {
     return this.afs.collection<UserRole>(`users/${userId}/role`).valueChanges();
   }
 
-
-  getAllData$(uid: string){
-    return combineLatest([this.getUserPublicData$(uid), this.getUserPrivateData$(uid), this.getUserRoles$(uid)])
-    .pipe(
+  getAllData$(uid: string) {
+    return combineLatest([
+      this.getUserPublicData$(uid),
+      this.getUserPrivateData$(uid),
+      this.getUserRoles$(uid),
+    ]).pipe(
       takeUntil(this.loggedOut$),
       map(([publicData, privateData, roles]) => {
         if (publicData && privateData && roles) {
@@ -64,30 +76,36 @@ export class UserService {
             userId: uid,
             publicData,
             privateData,
-            roles
-          }
+            roles,
+          };
           return userData;
         }
         return null;
       })
-    )
+    );
   }
 
   getAllUser$() {
-    return this.afs.collection<PublicData>(`users`).valueChanges({idField: 'userId'}).pipe(distinctUntilChanged());
+    return this.afs
+      .collection<PublicData>(`users`)
+      .valueChanges({ idField: 'userId' })
+      .pipe(distinctUntilChanged());
   }
 
   getUserMainRole$() {
-    return this.currentUser$.pipe(map(userData => {
-      if (userData && userData.roles) {
-        const roles = userData.roles;
-        const mainRoles = ['admin', 'teacher', 'student'];
-        for (const mainRole of mainRoles) {
-          if (roles.findIndex(roles => roles.roleId === mainRole) > -1) return mainRole;
+    return this.currentUser$.pipe(
+      map((userData) => {
+        if (userData && userData.roles) {
+          const roles = userData.roles;
+          const mainRoles = ['admin', 'teacher', 'student'];
+          for (const mainRole of mainRoles) {
+            if (roles.findIndex((roles) => roles.roleId === mainRole) > -1)
+              return mainRole;
+          }
         }
-      }
-      return '';
-    }))
+        return '';
+      })
+    );
   }
 
   /**SET/UPDATE DATA */
@@ -96,53 +114,81 @@ export class UserService {
   }
 
   setUserPrivateData(studentId: string, privateData: PrivateData) {
-    return this.afs.doc<PrivateData>(`users/${studentId}/data/private`).set(privateData);
+    return this.afs
+      .doc<PrivateData>(`users/${studentId}/data/private`)
+      .set(privateData);
   }
 
   async setUserRoles(studentId: string, userRoles: UserRole[]) {
     const promises: Promise<any>[] = [];
     for (const userRole of userRoles) {
-      const promise = this.afs.doc<UserRole>(`users/${studentId}`).collection('role').add(userRole);
+      const promise = this.afs
+        .doc<UserRole>(`users/${studentId}`)
+        .collection('role')
+        .add(userRole);
       promises.push(promise);
     }
     return await Promise.all(promises);
   }
 
   updateUserPrivateData(studentId: string, privateData: Partial<PrivateData>) {
-    return this.afs.doc<PrivateData>(`users/${studentId}/data/private`).update(privateData);
+    return this.afs
+      .doc<PrivateData>(`users/${studentId}/data/private`)
+      .update(privateData);
   }
 
   async setAllUserData(userData: AllUserData) {
-    await this.afs.doc<PublicData>(`users/${userData.userId}`)
+    await this.afs
+      .doc<PublicData>(`users/${userData.userId}`)
       .set(userData.publicData);
 
-    await this.afs.doc<PrivateData>(`users/${userData.userId}/data/private`)
+    await this.afs
+      .doc<PrivateData>(`users/${userData.userId}/data/private`)
       .set({
         address: userData.privateData.address,
         birthday: userData.privateData.birthday,
         idNumber: userData.privateData.idNumber,
-        phone: userData.privateData.phone
+        phone: userData.privateData.phone,
       });
 
-    const roleCollection = this.afs.collection<UserRole>(`users/${userData.userId}/role`);
-    const userRoles: UserRole[] = await this.getUserRoles$(userData.userId).pipe(take(1)).toPromise();
-    userRoles.forEach(async existingRole => {
-      if (userData.roles.findIndex(x => x.roleId === existingRole.roleId) < 0) {
-        const oldRole = roleCollection.ref.where('roleId', '==', existingRole.roleId);
-        oldRole.get().then(ref => ref.forEach(async function (doc) {
-          await doc.ref.delete();
-        }))
+    const roleCollection = this.afs.collection<UserRole>(
+      `users/${userData.userId}/role`
+    );
+    const userRoles: UserRole[] = await this.getUserRoles$(userData.userId)
+      .pipe(take(1))
+      .toPromise();
+    userRoles.forEach(async (existingRole) => {
+      if (
+        userData.roles.findIndex((x) => x.roleId === existingRole.roleId) < 0
+      ) {
+        const oldRole = roleCollection.ref.where(
+          'roleId',
+          '==',
+          existingRole.roleId
+        );
+        oldRole.get().then((ref) =>
+          ref.forEach(async function (doc) {
+            await doc.ref.delete();
+          })
+        );
       }
-    })
-    userData.roles.forEach(async role => {
-      if (userRoles.findIndex(x => x.roleId === role.roleId) < 0) {
-        await roleCollection.add({ roleId: role.roleId, roleName: role.roleName });
+    });
+    userData.roles.forEach(async (role) => {
+      if (userRoles.findIndex((x) => x.roleId === role.roleId) < 0) {
+        await roleCollection.add({
+          roleId: role.roleId,
+          roleName: role.roleName,
+        });
       }
-    })
+    });
   }
 
   /**NEW USER */
-  async createNewUser(userId: string, publicData: PublicData, userRoles: UserRole[]) {
+  async createNewUser(
+    userId: string,
+    publicData: PublicData,
+    userRoles: UserRole[]
+  ) {
     const promises: Promise<any>[] = [];
     promises.push(this.setUserPublicData(userId, publicData));
     promises.push(this.setUserPrivateData(userId, INITIAL_PRIVATE_DATA_VALUE));
@@ -150,6 +196,28 @@ export class UserService {
     return await Promise.all(promises);
   }
 
+  getTeachers$(): Observable<IPerson[]>{
+    return this.afs
+    .collection<PublicData>(`users`, ref => ref.where('teacher', '==', true))
+    .valueChanges({ idField: 'userId' })
+    .pipe(
+      map( teachers => {
+        let teachersPerson: IPerson[] = [];
+        teachers.forEach( teacher => teachersPerson.push({
+          id: teacher.userId,
+          firstName: teacher.firstName,
+          lastName: teacher.lastName,
+          headMaster: teacher.headMaster
+        }))
+        return teachersPerson;
+      }),
+      distinctUntilChanged()
+    );
+  }
 
+  getNonHeadMasters$(): Observable<IPerson[]>{
+    return this.getTeachers$().pipe(map( teachers => 
+      teachers.filter( teacher => !teacher.headMaster)
+    ))
+  }
 }
-

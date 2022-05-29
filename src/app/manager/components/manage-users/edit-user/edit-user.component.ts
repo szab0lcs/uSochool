@@ -152,7 +152,8 @@ export class EditUserComponent implements OnInit {
         firstName: this.firstName.value as string,
         lastName: this.lastName.value as string,
         email: this.email.value as string,
-        active: true
+        active: true,
+        teacher: !this.isStudent
       }
 
       let roles: UserRole[] = [];

@@ -32,8 +32,24 @@ export interface PublicData {
     active: boolean;
     promotionYear?: number;
     userImage?: string;
+    teacher: boolean;
+    headMaster?: string;
 }
 export interface UserRole {
     roleId: string;
     roleName: string;
+}
+
+export interface IPerson {
+    id: string;
+    firstName: string;
+    lastName: string;
+    roles?: UserRole[];
+    headMaster?: string;
+}
+
+export const INITIAL_PERSON_VALUE: IPerson = {
+    id: '',
+    firstName: '',
+    lastName: '',
 }

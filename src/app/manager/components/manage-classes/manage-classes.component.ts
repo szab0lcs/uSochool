@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { take } from 'rxjs/operators';
 import { NavigationService } from 'src/app/shared/services/navigation.service';
+import { AddClassComponent } from './add-class/add-class.component';
 import { EditClassComponent } from './edit-class/edit-class.component';
 
 @Component({
@@ -29,6 +30,7 @@ export class ManageClassesComponent implements OnInit {
     },
   ]
   show: number = -1;
+  canAddClass = false;
   constructor(
     private navigationService: NavigationService,
     private matDialog: MatDialog,
@@ -59,6 +61,24 @@ export class ManageClassesComponent implements OnInit {
       return;
     }
     this.show = i;
+  }
+
+  async addClass(){
+    if (!this.canAddClass) {
+      this.canAddClass = true;
+      setTimeout(() => {
+        this.canAddClass = false;
+      }, 5000);
+    } else {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      dialogConfig.panelClass = 'forgot-password';
+      dialogConfig.backdropClass = 'forgot-password-backdrop';
+      dialogConfig.maxWidth = '100vw';
+
+      const dialog = this.matDialog.open(AddClassComponent,dialogConfig);
+      await dialog.afterClosed().pipe(take(1)).toPromise();
+    }
   }
 
 }

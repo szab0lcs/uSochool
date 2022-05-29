@@ -84,7 +84,8 @@ export class AddUserComponent implements OnInit, OnDestroy {
         firstName: this.firstName.value as string,
         lastName: this.lastName.value as string,
         email: this.email.value as string,
-        active: true
+        active: true,
+        teacher: this.userType$.value === 'teacher'
       }
       let userRoles: UserRole[] = [];
 
@@ -92,7 +93,10 @@ export class AddUserComponent implements OnInit, OnDestroy {
         publicData.promotionYear = this.promotionYear.value;
         publicData.parentInitial = this.parentInitial.value;
         userRoles.push({roleId: 'student', roleName: 'student'});
-      } else userRoles.push({roleId: 'teacher', roleName: 'teacher'});
+      } else {
+        publicData.teacher = true;
+        userRoles.push({roleId: 'teacher', roleName: 'teacher'});
+      }
 
       this.authService.registerUser(this.email.value,publicData,userRoles).then(() => {
         this.toastr.success('User successfully created',`Registration`,{
