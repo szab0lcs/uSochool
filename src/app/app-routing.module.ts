@@ -18,6 +18,8 @@ import { AngularFireAuthGuard, redirectUnauthorizedTo, redirectLoggedInTo } from
 import { AddUserComponent } from './manager/components/manage-users/add-user/add-user.component';
 import { UsersListComponent } from './manager/components/manage-users/users-list/users-list.component';
 import { EditUserComponent } from './manager/components/manage-users/edit-user/edit-user.component';
+import { EditClassComponent } from './manager/components/manage-classes/edit-class/edit-class.component';
+import { ManageSubjectsComponent } from './manager/components/manage-subjects/manage-subjects.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 const redirectLoggedInToItems = () => redirectLoggedInTo(['home']);
@@ -73,12 +75,20 @@ const routes: Routes = [
     component: ManageClassesComponent
   },
   {
+    path: 'manage-classes/:id',
+    component: EditClassComponent
+  },
+  {
     path: 'manage-contacts',
     component: ManageContactsComponent
   },
   {
     path: 'manage-library',
     component: ManageLibraryComponent
+  },
+  {
+    path: 'manage-subjects',
+    component: ManageSubjectsComponent
   },
   {
     path: 'manage-news',
@@ -122,9 +132,10 @@ export enum ExistingRoutes {
   ManageClasses = 'manage-classes',
   ManageContacts = 'manage-contacts',
   ManageLibrary = 'manage-library',
+  ManageSubjects = 'manage-subjects',
   ManageNews = 'manage-news',
   ManageUsers = 'manage-users',
   AddUser = 'add-user',
   UsersList = 'users-list',
-  EditUser = 'edit-user'
+  EditUser = 'edit-user',
 }

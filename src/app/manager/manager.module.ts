@@ -7,6 +7,7 @@ import { ManageNewsComponent } from './components/manage-news/manage-news.compon
 import { ManageContactsComponent } from './components/manage-contacts/manage-contacts.component';
 import { ManageClassesModule } from './components/manage-classes/manage-classes.module';
 import { ManageUsersModule } from './components/manage-users/manage-users.module';
+import { ManageSubjectsComponent } from './components/manage-subjects/manage-subjects.component';
 
 
 
@@ -14,7 +15,8 @@ import { ManageUsersModule } from './components/manage-users/manage-users.module
   declarations: [
     ManageLibraryComponent,
     ManageNewsComponent,
-    ManageContactsComponent
+    ManageContactsComponent,
+    ManageSubjectsComponent
   ],
   imports: [
     CommonModule,

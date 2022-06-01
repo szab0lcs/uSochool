@@ -16,7 +16,7 @@ export class UsersListComponent implements OnInit {
   timeout: NodeJS.Timeout | undefined;
   searchFilter: any = '';
   query = '';
-  users$: Observable<(PublicData & { userId: string; })[]> | undefined;
+  users$: Observable<PublicData[]> | undefined;
 
   constructor(
     public matDialog: MatDialog,

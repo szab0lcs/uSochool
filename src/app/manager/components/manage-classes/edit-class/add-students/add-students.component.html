@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="title">Add student</div>
+    <div class="input">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="search by name" (input)="onSearchChange($event)">
+    </div>
+    <div class="names" *ngIf="eligibleStudents$ | async as users else noMore">
+        <span *ngFor="let user of users | searchFilter: query | azOrder:'lastName'" (click)="selectUser(user,selectedUsers$.value)">
+            <i class="bi bi-plus-lg"></i> {{user.lastName}} {{user.firstName}}
+        </span>
+    </div>
+    <ng-container *ngIf="selectedUsers$ | async as selectedUsers">
+        <div class="horizontal-line" *ngIf="selectedUsers.length"></div>
+        <div class="names names-selected">
+            <span *ngFor="let user of selectedUsers" (click)="removeUser(user,selectedUsers)">
+                <i class="bi bi-dash-lg"></i> {{user.lastName}} {{user.firstName}}
+            </span>
+        </div>
+        <div class="buttons">
+            <div class="button button-back" (click)="matRef.close()">
+                <i class="bi bi-chevron-left"></i>
+            </div>
+            <div *ngIf="selectedUsers.length" 
+            class="button button-add-class" 
+            (click)="addUsers(selectedUsers)" 
+            [ngClass]="{'button-add-class-active': canSave}">
+                <i class="bi bi-check2"></i>
+                <span class="button-add-class-text">Save</span>
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+<ng-template #noMore>There is no more students to add!</ng-template>

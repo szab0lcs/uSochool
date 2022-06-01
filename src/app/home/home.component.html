@@ -35,6 +35,9 @@
                 <div class="menu-items" (click)="navS.navigateTo(navS.eRoutes.ManageLibrary)">
                     <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-book',text: 'manage' + break + 'library'}"></ng-container>
                 </div>
+                <div class="menu-items" (click)="navS.navigateTo(navS.eRoutes.ManageSubjects)">
+                    <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-journals',text: 'manage' + break + 'subjects'}"></ng-container>
+                </div>
                 <div class="menu-items" (click)="navS.navigateTo(navS.eRoutes.ManageNews)">
                     <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-newspaper',text: 'edit' + break + 'news'}"></ng-container>
                 </div>
@@ -47,7 +50,7 @@
             </ng-container>
         </ng-container>
     </div>
-    <span class="next-class">Your next class is Geography!</span>
+    <span class="next-class" *ngIf="(role$ | async) !== 'admin'">Your next class is Geography!</span>
 </div>
 
 <ng-template let-icon="icon" let-text="text" #menuItem>

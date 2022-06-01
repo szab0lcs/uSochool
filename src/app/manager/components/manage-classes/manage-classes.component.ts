@@ -23,14 +23,12 @@ export class ManageClassesComponent implements OnInit {
   show: number = -1;
   canAddClass = false;
   constructor(
-    private navigationService: NavigationService,
+    public navS: NavigationService,
     private matDialog: MatDialog,
     private catalogueService: CatalogueService,
   ) { }
 
   ngOnInit(): void {
-    // this.catalogueService.addStudentToClass({id: 'KNzWmMwYhJYusFNf0xbq9GvH30t1',firstName: 'Alexandra', lastName: 'Dunn'},'2022_B');
-    this.catalogueService.getEligibleStudentForClass(2024).subscribe( students => console.log({students}))
     this.classesList$ = this.catalogueService.getAllClasses().pipe(map( classes => {
       const sortedClasses: {
         IX: IClass[], X: IClass[], XI: IClass[], XII: IClass[]
@@ -46,22 +44,6 @@ export class ManageClassesComponent implements OnInit {
       }
       return sortedClasses;
     }))
-  }
-
-  back(): void {
-    this.navigationService.back();
-  }
-
-  async openStudentsList(data: string) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.autoFocus = true;
-    dialogConfig.panelClass = 'forgot-password';
-    dialogConfig.backdropClass = 'forgot-password-backdrop';
-    dialogConfig.maxWidth = '100vw';
-    dialogConfig.data = data;
-
-    const dialog = this.matDialog.open(EditClassComponent,dialogConfig);
-    await dialog.afterClosed().pipe(take(1)).toPromise();
   }
 
   toggleExpandable(i: number){

@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
+import { AzOrderPipe } from './pipes/az-order.pipe';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     PromptComponent,
     FormatDatePipe,
     MyRentedBooksPipe,
-    SearchFilterPipe
+    SearchFilterPipe,
+    AzOrderPipe,
   ],
   imports: [
     CommonModule
@@ -39,6 +41,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     FormatDatePipe,
     MyRentedBooksPipe,
     SearchFilterPipe,
+    AzOrderPipe,
   ]
 })
 export class SharedModule { }

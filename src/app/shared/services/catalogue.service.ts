@@ -3,10 +3,10 @@ import {
   AngularFirestore,
   CollectionReference,
 } from '@angular/fire/compat/firestore';
-import { arrayUnion } from '@angular/fire/firestore';
-import { getDoc, updateDoc } from 'firebase/firestore';
+import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
+import { updateDoc } from 'firebase/firestore';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { distinctUntilChanged, map, take } from 'rxjs/operators';
 import { Student } from 'src/app/catalogues/catalogue-types';
 import {
   IClass,
@@ -21,7 +21,7 @@ import { IPerson, PublicData, UserRole } from '../interfaces/user';
   providedIn: 'root',
 })
 export class CatalogueService {
-  constructor(private afs: AngularFirestore) {}
+  constructor(private afs: AngularFirestore) { }
 
   async addNewClass(newClassDoc: IClass, newPeriodId = 1) {
     const promises: Promise<any>[] = [];
@@ -31,9 +31,8 @@ export class CatalogueService {
       lastPeriodOfYear: false,
       id: newPeriodId.toString(),
       endState: null,
-      name: `${newClassDoc.promotionYear - 4}_${
-        newClassDoc.promotionYear - 3
-      }_${newPeriodId}`,
+      name: `${newClassDoc.promotionYear - 4}_${newClassDoc.promotionYear - 3
+        }_${newPeriodId}`,
     };
     currentPromise = this.afs
       .doc<IPeriod>(`classes/${newClassDoc.classId}/periods/${newPeriodId}`)
@@ -133,6 +132,45 @@ export class CatalogueService {
     return promises;
   }
 
+  removePeriodalClosures(
+    student: IPerson,
+    classId: string,
+    currentPeriod: IPeriod
+  ) {
+    const promises: Promise<any>[] = [];
+    let currentPromise: Promise<any>;
+
+
+    currentPromise = this.afs
+      .collection<IClosure>(
+        `classes/${classId}/periods/${currentPeriod.id}/periodalClosures`,
+        ref => ref.where('userId', '==', student.userId)
+      ).get().toPromise().then(snapshot => snapshot.docs.forEach(doc => doc.ref.delete()));
+    promises.push(currentPromise);
+
+    currentPromise = this.afs
+      .collection<ISubjectClosure>(
+        `classes/${classId}/periods/${currentPeriod.id}/periodalSubjectClosures`,
+        ref => ref.where('userId', '==', student.userId)
+      ).get().toPromise().then(snapshot => snapshot.docs.forEach(doc => doc.ref.delete()));
+    promises.push(currentPromise);
+
+    currentPromise = this.afs
+      .collection<ISubjectClosure>(
+        `classes/${classId}/periods/${currentPeriod.id}/yearlySubjectClosures`,
+        ref => ref.where('userId', '==', student.userId)
+      ).get().toPromise().then(snapshot => snapshot.docs.forEach(doc => doc.ref.delete()));
+    promises.push(currentPromise);
+
+    currentPromise = this.afs
+      .collection<IClosure>(
+        `classes/${classId}/periods/${currentPeriod.id}/yearlyClosures`,
+        ref => ref.where('userId', '==', student.userId)
+      ).get().toPromise().then(snapshot => snapshot.docs.forEach(doc => doc.ref.delete()));
+    promises.push(currentPromise);
+    return promises;
+  }
+
   getAllClasses(): Observable<IClass[]> {
     return this.afs.collection<IClass>('classes').valueChanges();
   }
@@ -147,8 +185,8 @@ export class CatalogueService {
 
   async addStudentsToClass(students: IPerson[], classId: string) {
     const promises: Promise<any>[] = [];
-    for(const student of students){
-      promises.push(this.addStudentToClass(student,classId));
+    for (const student of students) {
+      promises.push(this.addStudentToClass(student, classId));
     }
     await Promise.all(promises);
   }
@@ -165,7 +203,7 @@ export class CatalogueService {
     currentPromise = updateDoc(userDocRef, { classId });
     promises.push(currentPromise);
 
-    const thisClass = (await this.getClassDoc(classId)).data();
+    const thisClass = await this.getClassDoc(classId).pipe(take(1)).toPromise();
     const subjects = thisClass && thisClass.subjects ? thisClass.subjects : [];
     const currentPeriod = await this.getActivePeriod(classId);
     promises.push(
@@ -174,9 +212,36 @@ export class CatalogueService {
     await Promise.all(promises);
   }
 
+  async removeStudentsFromClass(students: IPerson[], classId: string) {
+    const promises: Promise<any>[] = [];
+    for (const student of students) {
+      promises.push(this.removeStudentFromClass(student, classId));
+    }
+    await Promise.all(promises);
+  }
+
+  async removeStudentFromClass(student: IPerson, classId: string) {
+    const promises: Promise<any>[] = [];
+    let currentPromise: Promise<any>;
+    const classDocRef = this.afs.doc<IClass>(`classes/${classId}`).ref;
+    const userDocRef = this.afs.doc<PublicData>(`users/${student.userId}`).ref;
+
+    currentPromise = updateDoc(classDocRef, { students: arrayRemove(student) });
+    promises.push(currentPromise);
+
+    currentPromise = updateDoc(userDocRef, { classId: '' });
+    promises.push(currentPromise);
+
+    const currentPeriod = await this.getActivePeriod(classId);
+    promises.push(
+      ...this.removePeriodalClosures(student, classId, currentPeriod)
+    );
+    await Promise.all(promises);
+  }
+
   getClassDoc(classId: string) {
-    const docRef = this.afs.doc<IClass>(`classes/${classId}`).ref;
-    return getDoc(docRef);
+    const docRef = this.afs.doc<IClass>(`classes/${classId}`);
+    return docRef.valueChanges().pipe(distinctUntilChanged());
   }
 
   getActivePeriod(classId: string) {
@@ -196,11 +261,22 @@ export class CatalogueService {
     });
   }
 
-  getEligibleStudentForClass(promotionYear: number) {
-    const queries = (ref: CollectionReference) => ref 
-        .where('promotionYear', '==', promotionYear)
-        .where('classId', '==', '')
-    return this.afs.collection<PublicData>('users', queries).valueChanges();
+  getEligibleStudentForClass(promotionYear: number): Observable<IPerson[]> {
+    const queries = (ref: CollectionReference) => ref
+      .where('promotionYear', '==', promotionYear)
+      .where('classId', '==', '')
+    return this.afs.collection<PublicData>('users', queries).valueChanges()
+      .pipe(map(users => {
+        let persons: IPerson[] = [];
+        users.forEach(user => {
+          persons.push({
+            userId: user.userId,
+            firstName: user.firstName,
+            lastName: user.lastName,
+          })
+        })
+        return persons;
+      }));
   }
 
 }
