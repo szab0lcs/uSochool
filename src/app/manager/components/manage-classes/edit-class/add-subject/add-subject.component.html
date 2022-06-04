@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="title">Forgot password?</div>
+    <div class="inputs">
+        <div class="input" *ngIf="(subjects$ | async) as subjects">
+            <i class="bi bi-journal-bookmark-fill"></i>
+            <select type="text" placeholder="select subject" [(ngModel)]="selectedSubject">
+                <option [ngValue]="undefined" disabled selected>Choose a subject</option>
+                <option *ngFor="let subject of subjects" [ngValue]="subject">{{subject.subjectName}}</option>
+            </select>
+        </div>
+        <div class="input" *ngIf="(teachers$ | async) as teachers">
+            <i class="bi bi-person-fill"></i>
+            <select type="text" placeholder="select teacher" [(ngModel)]="selectedTeacher">
+                <option [ngValue]="undefined" disabled selected>Choose a teacher</option>
+                <option *ngFor="let teacher of teachers" [ngValue]="teacher">{{teacher.lastName}} {{teacher.firstName}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="buttons">
+        <button class="add" type="submit" (click)="onSubmit()">Add subject</button>
+        <span class="cancel" (click)="matDialogRef.close()">Cancel</span>
+    </div>
+</div>

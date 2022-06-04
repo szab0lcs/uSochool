@@ -22,7 +22,7 @@
                 <span class="button-add-class-text">Remove students</span>
             </div>
         </div>
-        <div class="students-list-collapsed-title" *ngIf="expanded !== 'students-list'" (click)="expanded = 'students-list'">Students list</div>
+        <div class="students-list-collapsed-title" [ngClass]="{'students-list-collapsed-title-expanded': expanded === 'students-list'}" (click)="expanded = 'students-list'">Students list</div>
     </div>
     
     <div class="students-list" [ngClass]="{'students-list-collapsed': expanded !== 'subjects-list'}">
@@ -31,19 +31,19 @@
             <input type="text" placeholder="search by name" (input)="onSearchChange($event,'subject')">
         </div>
         <div class="names">
-            <span *ngFor="let student of classDoc.students | searchFilter: querySubject">{{student.lastName}} {{student.firstName}}</span>
+            <span *ngFor="let subject of classDoc.subjects | searchFilter: querySubject">{{subject.subject.subjectName}}</span>
         </div>
         <div class="buttons">
-            <div class="button button-add-class" (click)="addStudent(classDoc)" [ngClass]="{'button-add-class-active': expand === 'addSubject'}">
+            <div class="button button-add-class" (click)="addSubject(classDoc)" [ngClass]="{'button-add-class-active': expand === 'addSubject'}">
                 <i class="bi bi-plus-lg"></i>
-                <span class="button-add-class-text">Add students</span>
+                <span class="button-add-class-text">Add subject</span>
             </div>
-            <div class="button button-add-class" (click)="removeStudent(classDoc)" [ngClass]="{'button-add-class-active': expand === 'removeSubject'}">
+            <div class="button button-add-class" (click)="removeSubjects(classDoc)" [ngClass]="{'button-add-class-active': expand === 'removeSubject'}">
                 <i class="bi bi-dash-lg"></i>
-                <span class="button-add-class-text">Remove students</span>
+                <span class="button-add-class-text">Remove subjects</span>
             </div>
         </div>
-        <div class="students-list-collapsed-title" *ngIf="expanded !== 'subjects-list'" (click)="expanded = 'subjects-list'">Subjects list</div>
+        <div class="students-list-collapsed-title" [ngClass]="{'students-list-collapsed-title-expanded': expanded === 'subjects-list'}" (click)="expanded = 'subjects-list'">Subjects list</div>
     </div>
     <div class="buttons">
         <div class="button button-back" (click)="navS.back()">

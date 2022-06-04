@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
-import { PublicData, UserRole } from '../interfaces/user';
+import { PrivateData, PublicData, UserRole } from '../interfaces/user';
 import { NavigationService } from './navigation.service';
 import { UserService } from './user.service';
 import firebase from 'firebase/compat/app';
@@ -56,12 +56,12 @@ export class AuthService {
       });
   }
 
-  async registerUser(email: string, publicData: PublicData, userRoles: UserRole[]) {
+  async registerUser(email: string, publicData: PublicData, userRoles: UserRole[], privateData?: PrivateData) {
     const detachApp = firebase.initializeApp(environment.firebase,"secondary");
     const newUser = await detachApp.auth().createUserWithEmailAndPassword(email,'123456');
     if (newUser && newUser.user) {
       publicData.userId = newUser.user.uid;
-      return this.userService.createNewUser(publicData,userRoles);
+      return this.userService.createNewUser(publicData,userRoles,privateData);
     }
     return;
   }

@@ -185,11 +185,12 @@ export class UserService {
   /**NEW USER */
   async createNewUser(
     publicData: PublicData,
-    userRoles: UserRole[]
+    userRoles: UserRole[],
+    privateData?: PrivateData
   ) {
     const promises: Promise<any>[] = [];
     promises.push(this.setUserPublicData(publicData.userId, publicData));
-    promises.push(this.setUserPrivateData(publicData.userId, INITIAL_PRIVATE_DATA_VALUE));
+    promises.push(this.setUserPrivateData(publicData.userId, privateData ? privateData : INITIAL_PRIVATE_DATA_VALUE));
     promises.push(this.setUserRoles(publicData.userId, userRoles));
     return await Promise.all(promises);
   }

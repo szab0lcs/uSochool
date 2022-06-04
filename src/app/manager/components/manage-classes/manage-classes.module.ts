@@ -6,6 +6,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { AddClassComponent } from './add-class/add-class.component';
 import { AddStudentsComponent } from './edit-class/add-students/add-students.component';
 import { RemoveStudentsComponent } from './edit-class/remove-students/remove-students.component';
+import { AddSubjectComponent } from './edit-class/add-subject/add-subject.component';
+import { RemoveSubjectsComponent } from './edit-class/remove-subjects/remove-subjects.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -15,11 +18,14 @@ import { RemoveStudentsComponent } from './edit-class/remove-students/remove-stu
     EditClassComponent,
     AddClassComponent,
     AddStudentsComponent,
-    RemoveStudentsComponent
+    RemoveStudentsComponent,
+    AddSubjectComponent,
+    RemoveSubjectsComponent
   ],
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ]
 })
 export class ManageClassesModule { }

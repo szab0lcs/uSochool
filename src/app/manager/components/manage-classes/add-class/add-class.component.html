@@ -33,22 +33,23 @@
                     </div>
                 </div>
                 <span *ngIf="profile.invalid && profile.touched" class="error-message">You need to select a profile!</span>
-
             </ng-container>
             
-            <div class="input">
-                <i class="bi bi-at"></i>
-                <div class="input-container" [ngClass]="{'input-container-active': headMaster?.value}">
-                    <span class="input-container-placeholder">head master</span>
-                    <select formControlName="headMaster" def>
-                        <option [ngValue]="" disabled selected>Choose a headmaster</option>
-                        <option *ngFor="let hm of (nonHeadMasters$ | async)" [ngValue]="hm">
-                        {{ hm.firstName }} {{ hm.lastName }}
-                        </option>
-                    </select>
+            <ng-container *ngIf="headMaster">
+                <div class="input">
+                    <i class="bi bi-at"></i>
+                    <div class="input-container" [ngClass]="{'input-container-active': (headMaster.invalid && !headMaster.touched) || headMaster.value}">
+                        <span class="input-container-placeholder">head master</span>
+                        <select formControlName="headMaster" def>
+                            <option [ngValue]="" disabled selected>Choose a headmaster</option>
+                            <option *ngFor="let hm of (nonHeadMasters$ | async)" [ngValue]="hm">
+                            {{ hm.lastName }} {{ hm.firstName }}
+                            </option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <span *ngIf="headMaster && headMaster.invalid && headMaster.touched" class="error-message">You need to select a headmaster!</span>
+                <span *ngIf="headMaster.invalid && headMaster.touched" class="error-message">You need to select a headmaster!</span>
+            </ng-container>
             
             <div class="autoexpand"></div>
             <button class="reset" type="submit">Add class</button>

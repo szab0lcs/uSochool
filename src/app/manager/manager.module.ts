@@ -8,6 +8,7 @@ import { ManageContactsComponent } from './components/manage-contacts/manage-con
 import { ManageClassesModule } from './components/manage-classes/manage-classes.module';
 import { ManageUsersModule } from './components/manage-users/manage-users.module';
 import { ManageSubjectsComponent } from './components/manage-subjects/manage-subjects.component';
+import { ManageSubjectsModule } from './components/manage-subjects/manage-subjects.module';
 
 
 
@@ -16,13 +17,13 @@ import { ManageSubjectsComponent } from './components/manage-subjects/manage-sub
     ManageLibraryComponent,
     ManageNewsComponent,
     ManageContactsComponent,
-    ManageSubjectsComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
     ManageClassesModule,
-    ManageUsersModule
+    ManageUsersModule,
+    ManageSubjectsModule
   ]
 })
 export class ManagerModule { }

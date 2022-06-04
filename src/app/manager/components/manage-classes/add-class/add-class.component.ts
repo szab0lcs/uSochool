@@ -26,24 +26,7 @@ export class AddClassComponent implements OnInit, OnDestroy {
   promotionYearSub: Subscription | undefined;
   thisYear = new Date().getFullYear();
   GRADES = [9, 10, 11, 12];
-  PROFILES: IClassProfile[] = [
-    {
-      id: 'A',
-      name: 'Mathematic',
-    },
-    {
-      id: 'B',
-      name: 'Biology',
-    },
-    {
-      id: 'C',
-      name: 'Physic',
-    },
-    {
-      id: 'D',
-      name: 'Phylology',
-    },
-  ];
+  PROFILES: IClassProfile[] = [];
   profiles: IClassProfile[] = [];
   nonHeadMasters$: Observable<IPerson[]> | undefined;
 
@@ -53,7 +36,9 @@ export class AddClassComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     public matDialogRef: MatDialogRef<AddClassComponent>,
     private catalogueService: CatalogueService
-  ) {}
+  ) {
+    catalogueService.getProfiles().pipe(take(1)).toPromise().then(profiles => this.PROFILES = profiles)
+  }
 
   ngOnInit() {
     this.nonHeadMasters$ = this.userService.getNonHeadMasters$();
@@ -89,6 +74,7 @@ export class AddClassComponent implements OnInit, OnDestroy {
                 );
                 this.profile && this.profile.enable();
               });
+            if (this.grade) this.grade.setValue(9 + 3 - (promotionYear-this.thisYear));
           }
         }
       );
@@ -125,7 +111,7 @@ export class AddClassComponent implements OnInit, OnDestroy {
         students: [],
         subjects: [],
         headMaster: {
-          userId: this.headMaster.value.id,
+          userId: this.headMaster.value.userId,
           firstName: this.headMaster.value.firstName,
           lastName: this.headMaster.value.lastName,
         },
