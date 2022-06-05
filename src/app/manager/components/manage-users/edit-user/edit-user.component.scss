@@ -168,11 +168,9 @@
     }
     .buttons {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 1em;
-        .back-button {
+        gap: 1.5em;
+        margin-top: 1em;
+        .button {
             width: 4em;
             height: 4em;
             display: flex;
@@ -182,10 +180,56 @@
     
             @include BlackBlurredBackground();
             color: white;
+            transition: width 0.4s cubic-bezier(0.4, 0, 1, 1);
             i {
                 font-size: 2em;
                 &::before {
                     font-weight: bold !important;
+                }
+            }
+            &-add-class {
+                position: relative;
+                background: #787878;
+                background: linear-gradient(135deg, rgb(255 255 255) 0%, rgb(245 245 245 / 65%) 100%);
+                box-shadow: inset 2px 3px 5px 0px rgb(0 0 0 / 16%);
+                color: black;
+                font-weight: 400;
+                border: none;
+                mix-blend-mode: screen;
+                text-shadow: 1px 1px 3px rgb(0 0 0 / 22%);
+                &:active {
+                    box-shadow: inset -2px -2px 5px 0px rgb(0 0 0 / 16%);
+                }
+                i {
+                    position: absolute;
+                    transform: translate(-50%,-50%);
+                    top: 50%;
+                    left: 50%;
+                    transition: left .4s cubic-bezier(0.4, 0, 1, 1);
+                }
+                &-text {
+                    position: absolute;
+                    opacity: 0;
+                    width: 0;
+                    transform: translate(-50%, -50%);
+                    top: 50%;
+                    left: 50%;
+                    font-size: 1.2em;
+                }
+            }
+
+            &-add-class-active {
+                width: 10em;
+                gap: 1em;
+                i {
+                    left: 25%;
+                }
+                .button-add-class-text {
+                    left: 60%;
+                    opacity: 1;
+                    width: 4em;
+                    text-align: center;
+                    transition: all .4s .2s cubic-bezier(0.4, 0, 1, 1);
                 }
             }
         }

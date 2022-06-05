@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { DialogData } from 'src/app/shared/components/prompt/prompt.component';
-import { ISubject } from 'src/app/shared/interfaces/catalogue';
 import { AllUserData, PrivateData, PublicData, UserRole } from 'src/app/shared/interfaces/user';
 import { NavigationService } from 'src/app/shared/services/navigation.service';
 import { PromptService } from 'src/app/shared/services/prompt.service';
 import { UserService } from 'src/app/shared/services/user.service';
+import { EditTeacherSubjectsComponent } from './edit-teacher-subjects/edit-teacher-subjects.component';
 
 @Component({
   selector: 'app-edit-user',
@@ -26,24 +26,19 @@ export class EditUserComponent implements OnInit {
   canSave = false;
   canSave$ = new Subject;
   userData: AllUserData | null = null;
-  canTeachSelected: ISubject[] = [];
-  subjects$: Observable<ISubject[]> | undefined;
+  canEditSubject = false;
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
     public navS: NavigationService,
     private toastr: ToastrService,
-    private promptService: PromptService
+    private promptService: PromptService,
+    private matDialog: MatDialog
   ) { }
 
   ngOnInit(): void {
     this.userId = this.route.snapshot.paramMap.get('id');
-    if (this.userId) {
-      this.initFormControl(this.userId);
-      this.userService.getTeacherWhatCanTeach$(this.userId)
-        .pipe(take(1)).toPromise()
-        .then( subjects => this.canTeachSelected = subjects);
-    }
+    if (this.userId) this.initFormControl(this.userId);
   }
 
   async initFormControl(userId: string) {
@@ -205,4 +200,22 @@ export class EditUserComponent implements OnInit {
     } else this.navS.back();
   }
 
+  async editTeacherSubjects(userId: string){
+    if (!this.canEditSubject) {
+      this.canEditSubject = true;
+      setTimeout(() => {
+        this.canEditSubject = false;
+      }, 5000);
+    } else {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      dialogConfig.panelClass = 'forgot-password';
+      dialogConfig.backdropClass = 'forgot-password-backdrop';
+      dialogConfig.maxWidth = '100vw';
+      dialogConfig.data = userId;
+  
+      const dialog = this.matDialog.open(EditTeacherSubjectsComponent,dialogConfig);
+      await dialog.afterClosed().pipe(take(1)).toPromise();
+    }
+  }
 }
