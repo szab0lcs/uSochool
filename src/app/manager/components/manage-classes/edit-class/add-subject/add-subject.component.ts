@@ -45,6 +45,7 @@ export class AddSubjectComponent implements OnInit {
       await this.catalagoueService.addSubjectToClass({
         subject: this.selectedSubject,
         teacher: this.selectedTeacher,
+        subjectDocId: this.selectedSubject.subjectDocId ? this.selectedSubject.subjectDocId : '',
         classId: this.data.classId,
         name: this.data.name
       },this.data.classId);

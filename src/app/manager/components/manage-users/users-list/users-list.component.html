@@ -1,5 +1,12 @@
 <div class="container">
     <div class="title">Users list</div>
+    <div class="user-type-toggle" (click)="switchUserType()">
+        <span class="thumb" [ngClass]="{'thumb-student': (userType$ | async) === 'student'}"></span>
+        <div class="types">
+            <span class="type">Teacher</span>
+            <span class="type">Student</span>
+        </div>
+    </div>
     <div class="input">
         <i class="bi bi-search"></i>
         <input type="text" placeholder="search by name or data" (input)="onSearchChange($event)">

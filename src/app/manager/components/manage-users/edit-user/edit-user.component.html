@@ -87,6 +87,14 @@
             </div>
             <span *ngIf="idNumber && idNumber.invalid && idNumber.touched" class="error-message">Not valid ID number!</span>
             
+            <div class="input">
+                <i class="bi bi-person-badge"></i>
+                <div class="input-container">
+                    <span class="input-container-placeholder">idNumber</span>
+                    <!-- <ng-select></ng-select> -->
+                </div>
+            </div>
+            
             <div class="autoexpand"></div>
             <button class="save" [ngClass]="{'save-disabled': !canSave}" type="submit">Save</button>
         </form>

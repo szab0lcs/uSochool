@@ -77,5 +77,4 @@ export class RemoveStudentsComponent implements OnInit {
       this.matRef.close();
     }
   }
-
 }

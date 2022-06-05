@@ -11,7 +11,7 @@
     </div>
     <ng-container *ngIf="selectedUsers$ | async as selectedUsers">
         <div class="horizontal-line" *ngIf="selectedUsers.length"></div>
-        <div class="names names-selected">
+        <div class="names names-selected" *ngIf="selectedUsers.length">
             <span *ngFor="let user of selectedUsers" (click)="removeUser(user,selectedUsers)">
                 <i class="bi bi-dash-lg"></i> {{user.lastName}} {{user.firstName}}
             </span>

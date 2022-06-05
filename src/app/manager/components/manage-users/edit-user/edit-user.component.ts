@@ -4,9 +4,10 @@ import { MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { DialogData } from 'src/app/shared/components/prompt/prompt.component';
+import { ISubject } from 'src/app/shared/interfaces/catalogue';
 import { AllUserData, PrivateData, PublicData, UserRole } from 'src/app/shared/interfaces/user';
 import { NavigationService } from 'src/app/shared/services/navigation.service';
 import { PromptService } from 'src/app/shared/services/prompt.service';
@@ -25,6 +26,8 @@ export class EditUserComponent implements OnInit {
   canSave = false;
   canSave$ = new Subject;
   userData: AllUserData | null = null;
+  canTeachSelected: ISubject[] = [];
+  subjects$: Observable<ISubject[]> | undefined;
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
@@ -35,8 +38,12 @@ export class EditUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.userId = this.route.snapshot.paramMap.get('id');
-    if (this.userId) this.initFormControl(this.userId);
-
+    if (this.userId) {
+      this.initFormControl(this.userId);
+      this.userService.getTeacherWhatCanTeach$(this.userId)
+        .pipe(take(1)).toPromise()
+        .then( subjects => this.canTeachSelected = subjects);
+    }
   }
 
   async initFormControl(userId: string) {

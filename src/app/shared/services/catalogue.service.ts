@@ -64,6 +64,7 @@ export class CatalogueService {
           subjectId: 'headMaster',
           subjectName: 'Master Class',
         },
+        subjectDocId: 'headMaster',
         classId: newClassDoc.classId,
         name: newClassDoc.name,
       });
@@ -249,24 +250,24 @@ export class CatalogueService {
     const classDocSnapData = (await getDoc(classDocRef)).data()
     let subjects = classDocSnapData ? classDocSnapData.subjects : [];
     subjects.push(subject);
-    currentPromise = classDocRef.update({subjects})
+    currentPromise = classDocRef.update({ subjects })
     promises.push(currentPromise);
 
-    currentPromise = teacherDocRef.add(subject);
+    currentPromise = teacherDocRef.doc(subject.subjectDocId).set(subject);
     promises.push(currentPromise);
 
     await Promise.all(promises);
   }
 
-  async removeSubjectsFromClass(subjects: ISubjectsWithTeachers[],subjectId: string, classId: string) {
+  async removeSubjectsFromClass(subjects: ISubjectsWithTeachers[], classId: string) {
     const promises: Promise<any>[] = [];
     for (const subject of subjects) {
-      promises.push(...this.removeSubjectFromClass(subject, subjectId, classId));
+      promises.push(...this.removeSubjectFromClass(subject, classId));
     }
     await Promise.all(promises);
   }
 
-  removeSubjectFromClass(subject: ISubjectsWithTeachers,subjectId: string, classId: string) {
+  removeSubjectFromClass(subject: ISubjectsWithTeachers, classId: string) {
     const promises: Promise<any>[] = [];
     let currentPromise: Promise<any>;
     const classDocRef = this.afs.doc<IClass>(`classes/${classId}`).ref;
@@ -275,7 +276,7 @@ export class CatalogueService {
     currentPromise = updateDoc(classDocRef, { subjects: arrayRemove(subject) });
     promises.push(currentPromise);
 
-    currentPromise = teacherCollRef.doc(subjectId).delete();
+    currentPromise = teacherCollRef.doc(subject.subjectDocId).delete();
     promises.push(currentPromise);
 
     return promises;
@@ -331,14 +332,24 @@ export class CatalogueService {
 
   async removeProfile(profileId: string) {
     const querySnapshot = await this.afs.collection<IClassProfile>('profiles', ref_1 => ref_1.where('id', '==', profileId))
-    .get()
-    .pipe(take(1))
-    .toPromise();
+      .get()
+      .pipe(take(1))
+      .toPromise();
     querySnapshot.forEach(async doc => await doc.ref.delete());
   }
 
   getSubjects() {
-    return this.afs.collection<ISubject>('subjects').valueChanges({idField: 'id'});
+    return this.afs.collection<ISubject>('subjects').valueChanges({ idField: 'subjectDocId' })
+      .pipe(map(subjects => {
+        let subjectsWithDocId: ISubject[] = [];
+        subjects.forEach( subject => subjectsWithDocId.push({
+          subjectId: subject.subjectId,
+          subjectName: subject.subjectName,
+          subjectDocId: subject.subjectDocId
+        }))
+        return subjectsWithDocId;
+      }
+    ));
   }
 
   addSubject(subject: ISubject) {

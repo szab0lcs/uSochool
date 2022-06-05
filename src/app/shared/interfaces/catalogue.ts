@@ -22,6 +22,7 @@ export interface IAbsence {
 export interface ISubject {
     subjectId: string;
     subjectName: string;
+    subjectDocId?: string;
 }
 export interface IClassProfile {
     id: string;
@@ -39,6 +40,7 @@ export interface IPeriod {
 export interface ISubjectsWithTeachers {
     teacher: IPerson,
     subject: ISubject,
+    subjectDocId: string;
     classId: string;
     name: string;
 }
