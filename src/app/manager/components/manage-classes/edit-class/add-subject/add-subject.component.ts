@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { map, take, tap } from 'rxjs/operators';
 import { IClass, ISubject, ISubjectsWithTeachers } from 'src/app/shared/interfaces/catalogue';
-import { IPerson } from 'src/app/shared/interfaces/user';
+import { IPerson, TeacherWithSubjects } from 'src/app/shared/interfaces/user';
 import { CatalogueService } from 'src/app/shared/services/catalogue.service';
 import { UserService } from 'src/app/shared/services/user.service';
 
@@ -15,8 +15,9 @@ import { UserService } from 'src/app/shared/services/user.service';
 })
 export class AddSubjectComponent implements OnInit {
   subjects$: Observable<ISubject[]> | undefined;
-  teachers$: Observable<IPerson[]> | undefined;
-  selectedSubject: ISubject | undefined;
+  teachers$: Observable<TeacherWithSubjects[]> | undefined;
+  eligibleTeachers$: Observable<IPerson[]> | undefined;
+  selectedSubject$ = new BehaviorSubject<ISubject | undefined>(undefined);
   selectedTeacher: IPerson | undefined;
   constructor(
     public matDialogRef: MatDialogRef<AddSubjectComponent>,
@@ -27,28 +28,49 @@ export class AddSubjectComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.subjects$ = this.catalagoueService.getSubjects().pipe(map( subjects =>
-      {
-        let existingSubjects: string[] = [];
-        this.data.subjects.forEach( subject => existingSubjects.push(subject.subject.subjectId));
-        const filteredSubjects = subjects.filter( subject => !existingSubjects.includes(subject.subjectId));
-        console.log({existingSubjects, filteredSubjects});
-        
-        return filteredSubjects;
-      }
+    this.subjects$ = this.catalagoueService.getSubjects().pipe(map(subjects => {
+      let existingSubjects: string[] = [];
+      this.data.subjects.forEach(subject => existingSubjects.push(subject.subject.subjectId));
+      const filteredSubjects = subjects.filter(subject => !existingSubjects.includes(subject.subjectId));
+      return filteredSubjects;
+    }
     ));
-    this.teachers$ = this.userService.getTeachers$();
+
+    this.teachers$ = this.userService.getTeachers$()
+      .pipe(map(teachers => {
+        let teachersWSubjects: TeacherWithSubjects[] = [];
+        teachers.forEach(async teacher => teachersWSubjects.push({
+          ...teacher,
+          canTeach: await this.userService.getTeacherWhatCanTeach(teacher.userId)
+        }))
+        return teachersWSubjects;
+      }));
+    
+    this.eligibleTeachers$ = combineLatest([
+      this.teachers$,
+      this.selectedSubject$.asObservable()
+    ]).pipe(map(([teachers, selectedSubject]) => {
+      let eligibleTeachers: IPerson[] = [];
+      if (selectedSubject) {
+        teachers.forEach(teacher => {
+          teacher.canTeach.forEach(subject => {
+            if (subject.subjectId === selectedSubject.subjectId) eligibleTeachers.push(teacher);
+          })
+        });
+      }
+      return eligibleTeachers;
+    }))
   }
 
   async onSubmit() {
-    if(this.selectedSubject && this.selectedTeacher){
+    if (this.selectedSubject$.value && this.selectedTeacher) {
       await this.catalagoueService.addSubjectToClass({
-        subject: this.selectedSubject,
+        subject: this.selectedSubject$.value,
         teacher: this.selectedTeacher,
-        subjectDocId: this.selectedSubject.subjectDocId ? this.selectedSubject.subjectDocId : '',
+        subjectDocId: this.selectedSubject$.value.subjectDocId ? this.selectedSubject$.value.subjectDocId : '',
         classId: this.data.classId,
         name: this.data.name
-      },this.data.classId);
+      }, this.data.classId);
       this.matDialogRef.close();
       this.toastr.success('Subject added.', `Succesful!`, {
         positionClass: 'toast-bottom-center',

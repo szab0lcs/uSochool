@@ -1,14 +1,19 @@
 <div class="container">
-    <div class="title">Forgot password?</div>
+    <div class="title">Add subjects</div>
     <div class="inputs">
         <div class="input" *ngIf="(subjects$ | async) as subjects">
             <i class="bi bi-journal-bookmark-fill"></i>
-            <select type="text" placeholder="select subject" [(ngModel)]="selectedSubject">
+            <select 
+                type="text" 
+                placeholder="select subject" 
+                [ngModel]="selectedSubject$ | async"
+                (ngModelChange)="selectedSubject$.next($event)"
+            >
                 <option [ngValue]="undefined" disabled selected>Choose a subject</option>
                 <option *ngFor="let subject of subjects" [ngValue]="subject">{{subject.subjectName}}</option>
             </select>
         </div>
-        <div class="input" *ngIf="(teachers$ | async) as teachers">
+        <div class="input" *ngIf="(eligibleTeachers$ | async) as teachers">
             <i class="bi bi-person-fill"></i>
             <select type="text" placeholder="select teacher" [(ngModel)]="selectedTeacher">
                 <option [ngValue]="undefined" disabled selected>Choose a teacher</option>

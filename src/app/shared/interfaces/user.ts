@@ -1,3 +1,5 @@
+import { ISubject } from "./catalogue";
+
 export interface User {
     uid: string;
     email: string;
@@ -47,6 +49,10 @@ export interface IPerson {
     lastName: string;
     roles?: UserRole[];
     headMaster?: string;
+}
+
+export interface TeacherWithSubjects extends IPerson {
+    canTeach: ISubject[];
 }
 
 export const INITIAL_PERSON_VALUE: IPerson = {

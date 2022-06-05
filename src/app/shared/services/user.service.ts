@@ -206,6 +206,10 @@ export class UserService {
     return this.afs.collection<ISubject>(`users/${userId}/canTeach`).valueChanges();
   }
 
+  getTeacherWhatCanTeach(userId: string): Promise<ISubject[]> {
+    return this.getTeacherWhatCanTeach$(userId).pipe(take(1)).toPromise();
+  }
+
   /**NEW USER */
   async createNewUser(
     publicData: PublicData,

@@ -49,7 +49,7 @@ export class EditUserComponent implements OnInit {
       const birthday = this.userData.privateData.birthday ? this.userData.privateData.birthday : moment(new Date()).unix();
       const phone = this.userData.privateData.phone ? this.userData.privateData.phone : '';
       const idNumber = this.userData.privateData.idNumber ? this.userData.privateData.idNumber : '';
-      this.isStudent = this.userData.roles.findIndex(obj => obj.roleId === 'student') !== -1;
+      this.isStudent = !this.userData.publicData.teacher;
       this.userForm = new FormGroup({
         firstName: new FormControl(this.userData.publicData.firstName,[Validators.required, Validators.pattern("^[A-Z].*$")]),
         lastName: new FormControl(this.userData.publicData.lastName,[Validators.required, Validators.pattern("^[A-Z].*$")]),
