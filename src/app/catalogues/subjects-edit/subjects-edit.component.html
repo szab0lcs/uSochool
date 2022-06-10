@@ -4,15 +4,15 @@
         <div class="tables" *ngIf="(gradesAbsences$ | async) as gradesAbsences">
             <div class="tables-item tables-item-grades">
                 <span class="title">grades</span>
-                <div class="table-container">
+                <div class="table-container" [ngClass]="{'table-container-master': data.isMaster}">
                     <div class="first-row">Grade</div>
                     <div class="first-row">Date</div>
-                    <div class="first-row">Edit</div>
+                    <div class="first-row" *ngIf="!data.isMaster">Edit</div>
     
                     <ng-container *ngFor="let grade of gradesAbsences.grades">
                         <div class="data">{{grade.grade}}</div>
                         <div class="data">{{formatDate(grade.date)}}</div>
-                        <div class="data data-edit" (click)="editGrade(grade)"><i class="bi bi-pencil-fill"></i></div>
+                        <div *ngIf="!data.isMaster" class="data data-edit" (click)="editGrade(grade)"><i class="bi bi-pencil-fill"></i></div>
                     </ng-container>
                 </div>
                 <ng-container *ngIf="gradesAbsences.semesterGrade as semGrade">

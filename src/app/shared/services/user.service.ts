@@ -252,4 +252,17 @@ export class UserService {
       teachers.filter(teacher => !teacher.headMaster)
     ))
   }
+
+  async getClassIdIfHeadMaster(userId: string): Promise<string | undefined>{
+    const masterClassId = await this.getTeachersClasses$(userId).pipe(
+      take(1),
+      map(tClasses => {
+        let mClassId: string | undefined;
+        tClasses.forEach( tClass => {
+          if (tClass.subject.subjectId === 'headMaster') mClassId = tClass.classId;
+        })
+        return mClassId;
+    })).toPromise();
+    return masterClassId;
+  }
 }

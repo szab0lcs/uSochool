@@ -2,6 +2,21 @@
     <span class="title">Catalogue</span>
     <div class="list-scroll-container">
         <div class="list" *ngIf="(teacherClasses$ | async) as classes">
+            <ng-container *ngIf="(headMasterClass$ | async) as classDoc">
+                <div class="list-items" 
+                (click)="showMaster = !showMaster">
+                    <span class="list-items-content">
+                        {{classDoc.name}} Master
+                    </span>
+                </div>
+                <div class="list-items-expandable" [ngClass]="{'list-items-expandable-show': showMaster}">
+                    <span class="class-subject" 
+                    *ngFor="let class of classDoc.subjects" 
+                    (click)="openStudentsList({className: class.name,classId: class.classId, subject: class.subject, isMaster: true})">
+                        {{class.subject.subjectName}}
+                    </span>
+                </div>
+            </ng-container>
             <ng-container *ngFor="let class of classes | keyvalue; let i = index;">
                 <div class="list-items" 
                 *ngIf="class"
@@ -13,7 +28,7 @@
                 <div class="list-items-expandable" [ngClass]="{'list-items-expandable-show': show === i}">
                     <span class="class-subject" 
                     *ngFor="let class of class.value" 
-                    (click)="openStudentsList({className: class.name,classId: class.classId, subject: class.subject})">
+                    (click)="openStudentsList({className: class.name,classId: class.classId, subject: class.subject, isMaster: false})">
                         {{class.subject.subjectName}}
                     </span>
                 </div>

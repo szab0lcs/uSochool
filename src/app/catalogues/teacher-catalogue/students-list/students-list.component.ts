@@ -18,7 +18,7 @@ export class StudentsListComponent implements OnInit {
     private matDialog: MatDialog,
     public matDialogRef: MatDialogRef<StudentsListComponent>,
     private catalogueService: CatalogueService,
-    @Inject(MAT_DIALOG_DATA) public data: {className: string, classId: string, subject: ISubject},
+    @Inject(MAT_DIALOG_DATA) public data: {className: string, classId: string, subject: ISubject, isMaster: boolean},
   ) { }
 
   ngOnInit(): void {
@@ -30,7 +30,7 @@ export class StudentsListComponent implements OnInit {
       }))
   }
 
-  async openSubjectDetails(data: {subject: ISubject, student: IPerson, classId: string}) {
+  async openSubjectDetails(data: {subject: ISubject, student: IPerson, classId: string, isMaster: boolean}) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.panelClass = 'forgot-password';

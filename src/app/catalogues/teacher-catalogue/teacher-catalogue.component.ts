@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { take, map, tap } from 'rxjs/operators';
-import { ISubject, ISubjectsWithTeachers } from 'src/app/shared/interfaces/catalogue';
+import { IClass, ISubject, ISubjectsWithTeachers } from 'src/app/shared/interfaces/catalogue';
 import { NavigationService } from 'src/app/shared/services/navigation.service';
 import { UserService } from 'src/app/shared/services/user.service';
 import { StudentsListComponent } from './students-list/students-list.component';
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
+import { CatalogueService } from 'src/app/shared/services/catalogue.service';
 
 @Component({
   selector: 'app-catalogue',
@@ -15,80 +16,17 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./teacher-catalogue.component.scss']
 })
 export class TeacherCatalogueComponent implements OnInit {
-  // teacherClasses: Classes[] = [
-  //   {
-  //     id: '2023_A',
-  //     name: 'XI.A',
-  //     subjects: [{
-  //       id: 'mathematics',
-  //       name: 'Mathematics'
-  //     },
-  //     {
-  //       id: 'history',
-  //       name: 'History'
-  //     },
-  //     {
-  //       id: 'english',
-  //       name: 'English'
-  //     },]
-  //   },
-  //   {
-  //     id: '2024_D',
-  //     name: 'X.D',
-  //     subjects: [{
-  //       id: 'geography',
-  //       name: 'Geography'
-  //     },
-  //     {
-  //       id: 'science',
-  //       name: 'Science'
-  //     },
-  //     {
-  //       id: 'informatics',
-  //       name: 'Informatics'
-  //     },]
-  //   },
-  //   {
-  //     id: '2025_A',
-  //     name: 'IX.A',
-  //     subjects: [{
-  //       id: 'geography',
-  //       name: 'Geography'
-  //     },
-  //     {
-  //       id: 'science',
-  //       name: 'Science'
-  //     },
-  //     {
-  //       id: 'informatics',
-  //       name: 'Informatics'
-  //     },]
-  //   },
-  //   {
-  //     id: '2022_C',
-  //     name: 'XII.C',
-  //     subjects: [{
-  //       id: 'geography',
-  //       name: 'Geography'
-  //     },
-  //     {
-  //       id: 'science',
-  //       name: 'Science'
-  //     },
-  //     {
-  //       id: 'informatics',
-  //       name: 'Informatics'
-  //     },]
-  //   },
-  // ]
   teacherClasses$: Observable<{[key: string]: ISubjectsWithTeachers[]}> | undefined;
+  headMasterClass$: Observable<IClass | undefined> | undefined;
   show: number = -1;
+  showMaster = false;
 
   constructor(
     private navigationService: NavigationService,
     private matDialog: MatDialog,
     private userService: UserService,
     private route: ActivatedRoute,
+    private cataloguService: CatalogueService,
   ) { }
 
   ngOnInit(): void {
@@ -106,7 +44,15 @@ export class TeacherCatalogueComponent implements OnInit {
               classes[key] = subject;
             });
             return classes;
-          }))
+        }))
+      this.userService.getClassIdIfHeadMaster(userId).then( masterClassId => {
+        if (masterClassId) this.headMasterClass$ = this.cataloguService
+        .getClassDoc$(masterClassId).pipe(map( classDoc => {
+          if (classDoc) return classDoc;
+          return undefined
+        }))
+
+      })
     }
   }
 
@@ -114,7 +60,7 @@ export class TeacherCatalogueComponent implements OnInit {
     this.navigationService.back();
   }
 
-  async openStudentsList(data: {className: string, classId: string, subject: ISubject}) {
+  async openStudentsList(data: {className: string, classId: string, subject: ISubject, isMaster: boolean}) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.panelClass = 'forgot-password';

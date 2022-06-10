@@ -4,7 +4,7 @@
         <div class="list">
             <div class="list-items" 
             *ngFor="let student of (studentList$ | async)"
-            (click)="openSubjectDetails({subject: data.subject,student,classId: data.classId})">
+            (click)="openSubjectDetails({subject: data.subject,student,classId: data.classId, isMaster: data.isMaster})">
                 <span class="list-items-content">
                     {{student.lastName}} {{student.firstName}}
                 </span>

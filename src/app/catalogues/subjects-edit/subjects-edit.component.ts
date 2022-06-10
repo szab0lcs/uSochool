@@ -30,7 +30,7 @@ export class SubjectsEditComponent implements OnInit {
   constructor(
     private matDialog: MatDialog,
     public matDialogRef: MatDialogRef<SubjectsEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {subject: ISubject, student: IPerson, classId: string},
+    @Inject(MAT_DIALOG_DATA) public data: {subject: ISubject, student: IPerson, classId: string, isMaster: boolean},
     public promptService: PromptService,
     private catService: CatalogueService,
   ) { }
