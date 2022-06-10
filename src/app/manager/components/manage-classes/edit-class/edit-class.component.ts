@@ -38,7 +38,6 @@ export class EditClassComponent implements OnInit, OnDestroy {
     if (this.classId) {
       this.classDocSub = this.catalogueService.getClassDoc$(this.classId).subscribe(classDoc => {
         if(classDoc) this.classDoc$.next(classDoc);
-        console.log({classDoc: this.classDoc$.value});
       });
     }
   }

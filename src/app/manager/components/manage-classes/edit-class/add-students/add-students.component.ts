@@ -31,7 +31,6 @@ export class AddStudentsComponent implements OnInit {
         this.selectedUsers$
       ]).pipe(
         map(([fromObs,selected]) => {
-          console.log({fromObs})
           return fromObs.filter( student => !selected.includes(student))
         })
       )

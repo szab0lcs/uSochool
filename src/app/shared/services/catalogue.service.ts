@@ -252,7 +252,6 @@ export class CatalogueService {
     const teacherDocRef = this.afs.collection<ISubjectsWithTeachers>(`users/${subject.teacher.userId}/classes`).ref;
 
     let newSubjects = classDoc.subjects;
-    console.log({ newSubjects });
     newSubjects.push(subject);
     currentPromise = updateDoc(classDocRef, { subjects: newSubjects })
     promises.push(currentPromise);

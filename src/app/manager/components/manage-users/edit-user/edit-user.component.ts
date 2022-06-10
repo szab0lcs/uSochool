@@ -59,7 +59,6 @@ export class EditUserComponent implements OnInit {
         phone: new FormControl(phone,Validators.required),
         idNumber: new FormControl(idNumber,[Validators.required, Validators.pattern("^[0-9]*$")]),
       })
-      console.log({userData: this.userData});
       
       if(this.isStudent) {
         this.userForm.addControl('promotionYear', new FormControl(
@@ -82,12 +81,9 @@ export class EditUserComponent implements OnInit {
   }
 
   checkIfTheSame(event: any) {
-    console.log({event});
     if (this.userData) {
       const allData: any = { ...this.userData.publicData, ...this.userData.privateData};
       for (const key in event) {
-        console.log({allData: allData[key],event: event[key]});
-        
         if (allData[key] !== event[key]) {
           this.canSave = true;
           this.canSave$.next();
@@ -135,7 +131,6 @@ export class EditUserComponent implements OnInit {
   async onFormSubmit() {
     if (!this.canSave) return;
     const allUserData = this.getAllFormData();
-    console.log({allUserData});
     
     if( allUserData && this.userId ) {
       await this.userService.setAllUserData(allUserData);

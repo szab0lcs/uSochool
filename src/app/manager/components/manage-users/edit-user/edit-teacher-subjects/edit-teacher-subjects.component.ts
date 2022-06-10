@@ -28,8 +28,7 @@ export class EditTeacherSubjectsComponent implements OnInit {
     .then( subjects => this.canTeachSelected = subjects);
     this.subjects$ = this.catalogueService.getSubjects().pipe(map(
       subjects => subjects.filter(subject => !this.canTeachSelected.includes(subject))
-    ),
-    tap(val => console.log({val})));
+    ));
   }
 
   async saveSubjects(selected: ISubject[]) {

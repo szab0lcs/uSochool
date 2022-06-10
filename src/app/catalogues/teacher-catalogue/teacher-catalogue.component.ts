@@ -106,8 +106,7 @@ export class TeacherCatalogueComponent implements OnInit {
               classes[key] = subject;
             });
             return classes;
-          }),
-          tap(val => console.log(val)))
+          }))
     }
   }
 
