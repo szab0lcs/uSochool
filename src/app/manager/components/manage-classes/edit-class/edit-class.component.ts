@@ -36,11 +36,15 @@ export class EditClassComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.classId = this.route.snapshot.paramMap.get('id');
     if (this.classId) {
-      this.classDocSub = this.catalogueService.getClassDoc(this.classId).subscribe(classDoc => {
+      this.classDocSub = this.catalogueService.getClassDoc$(this.classId).subscribe(classDoc => {
         if(classDoc) this.classDoc$.next(classDoc);
         console.log({classDoc: this.classDoc$.value});
       });
     }
+  }
+
+  promoteClass() {
+    // this.catalogueService.promoteClass(this.classId,)
   }
 
   onSearchChange(el: any, type: 'subject' | 'student'): void {  

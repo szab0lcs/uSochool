@@ -13,7 +13,7 @@
                 <div class="list-items-expandable" [ngClass]="{'list-items-expandable-show': show === i}">
                     <span class="class-subject" 
                     *ngFor="let class of classGrade.value" 
-                    (click)="navS.manageClass(class.classId)">
+                    (click)="navS.navigateWithId(navS.eRoutes.ManageClasses,class.classId)">
                         {{class.name}}
                     </span>
                 </div>

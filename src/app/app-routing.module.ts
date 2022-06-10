@@ -47,7 +47,7 @@ const routes: Routes = [
     component: StudentCatalogueComponent
   },
   {
-    path: 'teacher-catalogue',
+    path: 'teacher-catalogue/:id',
     component: TeacherCatalogueComponent
   },
   {

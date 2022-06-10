@@ -63,14 +63,23 @@ export class AddSubjectComponent implements OnInit {
   }
 
   async onSubmit() {
-    if (this.selectedSubject$.value && this.selectedTeacher) {
+    const selectedSubject = this.selectedSubject$.value;
+    const selectedTeacher = this.selectedTeacher
+    if ( selectedSubject && selectedTeacher) {
       await this.catalagoueService.addSubjectToClass({
-        subject: this.selectedSubject$.value,
-        teacher: this.selectedTeacher,
-        subjectDocId: this.selectedSubject$.value.subjectDocId ? this.selectedSubject$.value.subjectDocId : '',
+        subject: {
+          subjectId: selectedSubject.subjectId,
+          subjectName: selectedSubject.subjectName
+        },
+        teacher: {
+          userId: selectedTeacher.userId,
+          firstName: selectedTeacher.firstName,
+          lastName: selectedTeacher.lastName
+        },
+        subjectDocId: selectedSubject.subjectDocId ? selectedSubject.subjectDocId : '',
         classId: this.data.classId,
         name: this.data.name
-      }, this.data.classId);
+      }, this.data);
       this.matDialogRef.close();
       this.toastr.success('Subject added.', `Succesful!`, {
         positionClass: 'toast-bottom-center',

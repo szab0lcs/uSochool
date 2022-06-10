@@ -1,8 +1,9 @@
-import { Timestamp } from '@firebase/firestore-types';
+import { Timestamp } from 'firebase/firestore';
 import { IPerson } from './user';
 
 export type GradeType = 'general' | 'periodal';
 export interface IGrade {
+    id?: string;
     grade: number;
     date: Timestamp;
     type: GradeType;
@@ -11,7 +12,17 @@ export interface IGrade {
     period: string; 
 }
 
+export const INITIAL_GRADE_VALUE: IGrade = {
+    date: Timestamp.now(),
+    grade: 10,
+    type: 'general',
+    subject: '',
+    student: '',
+    period: ''
+}
+
 export interface IAbsence {
+    id?: string;
     date: Timestamp;
     proven: boolean;
     subject: string;
@@ -31,7 +42,7 @@ export interface IClassProfile {
 
 export interface IPeriod {
     id: string;
-    endState: IClass | null;
+    endState: IClass | undefined;
     active: boolean;
     name: string; // 2021-22 smester 1
     lastPeriodOfYear: boolean;

@@ -6,7 +6,7 @@
                 <div class="menu-items" (click)="navS.navigateTo(navS.eRoutes.StudentCatalogue)" *ngIf="role === 'student'">
                     <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-journals',text: 'catalogue'}"></ng-container>
                 </div>
-                <div class="menu-items" (click)="navS.navigateTo(navS.eRoutes.TeacherCatalogue)" *ngIf="role === 'teacher'">
+                <div class="menu-items" (click)="navS.navigateWithId(navS.eRoutes.TeacherCatalogue, user.publicData.userId)" *ngIf="role === 'teacher'">
                     <ng-container *ngTemplateOutlet="menuItem; context:{icon: 'bi bi-journals',text: 'catalogue'}"></ng-container>
                 </div>
                 <div class="menu-items" (click)="navS.navigateTo(navS.eRoutes.Timetable)">

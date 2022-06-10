@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { take } from 'rxjs/operators';
 import { NavigationService } from 'src/app/shared/services/navigation.service';
-import { Subject } from '../catalogue-types';
 import { SubjectsComponent } from '../subjects/subjects.component';
 
 @Component({
@@ -12,36 +11,36 @@ import { SubjectsComponent } from '../subjects/subjects.component';
 })
 export class StudentCatalogueComponent implements OnInit {
 
-  studentSubjects: Subject[] = [
-    {
-      id: 'mathematics',
-      name: 'Mathematics'
-    },
-    {
-      id: 'history',
-      name: 'History'
-    },
-    {
-      id: 'english',
-      name: 'English'
-    },
-    {
-      id: 'geography',
-      name: 'Geography'
-    },
-    {
-      id: 'science',
-      name: 'Science'
-    },
-    {
-      id: 'informatics',
-      name: 'Informatics'
-    },
-    {
-      id: 'science',
-      name: 'Science'
-    },
-  ]
+  // studentSubjects: Subject[] = [
+  //   {
+  //     id: 'mathematics',
+  //     name: 'Mathematics'
+  //   },
+  //   {
+  //     id: 'history',
+  //     name: 'History'
+  //   },
+  //   {
+  //     id: 'english',
+  //     name: 'English'
+  //   },
+  //   {
+  //     id: 'geography',
+  //     name: 'Geography'
+  //   },
+  //   {
+  //     id: 'science',
+  //     name: 'Science'
+  //   },
+  //   {
+  //     id: 'informatics',
+  //     name: 'Informatics'
+  //   },
+  //   {
+  //     id: 'science',
+  //     name: 'Science'
+  //   },
+  // ]
 
   constructor(
     private navigationService: NavigationService,

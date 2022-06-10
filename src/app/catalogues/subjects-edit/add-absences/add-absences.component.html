@@ -6,7 +6,7 @@
             <input matInput 
             [matDatepicker]="picker" 
             readonly 
-            [value]="convertedDate" 
+            [value]="gradeDate" 
             (dateChange)="dateChangeHandler($event.value)">
             <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

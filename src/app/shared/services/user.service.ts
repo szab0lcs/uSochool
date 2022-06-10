@@ -10,7 +10,7 @@ import {
   UserRole,
 } from '../interfaces/user';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { ISubject } from '../interfaces/catalogue';
+import { ISubject, ISubjectsWithTeachers } from '../interfaces/catalogue';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +19,7 @@ export class UserService {
   private user: AllUserData | null = null;
   private readonly user$ = new BehaviorSubject(this.user);
   private loggedOut$ = new Subject();
-  constructor(private afs: AngularFirestore) {}
+  constructor(private afs: AngularFirestore) { }
 
   get currentUser() {
     return this.user;
@@ -188,26 +188,31 @@ export class UserService {
       `users/${userId}/canTeach`
     );
     const currentSubjects = await canTeachCollection.valueChanges().pipe(take(1)).toPromise();
-    currentSubjects.forEach( cSubject => {
+    currentSubjects.forEach(cSubject => {
       if (!canTeach.includes(cSubject)) canTeachCollection.ref
         .where('subjectId', '==', cSubject.subjectId)
         .get().then((ref) =>
-        ref.forEach(async function (doc) {
-          await doc.ref.delete();
-        })
-      );
+          ref.forEach(async function (doc) {
+            await doc.ref.delete();
+          })
+        );
     })
-    canTeach.forEach( async (subject) => {
+    canTeach.forEach(async (subject) => {
       if (!currentSubjects.includes(subject)) await canTeachCollection.add(subject);
     })
   }
-  
+
   getTeacherWhatCanTeach$(userId: string): Observable<ISubject[]> {
     return this.afs.collection<ISubject>(`users/${userId}/canTeach`).valueChanges();
   }
 
   getTeacherWhatCanTeach(userId: string): Promise<ISubject[]> {
     return this.getTeacherWhatCanTeach$(userId).pipe(take(1)).toPromise();
+  }
+
+  getTeachersClasses$(teacherId: string) {
+    return this.afs.collection<ISubjectsWithTeachers>(`users/${teacherId}/classes`).valueChanges();
+
   }
 
   /**NEW USER */
@@ -223,28 +228,28 @@ export class UserService {
     return await Promise.all(promises);
   }
 
-  getTeachers$(): Observable<IPerson[]>{
+  getTeachers$(): Observable<IPerson[]> {
     return this.afs
-    .collection<PublicData>(`users`, ref => ref.where('teacher', '==', true))
-    .valueChanges({ idField: 'userId' })
-    .pipe(
-      map( teachers => {
-        let teachersPerson: IPerson[] = [];
-        teachers.forEach( teacher => teachersPerson.push({
-          userId: teacher.userId,
-          firstName: teacher.firstName,
-          lastName: teacher.lastName,
-          headMaster: teacher.headMaster
-        }))
-        return teachersPerson;
-      }),
-      distinctUntilChanged()
-    );
+      .collection<PublicData>(`users`, ref => ref.where('teacher', '==', true))
+      .valueChanges({ idField: 'userId' })
+      .pipe(
+        map(teachers => {
+          let teachersPerson: IPerson[] = [];
+          teachers.forEach(teacher => teachersPerson.push({
+            userId: teacher.userId,
+            firstName: teacher.firstName,
+            lastName: teacher.lastName,
+            headMaster: teacher.headMaster
+          }))
+          return teachersPerson;
+        }),
+        distinctUntilChanged()
+      );
   }
 
-  getNonHeadMasters$(): Observable<IPerson[]>{
-    return this.getTeachers$().pipe(map( teachers => 
-      teachers.filter( teacher => !teacher.headMaster)
+  getNonHeadMasters$(): Observable<IPerson[]> {
+    return this.getTeachers$().pipe(map(teachers =>
+      teachers.filter(teacher => !teacher.headMaster)
     ))
   }
 }

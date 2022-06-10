@@ -1,9 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { take } from 'rxjs/operators';
-import { Student, Subject } from '../../catalogue-types';
+import { Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
+import { ISubject } from 'src/app/shared/interfaces/catalogue';
+import { IPerson } from 'src/app/shared/interfaces/user';
+import { CatalogueService } from 'src/app/shared/services/catalogue.service';
 import { SubjectsEditComponent } from '../../subjects-edit/subjects-edit.component';
-import { SubjectsComponent } from '../../subjects/subjects.component';
 
 @Component({
   selector: 'app-students-list',
@@ -11,38 +13,24 @@ import { SubjectsComponent } from '../../subjects/subjects.component';
   styleUrls: ['./students-list.component.scss']
 })
 export class StudentsListComponent implements OnInit {
-  studentList: Student[] = [
-    {
-      id: '123456',
-      name: 'July Calleigh'
-    },
-    {
-      id: '123456',
-      name: 'Philander Lindsie'
-    },
-    {
-      id: '123456',
-      name: 'Roswell Ash'
-    },
-    {
-      id: '123456',
-      name: 'Mona Derby'
-    },
-    {
-      id: '123456',
-      name: 'Angelica Jarred'
-    },
-  ]
+  studentList$: Observable<IPerson[]> | undefined;
   constructor(
     private matDialog: MatDialog,
     public matDialogRef: MatDialogRef<StudentsListComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {className: string, classId: string, subject: Subject},
+    private catalogueService: CatalogueService,
+    @Inject(MAT_DIALOG_DATA) public data: {className: string, classId: string, subject: ISubject},
   ) { }
 
   ngOnInit(): void {
+    this.studentList$ = this.catalogueService.getClassDoc$(this.data.classId)
+      .pipe(map( classDoc => {
+        let students: IPerson[] = [];
+        if (classDoc) students = classDoc.students;
+        return students;
+      }))
   }
 
-  async openSubjectDetails(data: {subject: Subject, student: Student}) {
+  async openSubjectDetails(data: {subject: ISubject, student: IPerson, classId: string}) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.panelClass = 'forgot-password';

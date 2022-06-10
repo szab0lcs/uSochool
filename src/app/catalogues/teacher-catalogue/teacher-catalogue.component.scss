@@ -54,7 +54,7 @@
                     justify-content: center;
                     @include BlackBlurredBackground();
                     color: white;
-                    gap: 1em;
+                    gap: 1.5em;
                     padding: 1em;
                     &-show {
                         display: flex;

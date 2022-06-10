@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Timestamp } from 'firebase/firestore';
 import * as moment from 'moment';
-import { Grade } from '../../catalogue-types';
+import { IGrade } from 'src/app/shared/interfaces/catalogue';
 
 @Component({
   selector: 'app-edit-grades',
@@ -10,38 +10,60 @@ import { Grade } from '../../catalogue-types';
   styleUrls: ['./edit-grades.component.scss']
 })
 export class EditGradesComponent implements OnInit {
-  convertedDate: Date = new Date();
+  gradeDate: Date = new Date();
+  gradeTimestamp = Timestamp.now();
   displayOptions = false;
+  gradeValue: number = 0;
   constructor(
-    public matDialogRef: MatDialogRef<EditGradesComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Grade,
+    public matDialogRef: MatDialogRef<EditGradesComponent, {grade: IGrade, action: 'edit' | 'delete'}>,
+    @Inject(MAT_DIALOG_DATA) public data: IGrade,
   ) {}
 
   ngOnInit(): void {
-    if(this.data.date !== null) this.convertedDate = this.timestampToDate(this.data.date);
+    if(this.data.date !== null) {
+      this.gradeDate = this.formatDate(this.data.date);
+      this.gradeTimestamp = Timestamp.fromDate(this.gradeDate);
+    }
+    if(this.data.grade !== null) this.gradeValue = this.data.grade;
   }
 
-  timestampToDate(value: number) {
-    return new Date(moment.unix(value).format('MM/DD/YYYY'));
+  formatDate(value: Timestamp) {
+    return value.toDate();
   }
 
   dateChangeHandler(date: Date){
-    const timestamp = moment(date).unix();
-    this.data.date = timestamp;
+    this.gradeDate = date;
+    this.gradeTimestamp = Timestamp.fromDate(date);
   }
 
   minusGrade() {
-    if(this.data.value === 1 || this.data.value === null) return;
-    this.data.value = this.data.value - 1;
+    if(this.gradeValue === 1 || this.gradeValue === null) return;
+    this.gradeValue = this.gradeValue - 1;
   }
   
   plusGrade() {
-    if(this.data.value === 10 || this.data.value === null) return;
-    this.data.value = this.data.value + 1;
+    if(this.gradeValue === 10 || this.gradeValue === null) return;
+    this.gradeValue = this.gradeValue + 1;
   }
 
   save() {
-    this.matDialogRef.close(this.data);
+    this.matDialogRef.close(
+      {
+        grade: {
+          ...this.data,
+          grade: this.gradeValue,
+          date: this.gradeTimestamp
+        },
+        action: 'edit'
+      });
+  }
+
+  deleteThis() {
+    this.matDialogRef.close(
+      {
+        grade: this.data,
+        action: 'delete'
+      });
   }
 }
 

@@ -1,20 +1,20 @@
 <div class="container">
     <span class="title">Catalogue</span>
     <div class="list-scroll-container">
-        <div class="list">
-            <ng-container *ngFor="let class of teacherClasses; let i = index;">
+        <div class="list" *ngIf="(teacherClasses$ | async) as classes">
+            <ng-container *ngFor="let class of classes | keyvalue; let i = index;">
                 <div class="list-items" 
                 *ngIf="class"
                 (click)="toggleExpandable(i)">
                     <span class="list-items-content">
-                        {{class.name}}
+                        {{class.key}}
                     </span>
                 </div>
                 <div class="list-items-expandable" [ngClass]="{'list-items-expandable-show': show === i}">
                     <span class="class-subject" 
-                    *ngFor="let subject of class.subjects" 
-                    (click)="openStudentsList({className: class.name,classId: class.id, subject})">
-                        {{subject.name}}
+                    *ngFor="let class of class.value" 
+                    (click)="openStudentsList({className: class.name,classId: class.classId, subject: class.subject})">
+                        {{class.subject.subjectName}}
                     </span>
                 </div>
             </ng-container>

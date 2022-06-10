@@ -15,7 +15,7 @@
         <div class="table-container">
             <ng-container *ngFor="let user of (users$ | async) | searchFilter: query">
                 <div class="data data-title">{{user.firstName}} {{user.parentInitial ? user.parentInitial + '.' : ''}} {{user.lastName}}</div>
-                <div class="data data-view" (click)="navS.editUser(user.userId)">View</div>
+                <div class="data data-view" (click)="navS.navigateWithId(navS.eRoutes.EditUser,user.userId)">View</div>
             </ng-container>
         </div>
     </div>

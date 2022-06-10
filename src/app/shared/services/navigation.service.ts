@@ -27,9 +27,9 @@ export class NavigationService {
   navigateTo(url: ExistingRoutes) {
     this.router.navigateByUrl(url);
   }
-  
-  editUser(userId: string) {
-    this.router.navigateByUrl(`${ExistingRoutes.EditUser}/${userId}`);
+
+  navigateWithId(url: ExistingRoutes, id: string) {
+    this.router.navigateByUrl(`${url}/${id}`);
   }
 
   manageClass(classId: string) {

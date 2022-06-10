@@ -3,10 +3,10 @@
     <div class="scroll-container">
         <div class="list">
             <div class="list-items" 
-            *ngFor="let student of studentList"
-            (click)="openSubjectDetails({subject: data.subject,student})">
+            *ngFor="let student of (studentList$ | async)"
+            (click)="openSubjectDetails({subject: data.subject,student,classId: data.classId})">
                 <span class="list-items-content">
-                    {{student.name}}
+                    {{student.lastName}} {{student.firstName}}
                 </span>
             </div>
         </div>
