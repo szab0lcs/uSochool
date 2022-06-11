@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Book } from '../../library/library.component';
+import { Book } from '../services/library.service';
 
 @Pipe({ name: 'myRentedBooks' })
 export class MyRentedBooksPipe implements PipeTransform {

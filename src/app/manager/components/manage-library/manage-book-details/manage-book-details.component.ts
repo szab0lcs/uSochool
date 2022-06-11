@@ -3,13 +3,13 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Book } from 'src/app/shared/services/library.service';
 
 @Component({
-  selector: 'app-book-details',
-  templateUrl: './book-details.component.html',
-  styleUrls: ['./book-details.component.scss']
+  selector: 'app-manage-book-details',
+  templateUrl: './manage-book-details.component.html',
+  styleUrls: ['./manage-book-details.component.scss']
 })
-export class BookDetailsComponent implements OnInit {
+export class ManageBookDetailsComponent implements OnInit {
   constructor(
-    public matDialogRef: MatDialogRef<BookDetailsComponent>,
+    public matDialogRef: MatDialogRef<ManageBookDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {book: Book, rented: boolean},
   ) { }
 

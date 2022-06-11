@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { take } from 'rxjs/operators';
+import { Book } from 'src/app/shared/services/library.service';
 import { BookDetailsComponent } from '../book-details/book-details.component';
-import { Book } from '../library.component';
+
 
 @Component({
   selector: 'app-rented-books',

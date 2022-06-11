@@ -97,7 +97,7 @@ export class UserService {
       map((userData) => {
         if (userData && userData.roles) {
           const roles = userData.roles;
-          const mainRoles = ['admin', 'teacher', 'student'];
+          const mainRoles = ['admin', 'teacher', 'student','librarian', 'news'];
           for (const mainRole of mainRoles) {
             if (roles.findIndex((roles) => roles.roleId === mainRole) > -1)
               return mainRole;

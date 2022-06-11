@@ -3517,3 +3517,18 @@
     //   promises.push(currentPromise);
     // })
     // await Promise.all(promises);
+
+    // addStaff() {
+    //   let publicData: PublicData = {
+    //     userId: '',
+    //     firstName: 'News',
+    //     lastName: 'Staff',
+    //     email: 'news@usochool.com',
+    //     active: true,
+    //     teacher: false
+    //   }
+    //   let userRoles: UserRole[] = [
+    //     {roleId: 'news', roleName: 'News'}
+    //   ];
+    //   this.authService.registerUser('news@usochool.com',publicData,userRoles)
+    // }

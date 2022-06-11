@@ -9,12 +9,12 @@ import { ManageClassesModule } from './components/manage-classes/manage-classes.
 import { ManageUsersModule } from './components/manage-users/manage-users.module';
 import { ManageSubjectsComponent } from './components/manage-subjects/manage-subjects.component';
 import { ManageSubjectsModule } from './components/manage-subjects/manage-subjects.module';
+import { ManageLibraryModule } from './components/manage-library/manage-library.module';
 
 
 
 @NgModule({
   declarations: [
-    ManageLibraryComponent,
     ManageNewsComponent,
     ManageContactsComponent,
   ],
@@ -23,7 +23,8 @@ import { ManageSubjectsModule } from './components/manage-subjects/manage-subjec
     SharedModule,
     ManageClassesModule,
     ManageUsersModule,
-    ManageSubjectsModule
+    ManageSubjectsModule,
+    ManageLibraryModule,
   ]
 })
 export class ManagerModule { }

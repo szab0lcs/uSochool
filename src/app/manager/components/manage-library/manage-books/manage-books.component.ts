@@ -2,14 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { take } from 'rxjs/operators';
 import { Book } from 'src/app/shared/services/library.service';
-import { BookDetailsComponent } from '../book-details/book-details.component';
+import { ManageBookDetailsComponent } from '../manage-book-details/manage-book-details.component';
+
 
 @Component({
-  selector: 'app-books',
-  templateUrl: './books.component.html',
-  styleUrls: ['./books.component.scss']
+  selector: 'app-manage-books',
+  templateUrl: './manage-books.component.html',
+  styleUrls: ['./manage-books.component.scss']
 })
-export class BooksComponent implements OnInit {
+export class ManageBooksComponent implements OnInit {
   timeout: NodeJS.Timeout | undefined;
   searchFilter: any = '';
   query = '';
@@ -78,7 +79,7 @@ export class BooksComponent implements OnInit {
   ]
 
   constructor(
-    public matDialogRef: MatDialogRef<BooksComponent>,
+    public matDialogRef: MatDialogRef<ManageBooksComponent>,
     public matDialog: MatDialog,
   ) { }
 
@@ -104,7 +105,7 @@ export class BooksComponent implements OnInit {
     dialogConfig.maxWidth = '100vw';
     dialogConfig.data = {book, rented: false};
 
-    const dialog = this.matDialog.open(BookDetailsComponent,dialogConfig);
+    const dialog = this.matDialog.open(ManageBookDetailsComponent,dialogConfig);
     await dialog.afterClosed().pipe(take(1)).toPromise();
   }
 }
