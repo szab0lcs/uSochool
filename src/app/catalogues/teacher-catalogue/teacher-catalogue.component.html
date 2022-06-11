@@ -15,6 +15,9 @@
                     (click)="openStudentsList({className: class.name,classId: class.classId, subject: class.subject, isMaster: true})">
                         {{class.subject.subjectName}}
                     </span>
+                    <span class="class-subject class-subject-settings" (click)="navS.navigateWithId(navS.eRoutes.ManageClasses,classDoc.classId)">
+                        Settings
+                    </span>
                 </div>
             </ng-container>
             <ng-container *ngFor="let class of classes | keyvalue; let i = index;">

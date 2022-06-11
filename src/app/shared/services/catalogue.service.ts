@@ -35,7 +35,7 @@ export class CatalogueService {
       active: true,
       lastPeriodOfYear: false,
       id: newPeriodId.toString(),
-      endState: undefined,
+      endState: null,
       name: `${newClassDoc.promotionYear - 4}_${newClassDoc.promotionYear - 3
         }_${newPeriodId}`,
     };
@@ -290,8 +290,12 @@ export class CatalogueService {
     return docRef.valueChanges().pipe(distinctUntilChanged());
   }
 
-  getClassDoc(classId: string) {
-    return this.getClassDoc$(classId).pipe(take(1)).toPromise();
+  async getClassDoc(classId: string) {
+    return new Promise<IClass>(async (resolve, reject) => {
+      const classDoc = await this.getClassDoc$(classId).pipe(take(1)).toPromise();
+      if (classDoc) resolve(classDoc);
+      else reject('No class doc!')
+    })
   }
 
   getActivePeriod(classId: string) {
@@ -371,17 +375,29 @@ export class CatalogueService {
     querySnapshot.forEach(async doc => await doc.ref.delete());
   }
 
-  async promoteClass(classId: string, newClassDoc: IClass, newPeriodName: string) {
+  async promoteClass(classId: string, newClassDoc: IClass) {
     const promises: Promise<any>[] = [];
     let currentPromise: Promise<any>;
     const currentPeriod = await this.getActivePeriod(classId);
     const currentClassDoc = await this.getClassDoc(classId);
     const newPeriodId = parseInt(currentPeriod.id) + 1;
+    let newPeriodName = '';
+    if (currentPeriod.lastPeriodOfYear) {
+      const currentPeriodNumber = +currentPeriod.id;
+      const yearsLeftToPromote = 4 - (currentPeriodNumber / 2);
+      if (yearsLeftToPromote === 0) return;
+      const newPeriodYear = currentClassDoc.promotionYear - yearsLeftToPromote;
+      newPeriodName = newPeriodYear + '_' + (newPeriodYear + 1) + '_1'
+    } else {
+      newPeriodName = currentPeriod.name.replace(/\d$/, '2')
+    }
+    // console.log({newPeriodName});
+    // return;
     const newPeriod: IPeriod = {
       active: true,
       lastPeriodOfYear: newPeriodId % PERIOD_COUNT_IN_YEAR === 0,
       id: newPeriodId.toString(),
-      endState: undefined,
+      endState: null,
       name: newPeriodName
     }
 

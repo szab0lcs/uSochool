@@ -94,9 +94,9 @@ export class AddUserComponent implements OnInit, OnDestroy {
         publicData.promotionYear = this.promotionYear.value;
         publicData.parentInitial = this.parentInitial.value;
         publicData.classId = ''
-        userRoles.push({roleId: 'student', roleName: 'student'});
+        userRoles.push({roleId: 'student', roleName: 'Student'});
       } else {
-        userRoles.push({roleId: 'teacher', roleName: 'teacher'});
+        userRoles.push({roleId: 'teacher', roleName: 'Teacher'});
       }
 
       this.authService.registerUser(this.email.value,publicData,userRoles).then(() => {

@@ -2,10 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, take, tap } from 'rxjs/operators';
 import { IClass } from 'src/app/shared/interfaces/catalogue';
 import { CatalogueService } from 'src/app/shared/services/catalogue.service';
 import { NavigationService } from 'src/app/shared/services/navigation.service';
+import { UserService } from 'src/app/shared/services/user.service';
 import { AddStudentsComponent } from './add-students/add-students.component';
 import { AddSubjectComponent } from './add-subject/add-subject.component';
 import { RemoveStudentsComponent } from './remove-students/remove-students.component';
@@ -26,12 +27,17 @@ export class EditClassComponent implements OnInit, OnDestroy {
   query = '';
   querySubject = '';
   expanded: 'students-list' | 'subjects-list' = 'students-list';
+  canPromote = false;
+  userId$: Observable<string | undefined>;
   constructor(
     private catalogueService: CatalogueService,
     private route: ActivatedRoute,
     public navS: NavigationService,
     private matDialog: MatDialog,
-  ) { }
+    private userService: UserService
+  ) {
+    this.userId$ = this.userService.userId$;
+   }
 
   ngOnInit(): void {
     this.classId = this.route.snapshot.paramMap.get('id');
@@ -42,8 +48,17 @@ export class EditClassComponent implements OnInit, OnDestroy {
     }
   }
 
-  promoteClass() {
-    // this.catalogueService.promoteClass(this.classId,)
+  async promoteClass() {
+    if (!this.canPromote) {
+      this.canPromote = true;
+      setTimeout(() => {
+        this.canPromote = false;
+      }, 3000);
+    } else {
+      if (this.classId && this.classDoc$.value) {
+        this.catalogueService.promoteClass(this.classId,this.classDoc$.value);
+      }
+    }
   }
 
   onSearchChange(el: any, type: 'subject' | 'student'): void {  

@@ -49,8 +49,13 @@
         <div class="button button-back" (click)="navS.back()">
             <i class="bi bi-chevron-left"></i>
         </div>
-        <div class="button button-back" (click)="promoteClass()">
-            <i class="bi bi-chevron-double-right"></i>
+        <div
+            *ngIf="(userId$ | async) === classDoc.headMaster.userId"
+            class="button button-add-class" 
+            (click)="promoteClass()" 
+            [ngClass]="{'button-add-class-active': canPromote}">
+            <i class="bi bi-lock"></i>
+            <span class="button-add-class-text">Promote</span>
         </div>
     </div>
 </div>

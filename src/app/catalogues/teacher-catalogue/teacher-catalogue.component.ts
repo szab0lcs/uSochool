@@ -22,7 +22,7 @@ export class TeacherCatalogueComponent implements OnInit {
   showMaster = false;
 
   constructor(
-    private navigationService: NavigationService,
+    public navS: NavigationService,
     private matDialog: MatDialog,
     private userService: UserService,
     private route: ActivatedRoute,
@@ -57,7 +57,7 @@ export class TeacherCatalogueComponent implements OnInit {
   }
 
   back(): void {
-    this.navigationService.back();
+    this.navS.back();
   }
 
   async openStudentsList(data: {className: string, classId: string, subject: ISubject, isMaster: boolean}) {

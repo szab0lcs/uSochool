@@ -5,6 +5,7 @@ import { Capacitor } from '@capacitor/core';
 import { initializeApp } from 'firebase/app';
 import { indexedDBLocalPersistence, initializeAuth } from 'firebase/auth';
 import { environment } from 'src/environments/environment';
+import { AuthService } from './shared/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,8 @@ export class AppComponent {
   title = 'usochool';
   appBackgroundObs$: Observable<string[]>;
   constructor(
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private authService: AuthService,
   ){
     this.appBackgroundObs$ = this.themeService.getActiveColor$();
     const app = initializeApp(environment.firebase);

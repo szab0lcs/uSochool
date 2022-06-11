@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, map, take, takeUntil } from 'rxjs/operators';
 import {
   AllUserData,
@@ -212,7 +212,6 @@ export class UserService {
 
   getTeachersClasses$(teacherId: string) {
     return this.afs.collection<ISubjectsWithTeachers>(`users/${teacherId}/classes`).valueChanges();
-
   }
 
   /**NEW USER */

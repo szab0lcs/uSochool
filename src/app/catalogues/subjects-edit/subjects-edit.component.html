@@ -20,7 +20,7 @@
                     <span class="notes">Final grade: {{finalGrade(gradesAbsences.grades,semGrade)}}</span>
                 </ng-container>
 
-                <span class="button" (click)="addGrade(gradesAbsences.semesterGrade === undefined)"><i class="bi bi-plus-circle-fill"></i> Add</span>
+                <span *ngIf="!data.isMaster" class="button" (click)="addGrade(gradesAbsences.semesterGrade === undefined)"><i class="bi bi-plus-circle-fill"></i> Add</span>
             </div>
             <div class="tables-item tables-item-absences">
                 <span class="title">absences</span>
@@ -38,7 +38,7 @@
                     </ng-container>
                 </div>
                 <span class="notes">Total absences: {{totalAbsences(gradesAbsences.absences)}}</span>
-                <span class="button" (click)="addAbsence()"><i class="bi bi-plus-circle-fill"></i> Add</span>
+                <span *ngIf="!data.isMaster" class="button" (click)="addAbsence()"><i class="bi bi-plus-circle-fill"></i> Add</span>
             </div>
         </div>
     </div>

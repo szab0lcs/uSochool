@@ -42,7 +42,7 @@ export interface IClassProfile {
 
 export interface IPeriod {
     id: string;
-    endState: IClass | undefined;
+    endState: IClass | null;
     active: boolean;
     name: string; // 2021-22 smester 1
     lastPeriodOfYear: boolean;

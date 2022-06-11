@@ -1,12 +1,16 @@
 <div class="container">
     <span class="title">Catalogue</span>
     <div class="list-scroll-container">
-        <div class="list">
-            <!-- <ng-container *ngFor="let subject of studentSubjects">
-                <ng-container 
-                *ngTemplateOutlet="studentSubjectsTemplate; context:{subject: subject}">
-                </ng-container>
-            </ng-container> -->
+        <div class="list" *ngIf="(userSubjects$ | async) as userSubjects">
+            <ng-container *ngFor="let subjectWithTeacher of userSubjects">
+                <div class="list-items" 
+                *ngIf="subjectWithTeacher" 
+                (click)="openSubjectDetails(subjectWithTeacher)">
+                    <span class="list-items-content">
+                        {{subjectWithTeacher.subject.subjectName}}
+                    </span>
+                </div>
+            </ng-container>
         </div>
     </div>
     <div class="back-button" (click)="back()">
@@ -15,11 +19,5 @@
 </div>
 
 <ng-template let-subject="subject" #studentSubjectsTemplate>
-    <div class="list-items" 
-    *ngIf="subject" 
-    (click)="openSubjectDetails(subject)">
-        <span class="list-items-content">
-            {{subject.name}}
-        </span>
-    </div>
+    
 </ng-template>

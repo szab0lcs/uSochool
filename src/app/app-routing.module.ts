@@ -44,27 +44,39 @@ const routes: Routes = [
   },
   {
     path: 'student-catalogue',
-    component: StudentCatalogueComponent
+    component: StudentCatalogueComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'teacher-catalogue/:id',
-    component: TeacherCatalogueComponent
+    component: TeacherCatalogueComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'news',
-    component: NewsComponent
+    component: NewsComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'profile',
-    component: ProfileComponent
+    component: ProfileComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'library',
-    component: LibraryComponent
+    component: LibraryComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'timetable',
-    component: TimetableComponent
+    component: TimetableComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'contacts',
@@ -72,43 +84,63 @@ const routes: Routes = [
   },
   {
     path: 'manage-classes',
-    component: ManageClassesComponent
+    component: ManageClassesComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'manage-classes/:id',
-    component: EditClassComponent
+    component: EditClassComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'manage-contacts',
-    component: ManageContactsComponent
+    component: ManageContactsComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'manage-library',
-    component: ManageLibraryComponent
+    component: ManageLibraryComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'manage-subjects',
-    component: ManageSubjectsComponent
+    component: ManageSubjectsComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'manage-news',
-    component: ManageNewsComponent
+    component: ManageNewsComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'manage-users',
-    component: ManageUsersComponent
+    component: ManageUsersComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'add-user',
-    component: AddUserComponent
+    component: AddUserComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'users-list',
-    component: UsersListComponent
+    component: UsersListComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'edit-user/:id',
-    component: EditUserComponent
+    component: EditUserComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
 ];
 

@@ -17,8 +17,7 @@ export class AuthService {
     private toastr: ToastrService,
     private navigationService: NavigationService,
     private userService: UserService
-  ) {
-
+  ) {    
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.userService.getUserDataFromFirestore(user.uid);
