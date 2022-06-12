@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AzOrderPipe } from './pipes/az-order.pipe';
+import { EditFieldComponent } from './components/edit-field/edit-field.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { AzOrderPipe } from './pipes/az-order.pipe';
     MyRentedBooksPipe,
     SearchFilterPipe,
     AzOrderPipe,
+    EditFieldComponent,
   ],
   imports: [
     CommonModule

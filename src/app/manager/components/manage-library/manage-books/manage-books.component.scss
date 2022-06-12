@@ -91,17 +91,59 @@
             }
         }
     }
-    .cancel {
-        width: 6em;
+    .buttons {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-shrink: 0;
+        gap: 1.5em;
+        .button {
+            width: 4em;
+            height: 4em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+    
+            @include BlackBlurredBackground();
+            color: white;
+            transition: width 0.4s cubic-bezier(0.4, 0, 1, 1);
+            i {
+                font-size: 2em;
+                &::before {
+                    font-weight: bold !important;
+                }
+            }
+            &-logout {
+                position: relative;
+                i {
+                    position: absolute;
+                    transform: translate(-50%,-50%);
+                    top: 50%;
+                    left: 50%;
+                    transition: left .4s cubic-bezier(0.4, 0, 1, 1);
+                }
+                &-text {
+                    position: absolute;
+                    opacity: 0;
+                    width: 0;
+                    transform: translate(-50%, -50%);
+                    top: 50%;
+                    left: 50%;
+                }
+            }
 
-        @include BlackBlurredBackground();
-        border-radius: 0.6em;
-        color: white;
-        font-size: 1.3em;
-        padding: 0.7em 0.9em;
+            &-logout-active {
+                width: 10em;
+                gap: 1em;
+                i {
+                    left: 25%;
+                }
+                .button-logout-text {
+                    left: 60%;
+                    opacity: 1;
+                    width: 4em;
+                    text-align: center;
+                    transition: all .4s .2s cubic-bezier(0.4, 0, 1, 1);
+                }
+            }
+        }
     }
 }

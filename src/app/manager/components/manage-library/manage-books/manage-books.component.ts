@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
-import { take } from 'rxjs/operators';
-import { Book } from 'src/app/shared/services/library.service';
+import { Observable } from 'rxjs';
+import { take, tap } from 'rxjs/operators';
+import { Book, LibraryService } from 'src/app/shared/services/library.service';
+import { AddBookComponent } from '../add-book/add-book.component';
 import { ManageBookDetailsComponent } from '../manage-book-details/manage-book-details.component';
 
 
@@ -14,74 +16,16 @@ export class ManageBooksComponent implements OnInit {
   timeout: NodeJS.Timeout | undefined;
   searchFilter: any = '';
   query = '';
-  books: Book[] = [
-    {
-      id: 'asd123',
-      title: 'Lorem ipsum dolor sit abc',
-      author: 'Example Author',
-      maxRentPeriod: 30,
-      available: true,
-      isbn: '9496518465146854324564',
-    },
-    {
-      id: 'asd6347823123',
-      title: 'Lorem ipsum zzz',
-      author: 'Example Author',
-      maxRentPeriod: 30,
-      available: true,
-      isbn: '9496518465146854324564',
-    },
-    {
-      id: 'asddfefw123',
-      title: 'Lorem ipsum dolor',
-      author: 'Example Szerzo',
-      maxRentPeriod: 60,
-      available: {
-        rentPeriod: 20,
-        rentedDate: 1651901856,
-        rentedBy: 'myUserID'
-      },
-      isbn: '9496518465146854324564',
-    },
-    {
-      id: 'asdr32d123',
-      title: 'Lorem ipsum sit',
-      author: 'Example Author',
-      maxRentPeriod: 30,
-      available: {
-        rentPeriod: 20,
-        rentedDate: 1651901856,
-        rentedBy: 'otherUserID'
-      },
-      isbn: '9496518465146854324564',
-    },
-    {
-      id: 'asdf32f3d123',
-      title: 'Lorem ipsum dolor sit amet',
-      author: 'Pelda Author',
-      maxRentPeriod: 60,
-      available: true,
-      isbn: '9496518465146854324564',
-    },
-    {
-      id: 'af34f4fsd123',
-      title: 'Lorem dolor sit',
-      author: 'Example Author',
-      maxRentPeriod: 30,
-      available: {
-        rentPeriod: 20,
-        rentedDate: 1651901856,
-        rentedBy: 'myUserID'
-      },
-      isbn: '9496518465146854324564',
-    },
-
-  ]
+  canAdd = false;
+  books$: Observable<Book[]>;
 
   constructor(
     public matDialogRef: MatDialogRef<ManageBooksComponent>,
     public matDialog: MatDialog,
-  ) { }
+    private libraryService: LibraryService,
+  ) {
+    this.books$ = this.libraryService.getBooks$();
+  }
 
   ngOnInit(): void {
   }
@@ -107,5 +51,22 @@ export class ManageBooksComponent implements OnInit {
 
     const dialog = this.matDialog.open(ManageBookDetailsComponent,dialogConfig);
     await dialog.afterClosed().pipe(take(1)).toPromise();
+  }
+
+  addBook() {
+    if (!this.canAdd) {
+      this.canAdd = true;
+      setTimeout(() => {
+        this.canAdd = false;
+      }, 3000);
+    } else {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      dialogConfig.panelClass = 'forgot-password';
+      dialogConfig.backdropClass = 'forgot-password-backdrop';
+      dialogConfig.maxWidth = '100vw';
+
+      this.matDialog.open(AddBookComponent, dialogConfig);
+    }
   }
 }

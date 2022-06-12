@@ -8,10 +8,20 @@
                 <div class="table-container-props">
                     <span class="table-container-props-title">Title</span>
                     <span class="table-container-props-text">{{book.title}}</span>
+                    <i 
+                    *ngIf="!data.rented" 
+                    class="bi bi-pencil-fill table-container-props-edit"
+                    (click)="edit('Edit title','text','title')"
+                    ></i>
                 </div>
                 <div class="table-container-props">
                     <span class="table-container-props-title">Author</span>
                     <span class="table-container-props-text">{{book.author}}</span>
+                    <i 
+                    *ngIf="!data.rented" 
+                    class="bi bi-pencil-fill table-container-props-edit"
+                    (click)="edit('Edit author','text','author')"
+                    ></i>
                 </div>
                 <ng-container *ngIf="data.rented else notRented">
                     <ng-container *ngIf="book.available !== true">
@@ -20,26 +30,43 @@
                             <span class="table-container-props-text">{{book.available.rentedDate | formatDate}}</span>
                         </div>
                         <div class="table-container-props">
-                            <span class="table-container-props-title">Return date</span>
+                            <span class="table-container-props-title">Expected Return date</span>
                             <span class="table-container-props-text">
-                                {{calculateAvailableDate(book.available.rentedDate,book.available.rentPeriod) | formatDate}}
+                                {{calculateAvailableDate(book.available.rentedDate,book.available.rentPeriod)}}
                             </span>
                         </div>
                         <div class="table-container-props">
                             <span class="table-container-props-title">Rent period</span>
                             <span class="table-container-props-text">{{book.available.rentPeriod}} days</span>
                         </div>
+                        <div class="table-container-props" *ngIf="book.available.rentedBy as user">
+                            <span class="table-container-props-title">Rented by</span>
+                            <span class="table-container-props-text">{{user.name}}</span>
+                        </div>
                     </ng-container>
                 </ng-container>
                 <div class="table-container-props">
                     <span class="table-container-props-title">ISBN</span>
                     <span class="table-container-props-text">{{book.isbn}}</span>
+                    <i 
+                    *ngIf="!data.rented" 
+                    class="bi bi-pencil-fill table-container-props-edit"
+                    (click)="edit('Edit ISBN','text','isbn')"
+                    ></i>
                 </div>
             </div>
         </div>
         <div class="buttons">
-            <span class="button button-cancel" (click)="matDialogRef.close()">Cancel</span>
-            <span class="button button-hold" *ngIf="data.book && data.book.available === true">Hold</span>
+            <ng-container *ngIf="data.rented">
+                <span class="button button-cancel" (click)="matDialogRef.close()">Cancel</span>
+                <span class="button button-cancel" *ngIf="data.book.available !== true" (click)="returnBook()">Return</span>
+                <span class="button button-hold" *ngIf="data.book.available === true" (click)="rentBook()">Rent</span>
+            </ng-container>
+            <ng-container *ngIf="!data.rented">
+                <span class="button button-cancel" (click)="deleteBook()">Delete</span>
+                <span class="button button-hold" (click)="save()">Save</span>
+                <span class="button button-cancel" (click)="matDialogRef.close()">Cancel</span>
+            </ng-container>
         </div>
     </ng-container>
 </div>
@@ -49,6 +76,11 @@
         <div class="table-container-props">
             <span class="table-container-props-title">Maximum rent period</span>
             <span class="table-container-props-text">{{book.maxRentPeriod}}</span>
+            <i 
+            *ngIf="!data.rented" 
+            class="bi bi-pencil-fill table-container-props-edit"
+            (click)="edit('Edit rent Period','number','maxRentPeriod')"
+            ></i>
         </div>
         <div class="table-container-props" *ngIf="data && data.book">
             <span class="table-container-props-title">Available</span>
@@ -58,7 +90,7 @@
             <div class="table-container-props">
                 <span class="table-container-props-title">Expected availability</span>
                 <span class="table-container-props-text">
-                    {{calculateAvailableDate(book.available.rentedDate,book.available.rentPeriod) | formatDate}}
+                    {{calculateAvailableDate(book.available.rentedDate,book.available.rentPeriod)}}
                 </span>
             </div>
         </ng-container>

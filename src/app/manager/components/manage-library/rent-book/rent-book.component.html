@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="title">Add book</div>
+    <form class="inputs" [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+        <div class="input">
+            <i class="bi bi-search"></i>
+            <div class="input-container" [ngClass]="{'input-container-active': true}">
+                <span class="input-container-placeholder">search by author or title</span>
+                <input type="text" (input)="onSearchChange($event)">
+            </div>
+        </div>
+
+        <div class="input">
+            <i class="bi bi-at"></i>
+            <div class="input-container" [ngClass]="{'input-container-active': true}">
+                <span class="input-container-placeholder">Rent by</span>
+                <select formControlName="rentedBy" def>
+                    <option [ngValue]="" selected>Choose a renter</option>
+                    <option *ngFor="let hm of (users$ | async) | searchFilter: query" [ngValue]="hm">
+                    {{ hm.lastName }} {{ hm.firstName }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <span *ngIf="rentedBy && rentedBy.invalid && rentedBy.touched" class="error-message">You need to select a user!</span>
+        
+        <div class="input">
+            <i class="bi bi-123"></i>
+            <div class="input-container" [ngClass]="{'input-container-active': rentPeriod?.touched}">
+                <span class="input-container-placeholder">rent period</span>
+                <input type="number" formControlName="rentPeriod" required>
+            </div>
+        </div>
+        <span *ngIf="rentPeriod && rentPeriod.invalid && rentPeriod.touched" class="error-message">The max period is {{maxRentPeriod}}!</span>        
+
+        <div class="autoexpand"></div>
+        <button class="reset" type="submit">Add book</button>
+    </form>
+    <div class="buttons">
+        <span class="cancel" (click)="matDialogRef.close()">Cancel</span>
+    </div>
+</div>

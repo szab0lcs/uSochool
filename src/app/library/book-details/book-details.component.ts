@@ -1,5 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Timestamp } from 'firebase/firestore';
+import * as moment from 'moment';
 import { Book } from 'src/app/shared/services/library.service';
 
 @Component({
@@ -16,8 +18,15 @@ export class BookDetailsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  calculateAvailableDate(timestamp: number, rentedDays: number): number {
-    const day = 86400
-    return timestamp + (rentedDays * day)
+  calculateAvailableDate(timestamp: Timestamp, rentedDays: number) {
+    const date = timestamp.toDate();
+    const available = this.addDays(date,rentedDays);
+    return moment(available).format('YYYY MMMM D');
+  }
+
+  addDays(date: Date, days: number) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
   }
 }

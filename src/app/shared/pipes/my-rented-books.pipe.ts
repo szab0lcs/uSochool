@@ -9,7 +9,7 @@ export class MyRentedBooksPipe implements PipeTransform {
     }
 
     isMyRent(book: Book, userId: string) {
-        if (book.available !== true) return book.available.rentedBy === userId;
+        if (book.available !== true) return book.available.rentedBy.userId === userId;
         return;
     }
   }
