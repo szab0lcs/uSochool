@@ -12,9 +12,9 @@
         <input type="text" placeholder="search by name or data" (input)="onSearchChange($event)">
     </div>
     <div class="table">
-        <div class="table-container">
-            <ng-container *ngFor="let user of (users$ | async) | searchFilter: query">
-                <div class="data data-title">{{user.firstName}} {{user.parentInitial ? user.parentInitial + '.' : ''}} {{user.lastName}}</div>
+        <div class="table-container" *ngIf="(users$ | async) as users">
+            <ng-container *ngFor="let user of users | searchFilter: query | azOrder: 'lastName'">
+                <div class="data data-title">{{user.lastName}} {{user.parentInitial ? user.parentInitial + '.' : ''}} {{user.firstName}}</div>
                 <div class="data data-view" (click)="navS.navigateWithId(navS.eRoutes.EditUser,user.userId)">View</div>
             </ng-container>
         </div>
