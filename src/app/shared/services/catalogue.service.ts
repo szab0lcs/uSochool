@@ -28,9 +28,10 @@ import { IPerson, PublicData, UserRole } from '../interfaces/user';
 export class CatalogueService {
   constructor(private afs: AngularFirestore) { }
 
-  async addNewClass(newClassDoc: IClass, newPeriodId = 1) {
+  async addNewClass(newClassDoc: IClass, grade: number) {
     const promises: Promise<any>[] = [];
     let currentPromise: Promise<any>;
+    const newPeriodId = 1
     const newPeriod: IPeriod = {
       active: true,
       lastPeriodOfYear: false,
@@ -47,16 +48,6 @@ export class CatalogueService {
       .doc<IClass>(`classes/${newClassDoc.classId}`)
       .set(newClassDoc);
     promises.push(currentPromise);
-    for (let student of newClassDoc.students) {
-      promises.push(
-        ...this.addPeriodalClosures(
-          student,
-          newClassDoc.classId,
-          newPeriod,
-          newClassDoc.subjects
-        )
-      );
-    }
     currentPromise = this.afs
       .collection<ISubjectsWithTeachers>(
         `users/${newClassDoc.headMaster.userId}/classes`
@@ -85,57 +76,158 @@ export class CatalogueService {
         headMaster: newClassDoc.classId,
       });
     promises.push(currentPromise);
+    if (grade !== 9) {
+      const timesToPromote = (3 - (12 - grade)) * 2;
+      for (let index = 0; index < timesToPromote; index++) {
+        console.log('promoteClass');
+        
+        await this.promoteClass(newClassDoc.classId,newClassDoc);
+      }
+    }
     await Promise.all(promises);
   }
 
-  addPeriodalClosures(
+  async calculateClosureGrade(
+    student: IPerson,
+    classId: string,
+    subject: ISubjectsWithTeachers
+  ) {
+      const grades = await this.getGradesForCurrentPeriod(classId,student.userId,subject.subject.subjectId).pipe(take(1)).toPromise();
+      let generalGrades: number[] = [];
+      let semesterGrade = 0;
+      grades.forEach( grade => {
+        if (grade.type === 'general') generalGrades.push(grade.grade);
+        if (grade.type === 'periodal') semesterGrade = grade.grade;
+      })
+      return this.finalGrade(generalGrades,semesterGrade);
+  }
+
+  finalGrade(grades: number[], semesterGrade?: number) {
+    let gradesSum = 0;
+    grades.forEach( grade => gradesSum += grade);
+    const gradesAvg = gradesSum/grades.length;
+    let finalGrade = 0;
+    if (semesterGrade) {
+      finalGrade = ((gradesAvg * 3) + semesterGrade) / 4;
+    } else finalGrade = gradesAvg;
+    return Math.round(finalGrade);
+  }
+
+  calculateMedianGrade(subjectsWithClosures: ISubjectClosure[]) {
+    const grades = subjectsWithClosures.map(subwc => subwc.grade);
+    let gradesSum = 0;
+    grades.forEach( grade => gradesSum += grade);
+    const gradesAvg = gradesSum/grades.length;
+    return gradesAvg.toFixed(2);
+  }
+
+  async getStudentClosureFromSubject(classId: string, period: number, student: IPerson, subject: ISubject) {
+    const periodRef = this.afs.doc<IPeriod>(`classes/${classId}/periods/${period}`)
+    .collection<ISubjectClosure>(
+      `periodalSubjectClosures`, 
+      ref => ref.where('userId', '==', student.userId)
+    );
+    const closures = await periodRef.valueChanges().pipe(take(1)).toPromise();
+    for (const closure of closures) {
+      if (closure.subject.subjectId === subject.subjectId) return closure.grade;
+    }
+    return 0;
+  }
+
+  getStudentMedian(classId: string, period: IPeriod, student: IPerson) {
+    const periodRef = this.afs.doc<IPeriod>(`classes/${classId}/periods/${period.id}`)
+    .collection<IClosure>(
+      `periodalClosures`, 
+      ref => ref.where('userId', '==', student.userId)
+    );
+    return periodRef.doc().valueChanges().pipe(take(1)).toPromise();
+  }
+
+  async addPeriodalClosures(
     student: IPerson,
     classId: string,
     currentPeriod: IPeriod,
     subjects: ISubjectsWithTeachers[]
   ) {
-    const promises: Promise<any>[] = [];
-    let currentPromise: Promise<any>;
+    const currentPeriodRef = this.afs.doc<IPeriod>(`classes/${classId}/periods/${currentPeriod.id}`)
+    let subjectsWithClosures: ISubjectClosure[] = [];
+    for (const subject of subjects) {
+      const grade = await this.calculateClosureGrade(student,classId,subject);
+      subjectsWithClosures.push({...student,subject: subject.subject, grade})
+    }
+    for (const subjectsWithClosure of subjectsWithClosures) {
+      await currentPeriodRef.collection<ISubjectClosure>(`periodalSubjectClosures`).add(subjectsWithClosure);
+    }
     const periodalClosuresDoc: IClosure = {
       ...student,
-      medianGrade: 0,
+      medianGrade: +this.calculateMedianGrade(subjectsWithClosures),
     };
-    currentPromise = this.afs
-      .collection<IClosure>(
-        `classes/${classId}/periods/${currentPeriod.id}/periodalClosures`
-      )
-      .add(periodalClosuresDoc);
-    promises.push(currentPromise);
-    for (let subject of subjects) {
-      const subjectClosureDoc: ISubjectClosure = {
-        subject: subject.subject,
-        grade: 0,
-        ...student,
-      };
-      currentPromise = this.afs
-        .collection<ISubjectClosure>(
-          `classes/${classId}/periods/${currentPeriod.id}/periodalSubjectClosures`
-        )
-        .add(subjectClosureDoc);
-      promises.push(currentPromise);
-      if (currentPeriod.lastPeriodOfYear) {
-        currentPromise = this.afs
-          .collection<ISubjectClosure>(
-            `classes/${classId}/periods/${currentPeriod.id}/yearlySubjectClosures`
-          )
-          .add(subjectClosureDoc);
-        promises.push(currentPromise);
-      }
-    }
+    await currentPeriodRef.collection<IClosure>(`periodalClosures`).add(periodalClosuresDoc)
+
     if (currentPeriod.lastPeriodOfYear) {
-      currentPromise = this.afs
-        .collection<IClosure>(
-          `classes/${classId}/periods/${currentPeriod.id}/yearlyClosures`
-        )
-        .add(periodalClosuresDoc);
-      promises.push(currentPromise);
+      let finalSubjectsWithClosures: ISubjectClosure[] = [];
+      for (const subjectsWithClosure of subjectsWithClosures) {
+        const firstPeriodId = +currentPeriod.id - 1;
+        const firstPeriodClosure = await this.getStudentClosureFromSubject(classId, firstPeriodId, student, subjectsWithClosure.subject);
+        console.log({subjectsWithClosure,firstPeriodClosure});
+        finalSubjectsWithClosures.push({
+          ...subjectsWithClosure,
+          grade: (firstPeriodClosure + subjectsWithClosure.grade) / 2
+        })
+      }
+
+      for (const finalSubjectsWithClosure of finalSubjectsWithClosures) {
+        await currentPeriodRef.collection<ISubjectClosure>(`yearlySubjectClosures`).add(finalSubjectsWithClosure);
+      }
+      const yearlyClosuresDoc: IClosure = {
+        ...student,
+        medianGrade: +this.calculateMedianGrade(finalSubjectsWithClosures),
+      };
+      await currentPeriodRef.collection<IClosure>(`yearlyClosures`).add(yearlyClosuresDoc)
     }
-    return promises;
+
+    //OLD CODE
+    // const periodalClosuresDoc: IClosure = {
+    //   ...student,
+    //   medianGrade: 0,
+    // };
+    // currentPromise = this.afs
+    //   .collection<IClosure>(
+    //     `classes/${classId}/periods/${currentPeriod.id}/periodalClosures`
+    //   )
+    //   .add(periodalClosuresDoc);
+    // promises.push(currentPromise);
+    
+    // for (let subject of subjects) {
+    //   const subjectClosureDoc: ISubjectClosure = {
+    //     subject: subject.subject,
+    //     grade: 0,
+    //     ...student,
+    //   };
+    //   currentPromise = this.afs
+    //     .collection<ISubjectClosure>(
+    //       `classes/${classId}/periods/${currentPeriod.id}/periodalSubjectClosures`
+    //     )
+    //     .add(subjectClosureDoc);
+    //   promises.push(currentPromise);
+    //   if (currentPeriod.lastPeriodOfYear) {
+    //     currentPromise = this.afs
+    //       .collection<ISubjectClosure>(
+    //         `classes/${classId}/periods/${currentPeriod.id}/yearlySubjectClosures`
+    //       )
+    //       .add(subjectClosureDoc);
+    //     promises.push(currentPromise);
+    //   }
+    // }
+    // if (currentPeriod.lastPeriodOfYear) {
+    //   currentPromise = this.afs
+    //     .collection<IClosure>(
+    //       `classes/${classId}/periods/${currentPeriod.id}/yearlyClosures`
+    //     )
+    //     .add(periodalClosuresDoc);
+    //   promises.push(currentPromise);
+    // }
+    // return promises;
   }
 
   removePeriodalClosures(
@@ -208,13 +300,6 @@ export class CatalogueService {
 
     currentPromise = updateDoc(userDocRef, { classId });
     promises.push(currentPromise);
-
-    const thisClass = await this.getClassDoc(classId);
-    const subjects = thisClass && thisClass.subjects ? thisClass.subjects : [];
-    const currentPeriod = await this.getActivePeriod(classId);
-    promises.push(
-      ...this.addPeriodalClosures(student, classId, currentPeriod, subjects)
-    );
     await Promise.all(promises);
   }
 
@@ -375,11 +460,28 @@ export class CatalogueService {
     querySnapshot.forEach(async doc => await doc.ref.delete());
   }
 
+  async isPromoted(classId: string) {
+    const classDoc = await this.getClassDoc(classId);
+    return classDoc.promoted;
+  }
+
   async promoteClass(classId: string, newClassDoc: IClass) {
+    const isPromoted = await this.isPromoted(classId);
+    if (isPromoted) return;
     const promises: Promise<any>[] = [];
     let currentPromise: Promise<any>;
     const currentPeriod = await this.getActivePeriod(classId);
     const currentClassDoc = await this.getClassDoc(classId);
+
+    for (let student of newClassDoc.students) {
+      await this.addPeriodalClosures(student, classId, currentPeriod, newClassDoc.subjects);
+    }
+
+    if (currentPeriod.id === '8') {
+      await this.afs.doc<IClass>(`classes/${classId}`).update({promoted: true});
+      return;
+    }
+
     const newPeriodId = parseInt(currentPeriod.id) + 1;
     let newPeriodName = '';
     if (currentPeriod.lastPeriodOfYear) {
@@ -391,8 +493,6 @@ export class CatalogueService {
     } else {
       newPeriodName = currentPeriod.name.replace(/\d$/, '2')
     }
-    // console.log({newPeriodName});
-    // return;
     const newPeriod: IPeriod = {
       active: true,
       lastPeriodOfYear: newPeriodId % PERIOD_COUNT_IN_YEAR === 0,
@@ -410,9 +510,6 @@ export class CatalogueService {
     promises.push(currentPromise);
     currentPromise = this.afs.doc<IClass>(`classes/${classId}`).set(newClassDoc);
     promises.push(currentPromise);
-    for (let student of newClassDoc.students) {
-      promises.push(...this.addPeriodalClosures(student, classId, newPeriod, newClassDoc.subjects));
-    }
     await Promise.all(promises);
   }
 
@@ -493,7 +590,7 @@ export class CatalogueService {
     );
   }
 
-  getStudentSubjectDetailsForCurrentPeriod(classId: string, subjectId: string, studentId: string): Observable<{ grades: IGrade[], absences: IAbsence[] }> {
+  getStudentSubjectDetailsForCurrentPeriod$(classId: string, subjectId: string, studentId: string): Observable<{ grades: IGrade[], absences: IAbsence[] }> {
     return combineLatest([
       this.getGradesForCurrentPeriod(classId, studentId, subjectId), 
       this.getAbsencesForCurrentPeriod(classId, studentId, subjectId)])

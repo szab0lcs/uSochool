@@ -3,9 +3,11 @@ import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dial
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, map, take, tap } from 'rxjs/operators';
-import { IClass } from 'src/app/shared/interfaces/catalogue';
+import { DialogData } from 'src/app/shared/components/prompt/prompt.component';
+import { IClass, IPeriod } from 'src/app/shared/interfaces/catalogue';
 import { CatalogueService } from 'src/app/shared/services/catalogue.service';
 import { NavigationService } from 'src/app/shared/services/navigation.service';
+import { PromptService } from 'src/app/shared/services/prompt.service';
 import { UserService } from 'src/app/shared/services/user.service';
 import { AddStudentsComponent } from './add-students/add-students.component';
 import { AddSubjectComponent } from './add-subject/add-subject.component';
@@ -29,19 +31,22 @@ export class EditClassComponent implements OnInit, OnDestroy {
   expanded: 'students-list' | 'subjects-list' = 'students-list';
   canPromote = false;
   userId$: Observable<string | undefined>;
+  activePeriod$: Promise<IPeriod> | undefined;
   constructor(
     private catalogueService: CatalogueService,
     private route: ActivatedRoute,
     public navS: NavigationService,
     private matDialog: MatDialog,
-    private userService: UserService
+    private userService: UserService,
+    private promptService: PromptService,
   ) {
     this.userId$ = this.userService.userId$;
-   }
-
+  }
+  
   ngOnInit(): void {
     this.classId = this.route.snapshot.paramMap.get('id');
     if (this.classId) {
+      this.activePeriod$ = this.catalogueService.getActivePeriod(this.classId);
       this.classDocSub = this.catalogueService.getClassDoc$(this.classId).subscribe(classDoc => {
         if(classDoc) this.classDoc$.next(classDoc);
       });
@@ -49,6 +54,8 @@ export class EditClassComponent implements OnInit, OnDestroy {
   }
 
   async promoteClass() {
+    const activePeriod = await this.activePeriod$;
+    if (!activePeriod) return;
     if (!this.canPromote) {
       this.canPromote = true;
       setTimeout(() => {
@@ -56,7 +63,24 @@ export class EditClassComponent implements OnInit, OnDestroy {
       }, 3000);
     } else {
       if (this.classId && this.classDoc$.value) {
-        this.catalogueService.promoteClass(this.classId,this.classDoc$.value);
+        const dialogConfig = new MatDialogConfig<DialogData>();
+        dialogConfig.autoFocus = true;
+        dialogConfig.panelClass = 'forgot-password';
+        dialogConfig.backdropClass = 'forgot-password-backdrop';
+        dialogConfig.maxWidth = '100vw';
+        dialogConfig.data = {
+          title: 'Promote class',
+          text: `Current period name is ${activePeriod.name}. Do you want to promote class?. This will be archive all current class data.`,
+          okButton: 'Yes',
+          cancelButton: 'No',
+          extraData: {
+            hideCancel: true,
+          }
+        };
+        const confirmation = await this.promptService.promptForConfirmation<boolean>(dialogConfig);
+        if (confirmation) {
+          this.catalogueService.promoteClass(this.classId,this.classDoc$.value);
+        }
       }
     }
   }

@@ -6,6 +6,7 @@ import { take } from 'rxjs/operators';
 import { fadeInAnimation } from '../_animations';
 import { Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
+import { testUsers } from 'src/_testUsers/testUsers';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +27,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+    // this.registerUsers();
   }
 
   initForm() {
@@ -48,6 +50,73 @@ export class LoginComponent implements OnInit {
 
     const dialog = this.matDialog.open(ForgotPasswordComponent,dialogConfig);
     await dialog.afterClosed().pipe(take(1)).toPromise();    
+  }
+
+  async registerUsers() {
+    const promises: Promise<any>[] = [];
+    let currentPromise: Promise<any>;
+    
+    // testUsers.teachers.forEach(teacher => {
+    //   const email = teacher.email.toLowerCase().replace(/\s/g,'');
+    //   currentPromise = this.authService.registerUser(email, {
+    //     firstName: teacher.first_name,
+    //     lastName: teacher.last_name,
+    //     email,
+    //     userId: '',
+    //     active: true,
+    //     teacher: true
+    //   }, [
+    //     { roleId: 'teacher', roleName: 'Teacher' }
+    //   ], {
+    //     idNumber: teacher.idNumber,
+    //     birthday: teacher.birthday,
+    //     address: teacher.address,
+    //     phone: teacher.phone
+    //   })
+    //   promises.push(currentPromise);
+    // })
+    
+    
+    // testUsers.staff.forEach( staff => {
+    //   const email = staff.publicData.email.toLowerCase().replace(/\s/g,'');
+    //   currentPromise = this.authService.registerUser(email, {
+    //     firstName: staff.publicData.firstName,
+    //     lastName: staff.publicData.lastName,
+    //     email,
+    //     userId: '',
+    //     active: true,
+    //     teacher: false
+    //   }, [
+    //     staff.role
+    //   ])
+    //   promises.push(currentPromise);
+    // })
+    
+
+    // testUsers.students.forEach( student => {
+    //   const email = student.email.toLowerCase().replace(/\s/g,'');
+    //   currentPromise = this.authService.registerUser(email, {
+    //     firstName: student.first_name,
+    //     lastName: student.last_name,
+    //     email,
+    //     userId: '',
+    //     active: true,
+    //     teacher: false,
+    //     promotionYear: +student.promotionYear,
+    //     parentInitial: student.parentInitial,
+    //     classId: ''
+    //   }, [
+    //     { roleId: 'student', roleName: 'Student' }
+    //   ], {
+    //     idNumber: student.idNumber,
+    //     birthday: student.birthday,
+    //     address: student.address,
+    //     phone: student.phone
+    //   })
+    //   promises.push(currentPromise);
+    // })
+    await Promise.all(promises);
+
   }
 
 }

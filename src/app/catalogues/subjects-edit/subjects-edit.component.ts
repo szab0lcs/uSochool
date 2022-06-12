@@ -36,7 +36,7 @@ export class SubjectsEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.gradesAbsences$ = this.catService.getStudentSubjectDetailsForCurrentPeriod(
+    this.gradesAbsences$ = this.catService.getStudentSubjectDetailsForCurrentPeriod$(
       this.data.classId,
       this.data.subject.subjectId,
       this.data.student.userId

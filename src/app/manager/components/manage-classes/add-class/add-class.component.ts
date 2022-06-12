@@ -117,8 +117,9 @@ export class AddClassComponent implements OnInit, OnDestroy {
         },
         profile: this.profile.value,
         promotionYear: this.promotionYear.value,
+        promoted: false
       };
-      await this.catalogueService.addNewClass(newClass);
+      await this.catalogueService.addNewClass(newClass, this.grade.value);
       this.toastr.success('New class successfully created', `Succesful!`, {
         positionClass: 'toast-bottom-center',
       });

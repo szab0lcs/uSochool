@@ -63,6 +63,7 @@ export interface IClass {
     headMaster: IPerson;
     profile: IClassProfile;
     promotionYear: number;
+    promoted: boolean;
 }
 
 export interface IClosure extends IPerson {

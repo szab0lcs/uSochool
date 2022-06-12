@@ -25,7 +25,7 @@
                     <div class="input-container" [ngClass]="{'input-container-active': (profile.invalid && !profile.touched) || profile.value}">
                         <span class="input-container-placeholder">profile</span>
                         <select formControlName="profile" def>
-                            <option [ngValue]="" disabled selected>Choose a profile</option>
+                            <option [ngValue]="" selected>Choose a profile</option>
                             <option *ngFor="let prof of profiles" [ngValue]="prof">
                             {{ prof.id }} - {{ prof.name }}
                             </option>
@@ -41,7 +41,7 @@
                     <div class="input-container" [ngClass]="{'input-container-active': (headMaster.invalid && !headMaster.touched) || headMaster.value}">
                         <span class="input-container-placeholder">head master</span>
                         <select formControlName="headMaster" def>
-                            <option [ngValue]="" disabled selected>Choose a headmaster</option>
+                            <option [ngValue]="" selected>Choose a headmaster</option>
                             <option *ngFor="let hm of (nonHeadMasters$ | async)" [ngValue]="hm">
                             {{ hm.lastName }} {{ hm.firstName }}
                             </option>

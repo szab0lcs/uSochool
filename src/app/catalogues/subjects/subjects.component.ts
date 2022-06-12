@@ -25,7 +25,7 @@ export class SubjectsComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: {subject: ISubjectsWithTeachers, userId: string},
     private catalogueService: CatalogueService,
   ) { 
-    this.gradesAbsences$ = this.catalogueService.getStudentSubjectDetailsForCurrentPeriod(
+    this.gradesAbsences$ = this.catalogueService.getStudentSubjectDetailsForCurrentPeriod$(
       this.data.subject.classId,
       this.data.subject.subject.subjectId,
       this.data.userId
