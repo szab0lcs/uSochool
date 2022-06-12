@@ -12,7 +12,7 @@ export class EditFieldService {
     private matDialog: MatDialog,
   ) { }
 
-  edit(data: EditField) {
+  edit<T>(data: EditField): Promise<T | undefined> {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.panelClass = 'forgot-password';
@@ -20,7 +20,7 @@ export class EditFieldService {
     dialogConfig.maxWidth = '100vw';
     dialogConfig.data = data;
 
-    const dialog = this.matDialog.open(EditFieldComponent,dialogConfig);
+    const dialog = this.matDialog.open<EditFieldComponent,EditField,T>(EditFieldComponent,dialogConfig);
     return dialog.afterClosed().pipe(take(1)).toPromise();
   }
 }

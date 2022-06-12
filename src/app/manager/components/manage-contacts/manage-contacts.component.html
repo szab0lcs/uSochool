@@ -1,1 +1,30 @@
-<p>manage-contacts works!</p>
+<div class="container" *ngIf="(contacts$ | async) as contacts">
+    <span class="title">Contacts</span>
+    <div class="content">
+        <div class="content-item">
+            <span class="content-item-title">Office phone</span>
+            <span class="content-item-data">
+                {{contacts.phone}} 
+                <i class="bi bi-pencil-fill "(click)="setContacts('Edit phone',contacts.phone,'phone',contacts)"></i>
+            </span>
+
+        </div>
+        <div class="content-item">
+            <span class="content-item-title">Email address</span>
+            <span class="content-item-data">
+                {{contacts.email}} 
+                <i class="bi bi-pencil-fill "(click)="setContacts('Edit email',contacts.email,'email',contacts)"></i>
+            </span>
+        </div>
+        <div class="content-item">
+            <span class="content-item-title">Office open hours</span>
+            <span class="content-item-data">
+                {{contacts.open}} 
+                <i class="bi bi-pencil-fill "(click)="setContacts('Edit open',contacts.open,'open',contacts)"></i>
+            </span>
+        </div>
+    </div>
+    <div class="back-button" (click)="back()">
+        <i class="bi bi-chevron-left"></i>
+    </div>
+</div>

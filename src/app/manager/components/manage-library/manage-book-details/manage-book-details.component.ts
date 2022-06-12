@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Timestamp } from 'firebase/firestore';
 import { take } from 'rxjs/operators';
@@ -9,9 +9,6 @@ import { Book, BookRental, LibraryService } from 'src/app/shared/services/librar
 import { PromptService } from 'src/app/shared/services/prompt.service';
 import { RentBookComponent } from '../rent-book/rent-book.component';
 import * as moment from 'moment';
-import { UserService } from 'src/app/shared/services/user.service';
-import { Observable } from 'rxjs';
-import { AllUserData } from 'src/app/shared/interfaces/user';
 
 @Component({
   selector: 'app-manage-book-details',
@@ -29,16 +26,18 @@ export class ManageBookDetailsComponent {
   ) { }
 
   async edit(title: string, type: InputAttribute, field: 'title' | 'author' | 'isbn' | 'maxRentPeriod') {
-    const value = await this.editFieldService.edit({title, type, value: this.data.book[field]});
+    const inputValue = this.data.book[field];
+    const value = await this.editFieldService.edit<typeof inputValue>({title, type, value: inputValue});
     if (field !== 'maxRentPeriod') {
       this.data.book[field] = value + '';
     } else {
-      this.data.book[field] = +value;
+      if (value) this.data.book[field] = +value;
     }
   }
   
-  save() {
-    this.libraryService.editBook(this.data.book);
+  async save() {
+    await this.libraryService.editBook(this.data.book);
+    this.matDialogRef.close();
   }
 
   async deleteBook() {

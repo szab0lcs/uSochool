@@ -54,6 +54,10 @@ export class LibraryService {
   getBooks$(): Observable<Book[]>{
     return this.library.valueChanges({idField: 'id'});
   }
+
+  getUserBooks$(userId: string): Observable<Book[]> {
+    return this.afs.collection<Book>(`users/${userId}/books`).valueChanges();
+  }
 }
 
 export interface Book {

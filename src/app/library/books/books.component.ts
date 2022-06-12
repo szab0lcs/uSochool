@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
-import { take } from 'rxjs/operators';
-import { Book } from 'src/app/shared/services/library.service';
+import { Observable, OperatorFunction, pipe, UnaryFunction } from 'rxjs';
+import { filter, map, switchMap, take } from 'rxjs/operators';
+import { Book, LibraryService } from 'src/app/shared/services/library.service';
+import { UserService } from 'src/app/shared/services/user.service';
 import { BookDetailsComponent } from '../book-details/book-details.component';
 
 @Component({
@@ -13,78 +15,19 @@ export class BooksComponent implements OnInit {
   timeout: NodeJS.Timeout | undefined;
   searchFilter: any = '';
   query = '';
-  books: Book[] = [];
-  // books: Book[] = [
-  //   {
-  //     id: 'asd123',
-  //     title: 'Lorem ipsum dolor sit abc',
-  //     author: 'Example Author',
-  //     maxRentPeriod: 30,
-  //     available: true,
-  //     isbn: '9496518465146854324564',
-  //   },
-  //   {
-  //     id: 'asd6347823123',
-  //     title: 'Lorem ipsum zzz',
-  //     author: 'Example Author',
-  //     maxRentPeriod: 30,
-  //     available: true,
-  //     isbn: '9496518465146854324564',
-  //   },
-  //   {
-  //     id: 'asddfefw123',
-  //     title: 'Lorem ipsum dolor',
-  //     author: 'Example Szerzo',
-  //     maxRentPeriod: 60,
-  //     available: {
-  //       rentPeriod: 20,
-  //       rentedDate: 1651901856,
-  //       rentedBy: 'myUserID'
-  //     },
-  //     isbn: '9496518465146854324564',
-  //   },
-  //   {
-  //     id: 'asdr32d123',
-  //     title: 'Lorem ipsum sit',
-  //     author: 'Example Author',
-  //     maxRentPeriod: 30,
-  //     available: {
-  //       rentPeriod: 20,
-  //       rentedDate: 1651901856,
-  //       rentedBy: 'otherUserID'
-  //     },
-  //     isbn: '9496518465146854324564',
-  //   },
-  //   {
-  //     id: 'asdf32f3d123',
-  //     title: 'Lorem ipsum dolor sit amet',
-  //     author: 'Pelda Author',
-  //     maxRentPeriod: 60,
-  //     available: true,
-  //     isbn: '9496518465146854324564',
-  //   },
-  //   {
-  //     id: 'af34f4fsd123',
-  //     title: 'Lorem dolor sit',
-  //     author: 'Example Author',
-  //     maxRentPeriod: 30,
-  //     available: {
-  //       rentPeriod: 20,
-  //       rentedDate: 1651901856,
-  //       rentedBy: 'myUserID'
-  //     },
-  //     isbn: '9496518465146854324564',
-  //   },
-
-  // ]
+  books$: Observable<Book[]> | undefined;
 
   constructor(
     public matDialogRef: MatDialogRef<BooksComponent>,
     public matDialog: MatDialog,
-  ) { }
+    private libraryService: LibraryService,
+    ) {
+      this.books$ = this.libraryService.getBooks$();
+   }
 
   ngOnInit(): void {
   }
+
 
   onSearchChange(el: any): void {  
     if(this.timeout) clearTimeout(this.timeout);
