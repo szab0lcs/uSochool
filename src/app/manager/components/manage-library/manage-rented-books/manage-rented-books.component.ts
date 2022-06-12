@@ -1,37 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
-import { Observable, OperatorFunction, pipe, UnaryFunction } from 'rxjs';
-import { filter, map, switchMap, take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { Book, LibraryService } from 'src/app/shared/services/library.service';
-import { UserService } from 'src/app/shared/services/user.service';
-import { BookDetailsComponent } from '../book-details/book-details.component';
+import { ManageBookDetailsComponent } from '../manage-book-details/manage-book-details.component';
 
 @Component({
-  selector: 'app-books',
-  templateUrl: './books.component.html',
-  styleUrls: ['./books.component.scss']
+  selector: 'app-manage-rented-books',
+  templateUrl: './manage-rented-books.component.html',
+  styleUrls: ['./manage-rented-books.component.scss']
 })
-export class BooksComponent implements OnInit {
-  timeout: NodeJS.Timeout | undefined;
+export class ManageRentedBooksComponent implements OnInit {
+  private timeout?: number;
   searchFilter: any = '';
   query = '';
-  books$: Observable<Book[]> | undefined;
+  userId = 'myUserID';
+  books$: Observable<Book[]>;
 
   constructor(
-    public matDialogRef: MatDialogRef<BooksComponent>,
+    public matDialogRef: MatDialogRef<ManageRentedBooksComponent>,
     public matDialog: MatDialog,
     private libraryService: LibraryService,
-    ) {
-      this.books$ = this.libraryService.getBooks$();
-   }
+  ) {
+    this.books$ = this.libraryService.getBooks$();
+  }
 
   ngOnInit(): void {
   }
 
-
   onSearchChange(el: any): void {  
-    if(this.timeout) clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => this.search(el), 250);
+    window.clearTimeout(this.timeout);
+    this.timeout = window.setTimeout(() => this.search(el), 250);
   }
   
   search(el: any){
@@ -46,9 +45,9 @@ export class BooksComponent implements OnInit {
     dialogConfig.panelClass = 'forgot-password';
     dialogConfig.backdropClass = 'forgot-password-backdrop';
     dialogConfig.maxWidth = '100vw';
-    dialogConfig.data = {book, rented: false};
+    dialogConfig.data = {book, rented: true};
 
-    const dialog = this.matDialog.open(BookDetailsComponent,dialogConfig);
+    const dialog = this.matDialog.open(ManageBookDetailsComponent,dialogConfig);
     await dialog.afterClosed().pipe(take(1)).toPromise();
   }
 }

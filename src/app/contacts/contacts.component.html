@@ -1,17 +1,17 @@
-<div class="container">
+<div class="container" *ngIf="(contacts$ | async) as contacts">
     <span class="title">Contacts</span>
     <div class="content">
         <div class="content-item">
             <span class="content-item-title">Office phone</span>
-            <span class="content-item-data">0712345678</span>
+            <span class="content-item-data">{{contacts.phone}}</span>
         </div>
         <div class="content-item">
             <span class="content-item-title">Email address</span>
-            <span class="content-item-data">office@usochool.com</span>
+            <span class="content-item-data">{{contacts.email}}</span>
         </div>
         <div class="content-item">
             <span class="content-item-title">Office open hours</span>
-            <span class="content-item-data">10:00-16:00</span>
+            <span class="content-item-data">{{contacts.open}}</span>
         </div>
     </div>
     <div class="back-button" (click)="back()">

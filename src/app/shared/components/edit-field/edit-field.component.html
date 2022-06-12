@@ -1,0 +1,10 @@
+<div class="container" *ngIf="data">
+    <div class="title">{{data.title}}</div>
+    <div class="input">
+        <input [type]="data.type" [value]="data.value" #fieldValue required>
+    </div>
+    <div class="buttons">
+        <button class="reset" type="submit" (click)="edit(fieldValue.value)">Edit</button>
+        <span class="cancel" (click)="matDialogRef.close()">Cancel</span>
+    </div>
+</div>

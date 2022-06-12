@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="title">Add book</div>
+    <form class="inputs" [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+        <div class="input">
+            <i class="bi bi-type"></i>
+            <input type="text" placeholder="title" formControlName="title" required>
+        </div>
+        <span *ngIf="title && title.invalid && title.touched" class="error-message">The title is required!</span>
+        
+        <div class="input">
+            <i class="bi bi-type"></i>
+            <input type="text" placeholder="author" formControlName="author" required>
+        </div>
+        <span *ngIf="author && author.invalid && author.touched" class="error-message">The author is required!</span>
+        
+        <div class="input">
+            <i class="bi bi-123"></i>
+            <input type="number" placeholder="max rent period" formControlName="maxRentPeriod" required>
+        </div>
+        <span *ngIf="maxRentPeriod && maxRentPeriod.invalid && maxRentPeriod.touched" class="error-message">The number needs to be between 15 and 90!</span>
+        
+        <div class="input">
+            <i class="bi bi-123"></i>
+            <input type="number" placeholder="isbn" formControlName="isbn" required>
+        </div>
+        <span *ngIf="isbn && isbn.invalid && isbn.touched" class="error-message">The ISBN length is between 10 and 13!</span>
+        
+        <div class="autoexpand"></div>
+        <button class="reset" type="submit">Add book</button>
+    </form>
+    <div class="buttons">
+        <span class="cancel" (click)="matDialogRef.close()">Cancel</span>
+    </div>
+</div>

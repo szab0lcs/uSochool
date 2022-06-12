@@ -1,12 +1,12 @@
 <div class="container">
     <div class="title">Rented Books</div>
     <div class="table">
-        <div class="table-container">
+        <div class="table-container" *ngIf="books$ | async as books">
             <div class="first-row">Title</div>
             <div class="first-row">Available</div>
             <div class="first-row">Details</div>
 
-            <ng-container *ngFor="let book of books | myRentedBooks: userId">
+            <ng-container *ngFor="let book of books">
                 <div class="data data-title">{{book.title}}</div>
                 <div class="data">{{book.available === true ? "Yes": "No"}}</div>
                 <div class="data data-view" (click)="openBookDetails(book)">View</div>
