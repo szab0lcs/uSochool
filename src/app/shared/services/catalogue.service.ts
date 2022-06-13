@@ -6,7 +6,7 @@ import {
 import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
 import { getDoc, Timestamp, updateDoc } from 'firebase/firestore';
 import { combineLatest, from, Observable } from 'rxjs';
-import { distinctUntilChanged, map, switchMap, take } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, take, tap } from 'rxjs/operators';
 import {
   GradeType,
   IAbsence,
@@ -341,33 +341,30 @@ export class CatalogueService {
     currentPromise = updateDoc(classDocRef, { subjects: newSubjects })
     promises.push(currentPromise);
 
-    currentPromise = teacherDocRef.doc(subject.subjectDocId).set(subject);
+    currentPromise = teacherDocRef.add(subject);
     promises.push(currentPromise);
 
     await Promise.all(promises);
   }
 
   async removeSubjectsFromClass(subjects: ISubjectsWithTeachers[], classId: string) {
-    const promises: Promise<any>[] = [];
     for (const subject of subjects) {
-      promises.push(...this.removeSubjectFromClass(subject, classId));
+      await this.removeSubjectFromClass(subject, classId);
     }
-    await Promise.all(promises);
   }
 
-  removeSubjectFromClass(subject: ISubjectsWithTeachers, classId: string) {
-    const promises: Promise<any>[] = [];
-    let currentPromise: Promise<any>;
+  async removeSubjectFromClass(subject: ISubjectsWithTeachers, classId: string) {
     const classDocRef = this.afs.doc<IClass>(`classes/${classId}`).ref;
-    const teacherCollRef = this.afs.collection<ISubjectsWithTeachers>(`users/${subject.teacher.userId}/classes`).ref;
+    const teacherCollSnapshot = await this.afs.collection<ISubjectsWithTeachers>(
+      `users/${subject.teacher.userId}/classes`,
+      ref => ref.where('classId', '==', classId)
+      .where('subjectDocId','==',subject.subjectDocId)
+      ).get()
+      .pipe(take(1))
+      .toPromise();
 
-    currentPromise = updateDoc(classDocRef, { subjects: arrayRemove(subject) });
-    promises.push(currentPromise);
-
-    currentPromise = teacherCollRef.doc(subject.subjectDocId).delete();
-    promises.push(currentPromise);
-
-    return promises;
+    await updateDoc(classDocRef, { subjects: arrayRemove(subject) });
+    teacherCollSnapshot.forEach(async doc => await doc.ref.delete());
   }
 
   getClassDoc$(classId: string) {

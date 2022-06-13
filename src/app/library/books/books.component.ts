@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
-import { Observable, OperatorFunction, pipe, UnaryFunction } from 'rxjs';
-import { filter, map, switchMap, take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { Book, LibraryService } from 'src/app/shared/services/library.service';
-import { UserService } from 'src/app/shared/services/user.service';
 import { BookDetailsComponent } from '../book-details/book-details.component';
 
 @Component({

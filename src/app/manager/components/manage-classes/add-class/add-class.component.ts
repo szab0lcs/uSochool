@@ -1,16 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
-  FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { IClass, IClassProfile, romanNumbers } from 'src/app/shared/interfaces/catalogue';
-import { IPerson, PublicData, UserRole } from 'src/app/shared/interfaces/user';
+import { IPerson } from 'src/app/shared/interfaces/user';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { CatalogueService } from 'src/app/shared/services/catalogue.service';
 import { NavigationService } from 'src/app/shared/services/navigation.service';
@@ -33,6 +32,7 @@ export class AddClassComponent implements OnInit, OnDestroy {
   constructor(
     public navS: NavigationService,
     private userService: UserService,
+    private authService: AuthService,
     private toastr: ToastrService,
     public matDialogRef: MatDialogRef<AddClassComponent>,
     private catalogueService: CatalogueService

@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { DialogData } from 'src/app/shared/components/prompt/prompt.component';
 import { AllUserData, PrivateData, PublicData, UserRole } from 'src/app/shared/interfaces/user';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { NavigationService } from 'src/app/shared/services/navigation.service';
 import { PromptService } from 'src/app/shared/services/prompt.service';
 import { UserService } from 'src/app/shared/services/user.service';
@@ -33,7 +34,8 @@ export class EditUserComponent implements OnInit {
     public navS: NavigationService,
     private toastr: ToastrService,
     private promptService: PromptService,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private authService: AuthService,
   ) { }
 
   ngOnInit(): void {

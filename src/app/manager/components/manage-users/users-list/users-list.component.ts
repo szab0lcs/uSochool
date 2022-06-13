@@ -3,6 +3,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { AllUserData, PublicData } from 'src/app/shared/interfaces/user';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { NavigationService } from 'src/app/shared/services/navigation.service';
 import { UserService } from 'src/app/shared/services/user.service';
 import { EditUserComponent } from '../edit-user/edit-user.component';
@@ -23,6 +24,7 @@ export class UsersListComponent implements OnInit {
     public matDialog: MatDialog,
     public navS: NavigationService,
     public userService: UserService,
+    private authService: AuthService,
   ) { }
 
   ngOnInit(): void {

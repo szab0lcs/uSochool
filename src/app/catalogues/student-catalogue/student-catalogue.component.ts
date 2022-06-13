@@ -4,6 +4,7 @@ import { Observable, OperatorFunction, pipe, UnaryFunction } from 'rxjs';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { ISubject, ISubjectsWithTeachers } from 'src/app/shared/interfaces/catalogue';
 import { AllUserData } from 'src/app/shared/interfaces/user';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { CatalogueService } from 'src/app/shared/services/catalogue.service';
 import { NavigationService } from 'src/app/shared/services/navigation.service';
 import { UserService } from 'src/app/shared/services/user.service';
@@ -21,6 +22,7 @@ export class StudentCatalogueComponent implements OnInit {
     private navigationService: NavigationService,
     private matDialog: MatDialog,
     private userService: UserService,
+    private authService: AuthService,
     private cataloguService: CatalogueService,
   ) { 
     this.user$ = this.userService.currentUser$;

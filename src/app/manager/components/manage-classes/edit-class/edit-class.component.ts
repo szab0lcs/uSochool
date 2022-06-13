@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, map, take, tap } from 'rxjs/operators';
 import { DialogData } from 'src/app/shared/components/prompt/prompt.component';
 import { IClass, IPeriod } from 'src/app/shared/interfaces/catalogue';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { CatalogueService } from 'src/app/shared/services/catalogue.service';
 import { NavigationService } from 'src/app/shared/services/navigation.service';
 import { PromptService } from 'src/app/shared/services/prompt.service';
@@ -38,6 +39,7 @@ export class EditClassComponent implements OnInit, OnDestroy {
     public navS: NavigationService,
     private matDialog: MatDialog,
     private userService: UserService,
+    private authService: AuthService,
     private promptService: PromptService,
   ) {
     this.userId$ = this.userService.userId$;

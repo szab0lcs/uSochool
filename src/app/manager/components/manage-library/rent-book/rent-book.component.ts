@@ -5,6 +5,7 @@ import { Timestamp } from 'firebase/firestore';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { AllUserData, PublicData } from 'src/app/shared/interfaces/user';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { BookRental, LibraryService } from 'src/app/shared/services/library.service';
 import { UserService } from 'src/app/shared/services/user.service';
 
@@ -22,6 +23,7 @@ export class RentBookComponent implements OnInit {
     public matDialogRef: MatDialogRef<RentBookComponent,BookRental>,
     @Inject(MAT_DIALOG_DATA) public maxRentPeriod: number,
     private userService: UserService,
+    private authService: AuthService,
   ) {
     this.users$ = this.userService.getAllUser$();
   }

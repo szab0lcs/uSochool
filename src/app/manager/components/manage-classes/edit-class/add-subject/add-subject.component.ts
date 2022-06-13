@@ -5,6 +5,7 @@ import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map, take, tap } from 'rxjs/operators';
 import { IClass, ISubject, ISubjectsWithTeachers } from 'src/app/shared/interfaces/catalogue';
 import { IPerson, TeacherWithSubjects } from 'src/app/shared/interfaces/user';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { CatalogueService } from 'src/app/shared/services/catalogue.service';
 import { UserService } from 'src/app/shared/services/user.service';
 
@@ -23,6 +24,7 @@ export class AddSubjectComponent implements OnInit {
     public matDialogRef: MatDialogRef<AddSubjectComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IClass,
     private userService: UserService,
+    private authService: AuthService,
     private catalagoueService: CatalogueService,
     private toastr: ToastrService,
   ) { }

@@ -9,6 +9,7 @@ import { StudentsListComponent } from './students-list/students-list.component';
 import * as _ from 'lodash';
 import { ActivatedRoute } from '@angular/router';
 import { CatalogueService } from 'src/app/shared/services/catalogue.service';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-catalogue',
@@ -25,6 +26,7 @@ export class TeacherCatalogueComponent implements OnInit {
     public navS: NavigationService,
     private matDialog: MatDialog,
     private userService: UserService,
+    private authService: AuthService,
     private route: ActivatedRoute,
     private cataloguService: CatalogueService,
   ) { }

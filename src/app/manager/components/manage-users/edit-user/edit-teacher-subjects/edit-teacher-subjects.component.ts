@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map, take, tap } from 'rxjs/operators';
 import { ISubject } from 'src/app/shared/interfaces/catalogue';
+import { AuthService } from 'src/app/shared/services/auth.service';
 import { CatalogueService } from 'src/app/shared/services/catalogue.service';
 import { UserService } from 'src/app/shared/services/user.service';
 
@@ -19,7 +20,7 @@ export class EditTeacherSubjectsComponent implements OnInit {
     private userService: UserService,
     public matDialogRef: MatDialogRef<EditTeacherSubjectsComponent>,
     @Inject(MAT_DIALOG_DATA) public userId: string,
-
+    private authService: AuthService,
   ) { }
 
   ngOnInit(): void {

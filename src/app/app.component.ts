@@ -17,7 +17,6 @@ export class AppComponent {
   appBackgroundObs$: Observable<string[]>;
   constructor(
     private themeService: ThemeService,
-    private authService: AuthService,
   ){
     this.appBackgroundObs$ = this.themeService.getActiveColor$();
     const app = initializeApp(environment.firebase);
