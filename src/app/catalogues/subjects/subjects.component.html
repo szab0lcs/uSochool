@@ -1,5 +1,12 @@
-<div class="container">
-    <div class="dialog-title">{{data.name}}</div>
+<div class="container" *ngIf="(gradesAbsences$ | async) as gradesAbsences">
+    <ng-container *ngIf="data.subject as subject">
+        <div class="dialog-title" *ngIf="subject.subject.subjectName as name">
+            {{name}}
+            <span class="dialog-title-sub" *ngIf="subject.teacher as teacher">
+                {{teacher.lastName}} {{teacher.firstName}}
+            </span>
+        </div>
+    </ng-container>
     <div class="scroll-container">
         <div class="tables">
             <div class="tables-item tables-item-grades">
@@ -8,13 +15,15 @@
                     <div class="first-row">Grade</div>
                     <div class="first-row">Date</div>
     
-                    <ng-container *ngFor="let grade of grades">
+                    <ng-container *ngFor="let grade of gradesAbsences.grades">
                         <div class="data">{{grade.grade}}</div>
-                        <div class="data">{{grade.date}}</div>
+                        <div class="data">{{formatDate(grade.date)}}</div>
                     </ng-container>
                 </div>
-                <span class="notes">Semester test: {{8}}</span>
-                <span class="notes">Final grade: {{9}}</span>
+                <ng-container *ngIf="gradesAbsences.semesterGrade as semGrade">
+                    <span class="notes" >Semester test: {{semGrade.grade}}</span>
+                    <span class="notes">Final grade: {{finalGrade(gradesAbsences.grades,semGrade)}}</span>
+                </ng-container>
             </div>
             <div class="tables-item tables-item-absences">
                 <span class="title">absences</span>
@@ -22,14 +31,14 @@
                     <div class="first-row">Date</div>
                     <div class="first-row">Proven</div>
     
-                    <ng-container *ngFor="let absence of absences">
-                        <div class="data">{{absence.date}}</div>
+                    <ng-container *ngFor="let absence of gradesAbsences.absences">
+                        <div class="data">{{formatDate(absence.date)}}</div>
                         <div class="data" *ngIf="absence.proven else notProven">
                             <i class="bi bi-check-circle-fill"></i> Yes
                         </div>
                     </ng-container>
                 </div>
-                <span class="notes">Total absences: {{2}}</span>
+                <span class="notes">Total absences: {{totalAbsences(gradesAbsences.absences)}}</span>
             </div>
         </div>
     </div>

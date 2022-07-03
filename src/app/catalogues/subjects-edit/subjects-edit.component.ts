@@ -1,10 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Timestamp } from 'firebase/firestore';
 import * as moment from 'moment';
-import { take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, take, tap } from 'rxjs/operators';
 import { DialogData } from 'src/app/shared/components/prompt/prompt.component';
+import { IAbsence, IClass, IGrade, ISubject } from 'src/app/shared/interfaces/catalogue';
+import { IPerson } from 'src/app/shared/interfaces/user';
+import { CatalogueService } from 'src/app/shared/services/catalogue.service';
 import { PromptService } from 'src/app/shared/services/prompt.service';
-import { Absence, Grade, Student, Subject } from '../catalogue-types';
 import { AddAbsencesComponent } from './add-absences/add-absences.component';
 import { AddGradesComponent } from './add-grades/add-grades.component';
 import { EditGradesComponent } from './edit-grades/edit-grades.component';
@@ -16,64 +20,38 @@ import { EditGradesComponent } from './edit-grades/edit-grades.component';
 })
 export class SubjectsEditComponent implements OnInit {
   dateFormat = 'YYYY MMMM D';
-  grades: Grade[] = [
-    {
-      id: '123456789',
-      value: 9,
-      date: 1628511984
-    },
-    {
-      id: '123456789',
-      value: 5,
-      date: 1632151164
-    },
-    {
-      id: '123456789',
-      value: 8,
-      date: 1625833584
-    },
-    {
-      id: '123456789',
-      value: 10,
-      date: 1625747184
-    },
-  ]
-
-  absences: Absence[] = [
-    {
-      id: '123456789',
-      date: 1632151164,
-      proven: true
-    },
-    {
-      id: '123456789',
-      date: 1628511984,
-      proven: false
-    },
-    {
-      id: '123456789',
-      date: 1632151164,
-      proven: false
-    },
-    {
-      id: '123456789',
-      date: 1628511984,
-      proven: true
-    },
-  ]
   editableAbsences = false;
+  gradesAbsences$: Observable<{
+    grades: IGrade[], 
+    semesterGrade: IGrade | undefined,
+    absences: IAbsence[]
+  }> | undefined;
 
   constructor(
     private matDialog: MatDialog,
     public matDialogRef: MatDialogRef<SubjectsEditComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {subject: Subject, student: Student},
+    @Inject(MAT_DIALOG_DATA) public data: {subject: ISubject, student: IPerson, classId: string, isMaster: boolean},
     public promptService: PromptService,
+    private catService: CatalogueService,
   ) { }
 
   ngOnInit(): void {
+    this.gradesAbsences$ = this.catService.getStudentSubjectDetailsForCurrentPeriod$(
+      this.data.classId,
+      this.data.subject.subjectId,
+      this.data.student.userId
+    ).pipe(map( value => {
+      let grades: IGrade[]= [];
+      let semesterGrade: IGrade | undefined;
+      value.grades.forEach( grade => {
+        if (grade.type === 'general') grades.push(grade);
+        else semesterGrade = grade;
+      })
+      return {grades, semesterGrade, absences: value.absences}
+    }))
   }
 
-  async editGrade(grade: Grade) {
+  async editGrade(grade: IGrade) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.panelClass = 'forgot-password';
@@ -81,25 +59,33 @@ export class SubjectsEditComponent implements OnInit {
     dialogConfig.maxWidth = '100vw';
     dialogConfig.data = grade;
 
-    const dialog = this.matDialog.open(EditGradesComponent,dialogConfig);
+    const dialog: MatDialogRef<EditGradesComponent, {grade: IGrade, action: 'edit' | 'delete'}> = this.matDialog.open(EditGradesComponent,dialogConfig);
     const value = await dialog.afterClosed().pipe(take(1)).toPromise();
-    console.log({value});
+    if (value && value.grade.id && value.action === 'edit') await this.catService.editGrade(value.grade,value.grade.id,this.data.classId);
+    if (value && value.grade.id && value.action === 'delete') await this.catService.deleteGrade(value.grade.id,this.data.classId);
   }
   
-  async addGrade() {
+  async addGrade(canAddSemester: boolean) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.panelClass = 'forgot-password';
     dialogConfig.backdropClass = 'forgot-password-backdrop';
     dialogConfig.maxWidth = '100vw';
     dialogConfig.autoFocus = false;
+    dialogConfig.data = canAddSemester;
     
-    const dialog = this.matDialog.open(AddGradesComponent,dialogConfig);
-    const value = await dialog.afterClosed().pipe(take(1)).toPromise();
-    console.log({value});
+    const dialog: MatDialogRef<AddGradesComponent, IGrade> = this.matDialog.open(AddGradesComponent,dialogConfig);
+    const value = await dialog.afterClosed().pipe(take(1)).toPromise();    
+    if (value) await this.catService.addGrade(
+        this.data.classId,
+        this.data.student.userId,
+        this.data.subject.subjectId,
+        value.grade,
+        value.type,
+        value.date);
   }
   
-  async editAbsence(absence: Absence) {
+  async editAbsence(absence: IAbsence) {
     const dialogConfig = new MatDialogConfig<DialogData>();
     dialogConfig.autoFocus = true;
     dialogConfig.panelClass = 'forgot-password';
@@ -107,15 +93,15 @@ export class SubjectsEditComponent implements OnInit {
     dialogConfig.maxWidth = '100vw';
     dialogConfig.data = {
       title: 'Prove absence',
-      text: 'Do you want to prove the absence?',
+      text: absence.proven ? 'Do you want to mark as not proven?' : 'Do you want to prove the absence?',
       okButton: 'Yes',
       cancelButton: 'No',
       extraData: {
-        booleanValue: absence.proven
+        hideCancel: true
       }
     };
     const dialogData = await this.promptService.promptForConfirmation<boolean>(dialogConfig);
-    console.log({dialogData});
+    if (dialogData && absence.id) this.catService.proveAbsence(absence,this.data.classId);
     
   }
 
@@ -127,14 +113,24 @@ export class SubjectsEditComponent implements OnInit {
     dialogConfig.maxWidth = '100vw';
     dialogConfig.autoFocus = false;
     
-    const dialog = this.matDialog.open(AddAbsencesComponent,dialogConfig);
+    const dialog: MatDialogRef<AddAbsencesComponent, Timestamp> = this.matDialog.open(AddAbsencesComponent,dialogConfig);
     const value = await dialog.afterClosed().pipe(take(1)).toPromise();
-    console.log({value});
+    if (value) this.catService.addAbsence(this.data.classId,this.data.student.userId, this.data.subject.subjectId, value);
   }
 
-  formatDate(value: number | null) {
-    if (value === null) return;
-    return moment.unix(value).format(this.dateFormat);
+  formatDate(value: Timestamp) {
+    return moment(value.toDate()).format(this.dateFormat);
+  }
+
+  finalGrade(grades: IGrade[], semesterGrade: IGrade) {
+    let gradesSum = 0;
+    grades.forEach( grade => gradesSum += grade.grade);
+    const gradesAvg = gradesSum/grades.length;
+    const finalGrade = ((gradesAvg * 3) + semesterGrade.grade) / 4;    
+    return Math.round(finalGrade);
   }
   
+  totalAbsences(absences: IAbsence[]) {
+    return absences.filter(absence => !absence.proven).length;
+  }
 }

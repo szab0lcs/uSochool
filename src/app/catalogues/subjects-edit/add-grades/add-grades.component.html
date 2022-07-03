@@ -4,9 +4,9 @@
         <div class="grade">
             <i class="bi bi-dash-circle-fill" (click)="minusGrade()"></i>
             <div class="value" (click)="displayOptions = !displayOptions">
-                {{data.value}}
+                {{data.grade}}
                 <div class="options" *ngIf="displayOptions">
-                    <div *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]" (click)="data.value = item">{{item}}</div>
+                    <div *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]" (click)="data.grade = item">{{item}}</div>
                 </div>
             </div>
             <i class="bi bi-plus-circle-fill" (click)="plusGrade()"></i>
@@ -17,17 +17,26 @@
             <input matInput 
             [matDatepicker]="picker" 
             readonly 
-            [value]="convertedDate" 
+            [value]="gradeDate" 
             (dateChange)="dateChangeHandler($event.value)">
             <mat-hint>MM/DD/YYYY</mat-hint>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
+        <ng-container *ngIf="canAddSemester">
+            <div class="grade-type-toggle" (click)="switchGradeType()" *ngIf="(gradeType$ | async) as gradeType">
+                <span class="thumb" [ngClass]="{'thumb-periodal': gradeType === 'periodal'}"></span>
+                <div class="types">
+                    <span class="type">general</span>
+                    <span class="type">periodal</span>
+                </div>
+            </div>
+            <span class="click-note">grade type</span>
+        </ng-container>
     </div>
     <div class="buttons">
         <div class="edit-save">
-            <span class="delete"><i class="bi bi-trash-fill"></i> Delete</span>
-            <span class="save" (click)="save()"><i class="bi bi-save-fill"></i> Save</span>
+            <span class="save" (click)="save()"><i class="bi bi-plus-circle-fill"></i> Add</span>
         </div>
         <span class="cancel" (click)="matDialogRef.close()">Cancel</span>
     </div>

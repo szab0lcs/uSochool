@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="title">Remove subject</div>
+    <div class="input">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="search by name" (input)="onSearchChange($event)">
+    </div>
+    <div class="names" *ngIf="subjects$ | async as subjects else noMore">
+        <span *ngFor="let subject of subjects | searchFilter: query | azOrder:'lastName'" (click)="selectSubject(subject,selectedSubjects$.value)">
+            <i class="bi bi-plus-lg"></i>{{subject.subject.subjectName}}
+        </span>
+    </div>
+    <ng-container *ngIf="selectedSubjects$ | async as selectedSubjects">
+        <div class="horizontal-line" *ngIf="selectedSubjects.length"></div>
+        <div class="names names-selected" *ngIf="selectedSubjects.length">
+            <span *ngFor="let subject of selectedSubjects" (click)="removeSubject(subject,selectedSubjects)">
+                <i class="bi bi-dash-lg"></i> {{subject.subject.subjectName}}
+            </span>
+        </div>
+        <div class="buttons">
+            <div class="button button-back" (click)="matRef.close()">
+                <i class="bi bi-chevron-left"></i>
+            </div>
+            <div *ngIf="selectedSubjects.length" 
+            class="button button-add-class" 
+            (click)="removeSubjects(selectedSubjects)" 
+            [ngClass]="{'button-add-class-active': canSave}">
+                <i class="bi bi-check2"></i>
+                <span class="button-add-class-text">Save</span>
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+<ng-template #noMore>There is no more subjects to remove!</ng-template>

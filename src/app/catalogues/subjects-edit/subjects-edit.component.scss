@@ -50,6 +50,9 @@
                         border-bottom: 1px solid white;
                         padding-bottom: 0.4em;
                     }
+                    &-master{
+                        grid-template-columns: 0.8fr 1.2fr !important;
+                    }
                 }
                 .notes {
                     font-size: 0.8em;

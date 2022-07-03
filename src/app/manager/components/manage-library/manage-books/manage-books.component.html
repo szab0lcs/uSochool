@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="title">Search & Edit</div>
+    <div class="input">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="search by author or title" (input)="onSearchChange($event)">
+    </div>
+    <div class="table" *ngIf="(books$ | async) as books">
+        <div class="table-container">
+            <div class="first-row">Title</div>
+            <div class="first-row">Author</div>
+            <div class="first-row">Details</div>
+
+            <ng-container *ngFor="let book of books | searchFilter: query">
+                <div class="data data-title">{{book.title}}</div>
+                <div class="data">{{book.author}}</div>
+                <div class="data data-view" (click)="openBookDetails(book)">View</div>
+            </ng-container>
+        </div>
+    </div>
+    <div class="buttons">
+        <div class="button" (click)="matDialogRef.close()">
+            <i class="bi bi-chevron-left"></i>
+        </div>
+        <div class="button button-logout" (click)="addBook()" [ngClass]="{'button-logout-active': canAdd}">
+            <i class="bi bi-plus-lg"></i>
+            <span class="button-logout-text">Add book</span>
+        </div>
+    </div>
+</div>

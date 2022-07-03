@@ -1,33 +1,36 @@
-<div class="container">
+<div class="container" *ngIf="(userData$ | async) as user">
     <div class="pic-name">
-        <div class="image" [ngStyle]="getBackgroundUrl('assets/images/profile/default_boy_1.png')">
+        <div class="image" [ngStyle]="getBackgroundUrl(user.publicData)">
             <div class="change-pic">
-                <i class="bi bi-camera-fill"></i>
+                <div class="change-pic-container">
+                    <input type="file" accept="image/*" (change)="uploadFile($event, user.publicData.userId)" />
+                    <i class="bi bi-camera-fill"></i>
+                </div>
             </div>
         </div>
-        <span class="name">John Doe</span>
+        <span class="name">{{user.publicData.firstName}} {{user.publicData.lastName}}</span>
     </div>
     <div class="details-container">
         <div class="details">
             <div class="details-item">
                 <span class="header">Email</span>
-                <span class="text">johndoe@usochool.com</span>
+                <span class="text">{{user.publicData.email}}</span>
             </div>
-            <div class="details-item">
+            <div class="details-item" *ngIf="user.privateData.birthday as birthday">
                 <span class="header">Birthday</span>
-                <span class="text">1995/04/24</span>
+                <span class="text">{{birthday}}</span>
             </div>
-            <div class="details-item">
+            <div class="details-item" *ngIf="user.privateData.address as address">
                 <span class="header">Address</span>
-                <span class="text">Example street 123</span>
+                <span class="text">{{address}}</span>
             </div>
-            <div class="details-item">
+            <div class="details-item" *ngIf="user.privateData.phone as phone">
                 <span class="header">Phone</span>
-                <span class="text">0123456789</span>
+                <span class="text">{{phone}}</span>
             </div>
-            <div class="details-item">
-                <span class="header">CNP</span>
-                <span class="text">1654515486423</span>
+            <div class="details-item" *ngIf="user.privateData.idNumber as idNumber">
+                <span class="header">ID number</span>
+                <span class="text">{{idNumber}}</span>
             </div>
         </div>
     </div>

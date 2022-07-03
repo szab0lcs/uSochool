@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="title">Users list</div>
+    <div class="user-type-toggle" (click)="switchUserType()">
+        <span class="thumb" [ngClass]="{'thumb-student': (userType$ | async) === 'student'}"></span>
+        <div class="types">
+            <span class="type">Teacher</span>
+            <span class="type">Student</span>
+        </div>
+    </div>
+    <div class="input">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="search by name or data" (input)="onSearchChange($event)">
+    </div>
+    <div class="table">
+        <div class="table-container" *ngIf="(users$ | async) as users">
+            <ng-container *ngFor="let user of users | searchFilter: query | azOrder: 'lastName'">
+                <div class="data data-title">{{user.lastName}} {{user.parentInitial ? user.parentInitial + '.' : ''}} {{user.firstName}}</div>
+                <div class="data data-view" (click)="navS.navigateWithId(navS.eRoutes.EditUser,user.userId)">View</div>
+            </ng-container>
+        </div>
+    </div>
+    <div class="back-button" (click)="navS.back()">
+        <i class="bi bi-chevron-left"></i>
+    </div>
+</div>

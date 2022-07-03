@@ -14,6 +14,15 @@ import { ManageUsersComponent } from './manager/components/manage-users/manage-u
 import { NewsComponent } from './news/news.component';
 import { ProfileComponent } from './profile/profile.component';
 import { TimetableComponent } from './timetable/timetable.component';
+import { AngularFireAuthGuard, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/compat/auth-guard';
+import { AddUserComponent } from './manager/components/manage-users/add-user/add-user.component';
+import { UsersListComponent } from './manager/components/manage-users/users-list/users-list.component';
+import { EditUserComponent } from './manager/components/manage-users/edit-user/edit-user.component';
+import { EditClassComponent } from './manager/components/manage-classes/edit-class/edit-class.component';
+import { ManageSubjectsComponent } from './manager/components/manage-subjects/manage-subjects.component';
+
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
+const redirectLoggedInToItems = () => redirectLoggedInTo(['home']);
 
 const routes: Routes = [
   {
@@ -24,34 +33,50 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectLoggedInToItems }
   },
   {
     path: 'student-catalogue',
-    component: StudentCatalogueComponent
+    component: StudentCatalogueComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
-    path: 'teacher-catalogue',
-    component: TeacherCatalogueComponent
+    path: 'teacher-catalogue/:id',
+    component: TeacherCatalogueComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'news',
-    component: NewsComponent
+    component: NewsComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'profile',
-    component: ProfileComponent
+    component: ProfileComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'library',
-    component: LibraryComponent
+    component: LibraryComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'timetable',
-    component: TimetableComponent
+    component: TimetableComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'contacts',
@@ -59,23 +84,63 @@ const routes: Routes = [
   },
   {
     path: 'manage-classes',
-    component: ManageClassesComponent
+    component: ManageClassesComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
+  },
+  {
+    path: 'manage-classes/:id',
+    component: EditClassComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'manage-contacts',
-    component: ManageContactsComponent
+    component: ManageContactsComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'manage-library',
-    component: ManageLibraryComponent
+    component: ManageLibraryComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
+  },
+  {
+    path: 'manage-subjects',
+    component: ManageSubjectsComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'manage-news',
-    component: ManageNewsComponent
+    component: ManageNewsComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
     path: 'manage-users',
-    component: ManageUsersComponent
+    component: ManageUsersComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
+  },
+  {
+    path: 'add-user',
+    component: AddUserComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
+  },
+  {
+    path: 'users-list',
+    component: UsersListComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
+  },
+  {
+    path: 'edit-user/:id',
+    component: EditUserComponent,
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
 ];
 
@@ -85,19 +150,24 @@ const routes: Routes = [
 })
 export class AppRoutingModule { }
 
-export type ExistingRoutes = 
-  '' |
-  'home' |
-  'login' |
-  'student-catalogue' |
-  'teacher-catalogue' |
-  'news' |
-  'profile' |
-  'library' |
-  'contacts' |
-  'timetable' |
-  'manage-classes' |
-  'manage-contacts' |
-  'manage-library' |
-  'manage-news' |
-  'manage-users';
+export enum ExistingRoutes {
+  Default = '',
+  Home = 'home',
+  Login = 'login',
+  StudentCatalogue = 'student-catalogue',
+  TeacherCatalogue = 'teacher-catalogue',
+  News = 'news',
+  Profile = 'profile',
+  Library = 'library',
+  Contacts = 'contacts',
+  Timetable = 'timetable',
+  ManageClasses = 'manage-classes',
+  ManageContacts = 'manage-contacts',
+  ManageLibrary = 'manage-library',
+  ManageSubjects = 'manage-subjects',
+  ManageNews = 'manage-news',
+  ManageUsers = 'manage-users',
+  AddUser = 'add-user',
+  UsersList = 'users-list',
+  EditUser = 'edit-user',
+}

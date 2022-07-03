@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ThemeService } from './shared/services/theme.service';
+import { Capacitor } from '@capacitor/core';
+import { initializeApp } from 'firebase/app';
+import { indexedDBLocalPersistence, initializeAuth } from 'firebase/auth';
+import { environment } from 'src/environments/environment';
+import { AuthService } from './shared/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -11,11 +16,16 @@ export class AppComponent {
   title = 'usochool';
   appBackgroundObs$: Observable<string[]>;
   constructor(
-    private themeService: ThemeService
+    private themeService: ThemeService,
   ){
-    this.appBackgroundObs$ = this.themeService.activeScheme$;
+    this.appBackgroundObs$ = this.themeService.getActiveColor$();
+    const app = initializeApp(environment.firebase);
+    if (Capacitor.isNativePlatform()) {
+      initializeAuth(app, {
+        persistence: indexedDBLocalPersistence
+      });
+    }
   }
-
 
   getThemeColor(i: number, colorScheme: string[]) {
     const color = colorScheme[i-1];

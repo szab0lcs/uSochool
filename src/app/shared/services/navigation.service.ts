@@ -27,4 +27,16 @@ export class NavigationService {
   navigateTo(url: ExistingRoutes) {
     this.router.navigateByUrl(url);
   }
+
+  navigateWithId(url: ExistingRoutes, id: string) {
+    this.router.navigateByUrl(`${url}/${id}`);
+  }
+
+  manageClass(classId: string) {
+    this.router.navigateByUrl(`${ExistingRoutes.ManageClasses}/${classId}`)
+  }
+
+  public get eRoutes(): typeof ExistingRoutes {
+    return ExistingRoutes;
+  }
 }

@@ -1,0 +1,84 @@
+@import '../../../../../../theme/backgrounds.scss';
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+    .title {
+        color: white;
+        font-weight: 500;
+        font-size: 1.6em;
+    }
+    .input {
+        width: 100%;
+        display: flex;
+        padding: 0.8em 1.1em;
+        align-items: center;
+        justify-content: flex-start;
+        gap: .1em;
+        @include BlackBlurredBackground();
+        backdrop-filter: none;
+        background: linear-gradient(135deg, rgb(0 0 0 / 18%) 0%, rgb(0 0 0 / 6%) 100%);
+        color: white;
+        z-index: 2;
+        i {
+            font-size: 1.6em;
+            text-shadow: 0px 0px 0.2em rgb(0 0 0 / 40%);
+        }
+        &-container {
+            position: relative;
+            padding: 0.6em 0.5em 0.3em 0.5em;
+            flex: 1;
+            &-active {
+                .input-container-placeholder {
+                    font-size: 0.7em;
+                    bottom: 2.2em;
+                    left: 0.9em;
+                }
+                input {
+                    transform: translateY(0.3em);
+                }
+            }
+            &-placeholder {
+                position: absolute;
+                opacity: 0.8;
+                bottom: 0.3em;
+                left: 0.78em;
+                transition: all 0.3s ease-in-out;
+                pointer-events: none;
+            }
+        }
+    }
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1em;
+        z-index: 1;
+        .save {
+            background: #787878;
+            background: linear-gradient(135deg, rgb(255 255 255) 0%, rgb(245 245 245 / 65%) 100%);
+            box-shadow: inset 2px 3px 5px 0px rgb(0 0 0 / 16%);
+            border-radius: 1.25em;
+            padding: 0.8em 1.8em;
+            color: black;
+            font-size: 1.2em;
+            font-weight: 400;
+            border: none;
+            border-radius: 0.75em;
+            mix-blend-mode: screen;
+            text-shadow: 1px 1px 3px rgb(0 0 0 / 22%);
+            &:active {
+                box-shadow: inset -2px -2px 5px 0px rgb(0 0 0 / 16%);
+            }
+        }
+        .cancel {
+            color: white;
+            font-weight: 400;
+            font-size: 1.2em;
+            text-shadow: 1px 1px 3px rgb(0 0 0 / 22%);
+        }
+    }
+}

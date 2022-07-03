@@ -22,7 +22,7 @@
                         <div class="table-container-props">
                             <span class="table-container-props-title">Return date</span>
                             <span class="table-container-props-text">
-                                {{calculateAvailableDate(book.available.rentedDate,book.available.rentPeriod) | formatDate}}
+                                {{calculateAvailableDate(book.available.rentedDate,book.available.rentPeriod)}}
                             </span>
                         </div>
                         <div class="table-container-props">
@@ -58,7 +58,7 @@
             <div class="table-container-props">
                 <span class="table-container-props-title">Expected availability</span>
                 <span class="table-container-props-text">
-                    {{calculateAvailableDate(book.available.rentedDate,book.available.rentPeriod) | formatDate}}
+                    {{calculateAvailableDate(book.available.rentedDate,book.available.rentPeriod)}}
                 </span>
             </div>
         </ng-container>

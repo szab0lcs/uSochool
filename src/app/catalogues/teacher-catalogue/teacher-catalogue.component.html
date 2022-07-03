@@ -1,20 +1,38 @@
 <div class="container">
     <span class="title">Catalogue</span>
     <div class="list-scroll-container">
-        <div class="list">
-            <ng-container *ngFor="let class of teacherClasses; let i = index;">
+        <div class="list" *ngIf="(teacherClasses$ | async) as classes">
+            <ng-container *ngIf="(headMasterClass$ | async) as classDoc">
+                <div class="list-items" 
+                (click)="showMaster = !showMaster">
+                    <span class="list-items-content">
+                        {{classDoc.name}} Master
+                    </span>
+                </div>
+                <div class="list-items-expandable" [ngClass]="{'list-items-expandable-show': showMaster}">
+                    <span class="class-subject" 
+                    *ngFor="let class of classDoc.subjects" 
+                    (click)="openStudentsList({className: class.name,classId: class.classId, subject: class.subject, isMaster: true})">
+                        {{class.subject.subjectName}}
+                    </span>
+                    <span class="class-subject class-subject-settings" (click)="navS.navigateWithId(navS.eRoutes.ManageClasses,classDoc.classId)">
+                        Settings
+                    </span>
+                </div>
+            </ng-container>
+            <ng-container *ngFor="let class of classes | keyvalue; let i = index;">
                 <div class="list-items" 
                 *ngIf="class"
                 (click)="toggleExpandable(i)">
                     <span class="list-items-content">
-                        {{class.name}}
+                        {{class.key}}
                     </span>
                 </div>
                 <div class="list-items-expandable" [ngClass]="{'list-items-expandable-show': show === i}">
                     <span class="class-subject" 
-                    *ngFor="let subject of class.subjects" 
-                    (click)="openStudentsList({className: class.name,classId: class.id, subject})">
-                        {{subject.name}}
+                    *ngFor="let class of class.value" 
+                    (click)="openStudentsList({className: class.name,classId: class.classId, subject: class.subject, isMaster: false})">
+                        {{class.subject.subjectName}}
                     </span>
                 </div>
             </ng-container>

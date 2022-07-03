@@ -5,7 +5,7 @@
         <input type="text" placeholder="search by author or title" (input)="onSearchChange($event)">
     </div>
     <div class="table">
-        <div class="table-container">
+        <div class="table-container" *ngIf="books$ | async as books">
             <div class="first-row">Title</div>
             <div class="first-row">Available</div>
             <div class="first-row">Details</div>

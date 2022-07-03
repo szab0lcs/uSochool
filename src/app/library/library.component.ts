@@ -46,18 +46,3 @@ export class LibraryComponent implements OnInit {
     await dialog.afterClosed().pipe(take(1)).toPromise();
   }
 }
-
-export interface Book {
-  id: string;
-  title: string;
-  author: string;
-  maxRentPeriod: number;
-  available: true | BookRental;
-  isbn: string;
-}
-
-export interface BookRental {
-  rentedDate: number;
-  rentPeriod: number;
-  rentedBy: string;
-}

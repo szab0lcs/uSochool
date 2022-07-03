@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="title">Subjects</div>
+    <div class="subjects">
+        <div class="subjects-item" *ngFor="let subject of (subjects$ | async) | azOrder: 'subjectName'">
+            <span class="subjects-item-name">{{subject.subjectName}}</span>
+            <i class="bi bi-trash3-fill" (click)="removeSubject(subject.subjectId)"></i>
+        </div>
+    </div>
+    <div class="input">
+        <i class="bi bi-journal-bookmark-fill"></i>
+        <input type="text" placeholder="enter subject name" #subjectName>
+    </div>
+    <div class="buttons">
+        <button type="submit" class="add" (click)="addSubject(subjectName)" [disabled]="addDisabled">Add subject</button>
+        <span class="cancel" (click)="matDialogRef.close()">Cancel</span>
+    </div>
+</div>

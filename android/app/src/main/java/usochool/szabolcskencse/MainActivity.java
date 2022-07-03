@@ -1,4 +1,4 @@
-package usochool.szabolcskencse;
+package usochool.sapi.szabolcskencse;
 
 import com.getcapacitor.BridgeActivity;
 

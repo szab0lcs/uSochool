@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Book } from '../../library/library.component';
+import { Book } from '../services/library.service';
 
 @Pipe({ name: 'myRentedBooks' })
 export class MyRentedBooksPipe implements PipeTransform {
@@ -9,7 +9,7 @@ export class MyRentedBooksPipe implements PipeTransform {
     }
 
     isMyRent(book: Book, userId: string) {
-        if (book.available !== true) return book.available.rentedBy === userId;
+        if (book.available !== true) return book.available.rentedBy.userId === userId;
         return;
     }
   }

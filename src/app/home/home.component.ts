@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ExistingRoutes } from '../app-routing.module';
+import { Observable } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
+import { AllUserData } from '../shared/interfaces/user';
+import { AuthService } from '../shared/services/auth.service';
 import { NavigationService } from '../shared/services/navigation.service';
+import { UserService } from '../shared/services/user.service';
 import { fadeInAnimation } from '../_animations/index';
 
 @Component({
@@ -11,17 +15,20 @@ import { fadeInAnimation } from '../_animations/index';
   host: { '[@fadeInAnimation]': '' }
 })
 export class HomeComponent implements OnInit {
-  role: 'student' | 'teacher' | 'admin' = 'student';
+  role$: Observable<string>;
+  userData$: Observable<AllUserData | null>;
   break = '<br>';
 
   constructor(
-    private navigationService: NavigationService
-  ) { }
+    public navS: NavigationService,
+    public authService: AuthService,
+    private userService: UserService
+  ) {
+    this.role$ = this.userService.getUserMainRole$().pipe(distinctUntilChanged());
+    this.userData$ = this.userService.currentUser$;
+  }
 
   ngOnInit(): void {
   }
 
-  navigateTo(url: ExistingRoutes) {
-    this.navigationService.navigateTo(url);
-  }
 }

@@ -65,7 +65,6 @@ export class NewsComponent implements OnInit {
 
     const dialog = this.matDialog.open(ArticleComponent,dialogConfig);
     const value = await dialog.afterClosed().pipe(take(1)).toPromise();
-    console.log({value});
   }
 
 }
